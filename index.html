@@ -31,27 +31,13 @@
       overflow: hidden;
     }
 
-    .hearts span {
-      position: fixed;
-      bottom: -40px;
-      font-size: 24px;
-      opacity: 0.35;
-      animation: subir 8s linear infinite;
-      pointer-events: none;
-    }
-
-    .hearts span:nth-child(1) { left: 8%; animation-delay: 0s; }
-    .hearts span:nth-child(2) { left: 25%; animation-delay: 2s; }
-    .hearts span:nth-child(3) { left: 70%; animation-delay: 1s; }
-    .hearts span:nth-child(4) { left: 88%; animation-delay: 3s; }
-
     .card {
       width: 100%;
       max-width: 720px;
-      padding: 42px 28px;
+      padding: 38px 24px;
       border-radius: 34px;
-      background: rgba(255, 255, 255, 0.62);
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
       box-shadow: 0 30px 80px rgba(111, 64, 91, 0.22);
       text-align: center;
@@ -61,7 +47,7 @@
     }
 
     h1 {
-      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-size: clamp(2rem, 6vw, 4.2rem);
       line-height: 1.05;
       color: #4b203b;
       margin-bottom: 18px;
@@ -73,7 +59,18 @@
       line-height: 1.7;
       color: #67475c;
       max-width: 580px;
-      margin: 0 auto 30px;
+      margin: 0 auto 24px;
+    }
+
+    .score {
+      margin: 18px auto;
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      color: #7b3d62;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(128, 70, 105, 0.12);
     }
 
     button {
@@ -87,6 +84,7 @@
       font-weight: 700;
       box-shadow: 0 18px 35px rgba(255, 95, 162, 0.35);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      margin-top: 8px;
     }
 
     button:hover {
@@ -94,81 +92,39 @@
       box-shadow: 0 24px 45px rgba(255, 95, 162, 0.45);
     }
 
-    .surpresa {
+    .game-area {
+      position: relative;
+      width: 100%;
+      height: 330px;
+      margin-top: 28px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
       display: none;
-      margin-top: 36px;
+    }
+
+    .flower {
+      position: absolute;
+      top: -50px;
+      font-size: 36px;
+      cursor: pointer;
+      user-select: none;
+      animation: cair 4s linear forwards;
+      filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
+    }
+
+    .final {
+      display: none;
+      margin-top: 28px;
       animation: aparecerFlor 0.9s ease both;
     }
 
-    .flor {
-      position: relative;
-      width: 150px;
-      height: 210px;
-      margin: 0 auto 24px;
-    }
-
-    .miolo {
-      position: absolute;
-      top: 55px;
-      left: 50%;
-      width: 54px;
-      height: 54px;
-      background: #ffd1e6;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      box-shadow: inset 0 0 0 6px rgba(255, 143, 189, 0.7);
-    }
-
-    .petala {
-      position: absolute;
-      width: 62px;
-      height: 86px;
-      background: linear-gradient(135deg, #ff5fa2, #ffc1dc);
-      border-radius: 60px 60px 20px 20px;
-      top: 10px;
-      left: 44px;
-      transform-origin: 31px 70px;
-      box-shadow: 0 10px 22px rgba(255, 126, 179, 0.25);
-    }
-
-    .petala:nth-child(1) { transform: rotate(0deg); }
-    .petala:nth-child(2) { transform: rotate(60deg); }
-    .petala:nth-child(3) { transform: rotate(120deg); }
-    .petala:nth-child(4) { transform: rotate(180deg); }
-    .petala:nth-child(5) { transform: rotate(240deg); }
-    .petala:nth-child(6) { transform: rotate(300deg); }
-
-    .caule {
-      position: absolute;
-      top: 108px;
-      left: 50%;
-      width: 10px;
-      height: 100px;
-      background: linear-gradient(#4caf50, #2e7d32);
-      border-radius: 999px;
-      transform: translateX(-50%);
-      z-index: 1;
-    }
-
-    .folha {
-      position: absolute;
-      top: 145px;
-      width: 54px;
-      height: 28px;
-      background: #66bb6a;
-      border-radius: 80px 10px 80px 10px;
-      z-index: 2;
-    }
-
-    .folha.esquerda {
-      left: 30px;
-      transform: rotate(-25deg);
-    }
-
-    .folha.direita {
-      right: 30px;
-      transform: rotate(205deg);
+    .flor-grande {
+      font-size: 6rem;
+      animation: pulse 1.8s ease-in-out infinite;
+      margin-bottom: 14px;
     }
 
     .mensagem {
@@ -176,7 +132,7 @@
       margin: 0 auto;
       padding: 24px;
       border-radius: 26px;
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.76);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 45px rgba(125, 68, 101, 0.13);
       color: #4d2d42;
       font-size: clamp(1.1rem, 2.7vw, 1.45rem);
@@ -201,6 +157,17 @@
       }
     }
 
+    @keyframes cair {
+      from {
+        top: -50px;
+        transform: rotate(0deg);
+      }
+      to {
+        top: 110%;
+        transform: rotate(180deg);
+      }
+    }
+
     @keyframes aparecerFlor {
       from {
         opacity: 0;
@@ -212,74 +179,118 @@
       }
     }
 
-    @keyframes subir {
-      0% {
-        transform: translateY(0) rotate(0deg) scale(0.8);
-        opacity: 0;
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
       }
-      15% {
-        opacity: 0.38;
-      }
-      100% {
-        transform: translateY(-110vh) rotate(25deg) scale(1.2);
-        opacity: 0;
+      50% {
+        transform: scale(1.08);
       }
     }
 
     @media (max-width: 600px) {
       .card {
-        padding: 32px 20px;
+        padding: 30px 18px;
         border-radius: 28px;
       }
 
       button {
         width: 100%;
       }
+
+      .game-area {
+        height: 360px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="hearts">
-    <span>🌸</span>
-    <span>✨</span>
-    <span>💕</span>
-    <span>🌷</span>
-  </div>
-
   <main class="card">
-    <h1>Minhas porcentagens subiram um pouquinho ? 🌸</h1>
+    <h1>Oi, Dai 🌸</h1>
 
-    <p class="subtitle">
-      Fiz uma coisinha simples, mas com carinho.  
-      Clica no botão aqui embaixo.
+    <p class="subtitle" id="textoInicial">
+      Para ganhar sua mensagem, você precisa pegar 5 flores.
     </p>
 
-    <button onclick="mostrarFlor()">
-      Clique para receber uma flor
+    <div class="score" id="score">
+      Flores: 0/5
+    </div>
+
+    <br>
+
+    <button id="startButton" onclick="iniciarJogo()">
+      Começar joguinho
     </button>
 
-    <section class="surpresa" id="surpresa">
-      <div class="flor">
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
+    <div class="game-area" id="gameArea"></div>
 
-        <div class="miolo"></div>
-        <div class="caule"></div>
-        <div class="folha esquerda"></div>
-        <div class="folha direita"></div>
+    <section class="final" id="final">
+      <div class="flor-grande">🌸</div>
+
+      <div class="mensagem">
+        Espero que seu dia seja maravilhoso como a mulher que você é.
       </div>
+
+      <p class="assinatura">
+        — De alguém que quis deixar seu dia um pouquinho mais bonito.
+      </p>
     </section>
   </main>
 
   <script>
-    function mostrarFlor() {
-      const surpresa = document.getElementById("surpresa");
-      surpresa.style.display = "block";
+    let pontos = 0;
+    let intervalo;
+    const totalFlores = 5;
+
+    function iniciarJogo() {
+      pontos = 0;
+
+      document.getElementById("score").innerText = "Flores: 0/5";
+      document.getElementById("gameArea").style.display = "block";
+      document.getElementById("final").style.display = "none";
+      document.getElementById("startButton").style.display = "none";
+      document.getElementById("textoInicial").innerText = "Clique nas flores antes que elas caiam 🌸";
+
+      intervalo = setInterval(criarFlor, 800);
+    }
+
+    function criarFlor() {
+      const gameArea = document.getElementById("gameArea");
+      const flor = document.createElement("div");
+
+      flor.classList.add("flower");
+      flor.innerText = "🌸";
+
+      const larguraArea = gameArea.offsetWidth;
+      const posicaoX = Math.random() * (larguraArea - 50);
+
+      flor.style.left = posicaoX + "px";
+
+      flor.onclick = function () {
+        pontos++;
+        document.getElementById("score").innerText = "Flores: " + pontos + "/5";
+        flor.remove();
+
+        if (pontos >= totalFlores) {
+          finalizarJogo();
+        }
+      };
+
+      gameArea.appendChild(flor);
+
+      setTimeout(() => {
+        flor.remove();
+      }, 4000);
+    }
+
+    function finalizarJogo() {
+      clearInterval(intervalo);
+
+      document.getElementById("gameArea").style.display = "none";
+      document.getElementById("final").style.display = "block";
+      document.getElementById("score").innerText = "Você pegou todas as flores 🌸";
+      document.getElementById("textoInicial").innerText = "Você conseguiu!";
     }
   </script>
 </body>
