@@ -210,11 +210,11 @@
     <h1>Pra você Dai 🌸</h1>
 
     <p class="subtitle" id="textoInicial">
-      Para ganhar sua mensagem, você precisa pegar 10 flores em 20 segundos.
+      PPara ganhar sua mensagem, você precisa vencer 3 fases e pegar 30 flores.
     </p>
 
     <div class="score" id="score">
-      Flores: 0/5
+     Fase: 1/3 | Flores: 0/30 | Erros: 0/10 | Tempo: 60s
     </div>
 
     <br>
@@ -241,39 +241,58 @@
 <script>
   let pontos = 0;
   let erros = 0;
-  let tempo = 20;
+  let tempo = 60;
+  let fase = 1;
+
   let intervaloFlores;
   let intervaloTempo;
 
-  const totalFlores = 10;
-  const maxErros = 5;
+  const totalFlores = 30;
+  const maxErros = 10;
 
   function iniciarJogo() {
     pontos = 0;
     erros = 0;
-    tempo = 20;
+    tempo = 60;
+    fase = 1;
 
-    document.getElementById("score").innerText = "Flores: 0/10 | Erros: 0/5 | Tempo: 20s";
+    document.getElementById("score").innerText =
+      "Fase: 1/3 | Flores: 0/30 | Erros: 0/10 | Tempo: 60s";
+
     document.getElementById("gameArea").style.display = "block";
     document.getElementById("final").style.display = "none";
     document.getElementById("startButton").style.display = "none";
-    document.getElementById("textoInicial").innerText = "Pegue só as flores rosas 🌸 antes que elas caiam!";
+    document.getElementById("textoInicial").innerText =
+      "Pegue as flores rosas 🌸, evite as falsas 🌺 e cuidado com o tempo!";
 
-    intervaloFlores = setInterval(criarFlor, 550);
+    document.querySelector(".flor-grande").innerText = "🌸";
+
+    intervaloFlores = setInterval(criarFlor, 650);
 
     intervaloTempo = setInterval(() => {
       tempo--;
+      atualizarFase();
       atualizarScore();
 
       if (tempo <= 0) {
-        perderJogo();
+        perderJogo("O tempo acabou 😭");
       }
     }, 1000);
   }
 
+  function atualizarFase() {
+    if (pontos >= 20) {
+      fase = 3;
+    } else if (pontos >= 10) {
+      fase = 2;
+    } else {
+      fase = 1;
+    }
+  }
+
   function atualizarScore() {
     document.getElementById("score").innerText =
-      "Flores: " + pontos + "/10 | Erros: " + erros + "/5 | Tempo: " + tempo + "s";
+      "Fase: " + fase + "/3 | Flores: " + pontos + "/30 | Erros: " + erros + "/10 | Tempo: " + tempo + "s";
   }
 
   function criarFlor() {
@@ -282,28 +301,64 @@
 
     flor.classList.add("flower");
 
-    const ehFlorFalsa = Math.random() < 0.30;
+    const sorteio = Math.random();
 
-    flor.innerText = ehFlorFalsa ? "🌺" : "🌸";
+    let tipo = "normal";
+
+    if (sorteio < 0.25) {
+      tipo = "falsa";
+      flor.innerText = "🌺";
+    } else if (sorteio < 0.33) {
+      tipo = "especial";
+      flor.innerText = "💐";
+    } else if (sorteio < 0.40) {
+      tipo = "perigosa";
+      flor.innerText = "🥀";
+    } else {
+      tipo = "normal";
+      flor.innerText = "🌸";
+    }
 
     const larguraArea = gameArea.offsetWidth;
     const posicaoX = Math.random() * (larguraArea - 50);
 
     flor.style.left = posicaoX + "px";
 
-    const tamanho = Math.floor(Math.random() * 18) + 26;
+    const tamanho = Math.floor(Math.random() * 20) + 24;
     flor.style.fontSize = tamanho + "px";
 
-    const velocidade = Math.random() * 1.4 + 1.9;
+    let velocidade;
+
+    if (fase === 1) {
+      velocidade = Math.random() * 1.4 + 2.6;
+    } else if (fase === 2) {
+      velocidade = Math.random() * 1.1 + 2.0;
+    } else {
+      velocidade = Math.random() * 0.9 + 1.5;
+    }
+
     flor.style.animationDuration = velocidade + "s";
 
     flor.onclick = function () {
-      if (ehFlorFalsa) {
-        erros++;
-      } else {
+      if (tipo === "normal") {
         pontos++;
       }
 
+      if (tipo === "especial") {
+        pontos += 3;
+        tempo += 3;
+      }
+
+      if (tipo === "falsa") {
+        erros += 2;
+      }
+
+      if (tipo === "perigosa") {
+        erros += 3;
+        tempo -= 5;
+      }
+
+      atualizarFase();
       atualizarScore();
       flor.remove();
 
@@ -312,7 +367,11 @@
       }
 
       if (erros >= maxErros) {
-        perderJogo();
+        perderJogo("Você errou flores demais 😭");
+      }
+
+      if (tempo <= 0) {
+        perderJogo("O tempo acabou 😭");
       }
     };
 
@@ -320,18 +379,23 @@
 
     setTimeout(() => {
       if (gameArea.contains(flor)) {
-        if (!ehFlorFalsa) {
+        if (tipo === "normal") {
           erros++;
-          atualizarScore();
+        }
 
-          if (erros >= maxErros) {
-            perderJogo();
-          }
+        if (tipo === "especial") {
+          erros++;
+        }
+
+        atualizarScore();
+
+        if (erros >= maxErros) {
+          perderJogo("Você deixou muitas flores escaparem 😭");
         }
 
         flor.remove();
       }
-    }, 3200);
+    }, velocidade * 1000);
   }
 
   function finalizarJogo() {
@@ -340,25 +404,33 @@
 
     document.getElementById("gameArea").style.display = "none";
     document.getElementById("final").style.display = "block";
-    document.getElementById("score").innerText = "Você venceu e pegou todas as flores 🌸";
-    document.getElementById("textoInicial").innerText = "Você conseguiu!";
+
+    document.getElementById("score").innerText =
+      "Você venceu! Pegou " + pontos + " flores 🌸";
+
+    document.getElementById("textoInicial").innerText =
+      "Você conseguiu passar todas as fases!";
+
+    document.querySelector(".flor-grande").innerText = "🌸";
 
     document.querySelector(".mensagem").innerText =
-      "Espero que seu dia seja maravilhoso como a mulher que você é.";
+      "Espero que seu dia seja maravilhoso como a mulher que você é. Você venceu o joguinho, então oficialmente merece uma flor, um sorriso e umas porcentagens a mais comigo.";
   }
 
-  function perderJogo() {
+  function perderJogo(motivo) {
     clearInterval(intervaloFlores);
     clearInterval(intervaloTempo);
 
     document.getElementById("gameArea").style.display = "none";
     document.getElementById("final").style.display = "block";
-    document.getElementById("score").innerText = "Você perdeu 😭";
+
+    document.getElementById("score").innerText = motivo;
     document.getElementById("textoInicial").innerText = "Quase conseguiu!";
 
     document.querySelector(".flor-grande").innerText = "🥀";
+
     document.querySelector(".mensagem").innerText =
-      "Você deixou flores demais escaparem... tenta de novo, linda 🌸";
+      "Você perdeu... mas como eu sou generoso, vou deixar você tentar de novo. A flor ainda está te esperando 🌸";
 
     document.getElementById("startButton").style.display = "inline-block";
     document.getElementById("startButton").innerText = "Tentar de novo";
