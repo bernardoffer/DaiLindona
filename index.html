@@ -1,297 +1,126 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uma flor pra você, Dai</title>
+<script>
+  let pontos = 0;
+  let erros = 0;
+  let tempo = 20;
+  let intervaloFlores;
+  let intervaloTempo;
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  const totalFlores = 10;
+  const maxErros = 5;
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  function iniciarJogo() {
+    pontos = 0;
+    erros = 0;
+    tempo = 20;
 
-    body {
-      min-height: 100vh;
-      font-family: 'Poppins', sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(255, 150, 196, 0.75), transparent 35%),
-        linear-gradient(135deg, #ffd1e6 0%, #ffb3d1 45%, #ff8fbd 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      color: #442236;
-      overflow: hidden;
-    }
+    document.getElementById("score").innerText = "Flores: 0/10 | Erros: 0/5 | Tempo: 20s";
+    document.getElementById("gameArea").style.display = "block";
+    document.getElementById("final").style.display = "none";
+    document.getElementById("startButton").style.display = "none";
+    document.getElementById("textoInicial").innerText = "Pegue só as flores rosas 🌸 antes que elas caiam!";
 
-    .card {
-      width: 100%;
-      max-width: 720px;
-      padding: 38px 24px;
-      border-radius: 34px;
-      background: rgba(255, 255, 255, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 30px 80px rgba(111, 64, 91, 0.22);
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      animation: aparecer 1s ease both;
-    }
+    intervaloFlores = setInterval(criarFlor, 550);
 
-    h1 {
-      font-size: clamp(2rem, 6vw, 4.2rem);
-      line-height: 1.05;
-      color: #4b203b;
-      margin-bottom: 18px;
-      letter-spacing: -1.5px;
-    }
+    intervaloTempo = setInterval(() => {
+      tempo--;
+      atualizarScore();
 
-    .subtitle {
-      font-size: clamp(1rem, 2.3vw, 1.2rem);
-      line-height: 1.7;
-      color: #67475c;
-      max-width: 580px;
-      margin: 0 auto 24px;
-    }
-
-    .score {
-      margin: 18px auto;
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.75);
-      color: #7b3d62;
-      font-weight: 700;
-      box-shadow: 0 10px 30px rgba(128, 70, 105, 0.12);
-    }
-
-    button {
-      border: none;
-      cursor: pointer;
-      padding: 16px 26px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
-      color: white;
-      font-size: 1rem;
-      font-weight: 700;
-      box-shadow: 0 18px 35px rgba(255, 95, 162, 0.35);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      margin-top: 8px;
-    }
-
-    button:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 24px 45px rgba(255, 95, 162, 0.45);
-    }
-
-    .game-area {
-      position: relative;
-      width: 100%;
-      height: 330px;
-      margin-top: 28px;
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      overflow: hidden;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
-      display: none;
-    }
-
-    .flower {
-      position: absolute;
-      top: -50px;
-      font-size: 36px;
-      cursor: pointer;
-      user-select: none;
-      animation: cair 4s linear forwards;
-      filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
-    }
-
-    .final {
-      display: none;
-      margin-top: 28px;
-      animation: aparecerFlor 0.9s ease both;
-    }
-
-    .flor-grande {
-      font-size: 6rem;
-      animation: pulse 1.8s ease-in-out infinite;
-      margin-bottom: 14px;
-    }
-
-    .mensagem {
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 24px;
-      border-radius: 26px;
-      background: rgba(255, 255, 255, 0.76);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 45px rgba(125, 68, 101, 0.13);
-      color: #4d2d42;
-      font-size: clamp(1.1rem, 2.7vw, 1.45rem);
-      line-height: 1.6;
-      font-weight: 600;
-    }
-
-    .assinatura {
-      margin-top: 18px;
-      color: #7b526b;
-      font-size: 0.95rem;
-    }
-
-    @keyframes aparecer {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
+      if (tempo <= 0) {
+        perderJogo();
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    }, 1000);
+  }
 
-    @keyframes cair {
-      from {
-        top: -50px;
-        transform: rotate(0deg);
-      }
-      to {
-        top: 110%;
-        transform: rotate(180deg);
-      }
-    }
+  function atualizarScore() {
+    document.getElementById("score").innerText =
+      "Flores: " + pontos + "/10 | Erros: " + erros + "/5 | Tempo: " + tempo + "s";
+  }
 
-    @keyframes aparecerFlor {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.92);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
+  function criarFlor() {
+    const gameArea = document.getElementById("gameArea");
+    const flor = document.createElement("div");
 
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.08);
-      }
-    }
+    flor.classList.add("flower");
 
-    @media (max-width: 600px) {
-      .card {
-        padding: 30px 18px;
-        border-radius: 28px;
-      }
+    const ehFlorFalsa = Math.random() < 0.30;
 
-      button {
-        width: 100%;
-      }
+    flor.innerText = ehFlorFalsa ? "🌺" : "🌸";
 
-      .game-area {
-        height: 360px;
-      }
-    }
-  </style>
-</head>
+    const larguraArea = gameArea.offsetWidth;
+    const posicaoX = Math.random() * (larguraArea - 50);
 
-<body>
-  <main class="card">
-    <h1>Pra você Dai 🌸</h1>
+    flor.style.left = posicaoX + "px";
 
-    <p class="subtitle" id="textoInicial">
-      Para ganhar sua mensagem, você precisa pegar 5 flores.
-    </p>
+    const tamanho = Math.floor(Math.random() * 18) + 26;
+    flor.style.fontSize = tamanho + "px";
 
-    <div class="score" id="score">
-      Flores: 0/5
-    </div>
+    const velocidade = Math.random() * 1.4 + 1.9;
+    flor.style.animationDuration = velocidade + "s";
 
-    <br>
-
-    <button id="startButton" onclick="iniciarJogo()">
-      Começar joguinho
-    </button>
-
-    <div class="game-area" id="gameArea"></div>
-
-    <section class="final" id="final">
-      <div class="flor-grande">🌸</div>
-
-      <div class="mensagem">
-        Espero que seu dia seja maravilhoso como a mulher que você é.
-      </div>
-
-      <p class="assinatura">
-        Minhas porcentagens subiram um pouquinho ?
-      </p>
-    </section>
-  </main>
-
-  <script>
-    let pontos = 0;
-    let intervalo;
-    const totalFlores = 5;
-
-    function iniciarJogo() {
-      pontos = 0;
-
-      document.getElementById("score").innerText = "Flores: 0/5";
-      document.getElementById("gameArea").style.display = "block";
-      document.getElementById("final").style.display = "none";
-      document.getElementById("startButton").style.display = "none";
-      document.getElementById("textoInicial").innerText = "Clique nas flores antes que elas caiam 🌸";
-
-      intervalo = setInterval(criarFlor, 800);
-    }
-
-    function criarFlor() {
-      const gameArea = document.getElementById("gameArea");
-      const flor = document.createElement("div");
-
-      flor.classList.add("flower");
-      flor.innerText = "🌸";
-
-      const larguraArea = gameArea.offsetWidth;
-      const posicaoX = Math.random() * (larguraArea - 50);
-
-      flor.style.left = posicaoX + "px";
-
-      flor.onclick = function () {
+    flor.onclick = function () {
+      if (ehFlorFalsa) {
+        erros++;
+      } else {
         pontos++;
-        document.getElementById("score").innerText = "Flores: " + pontos + "/5";
-        flor.remove();
+      }
 
-        if (pontos >= totalFlores) {
-          finalizarJogo();
+      atualizarScore();
+      flor.remove();
+
+      if (pontos >= totalFlores) {
+        finalizarJogo();
+      }
+
+      if (erros >= maxErros) {
+        perderJogo();
+      }
+    };
+
+    gameArea.appendChild(flor);
+
+    setTimeout(() => {
+      if (gameArea.contains(flor)) {
+        if (!ehFlorFalsa) {
+          erros++;
+          atualizarScore();
+
+          if (erros >= maxErros) {
+            perderJogo();
+          }
         }
-      };
 
-      gameArea.appendChild(flor);
-
-      setTimeout(() => {
         flor.remove();
-      }, 4000);
-    }
+      }
+    }, 3200);
+  }
 
-    function finalizarJogo() {
-      clearInterval(intervalo);
+  function finalizarJogo() {
+    clearInterval(intervaloFlores);
+    clearInterval(intervaloTempo);
 
-      document.getElementById("gameArea").style.display = "none";
-      document.getElementById("final").style.display = "block";
-      document.getElementById("score").innerText = "Você pegou todas as flores 🌸";
-      document.getElementById("textoInicial").innerText = "Você conseguiu!";
-    }
-  </script>
-</body>
-</html>
+    document.getElementById("gameArea").style.display = "none";
+    document.getElementById("final").style.display = "block";
+    document.getElementById("score").innerText = "Você venceu e pegou todas as flores 🌸";
+    document.getElementById("textoInicial").innerText = "Você conseguiu!";
+
+    document.querySelector(".mensagem").innerText =
+      "Espero que seu dia seja maravilhoso como a mulher que você é.";
+  }
+
+  function perderJogo() {
+    clearInterval(intervaloFlores);
+    clearInterval(intervaloTempo);
+
+    document.getElementById("gameArea").style.display = "none";
+    document.getElementById("final").style.display = "block";
+    document.getElementById("score").innerText = "Você perdeu 😭";
+    document.getElementById("textoInicial").innerText = "Quase conseguiu!";
+
+    document.querySelector(".flor-grande").innerText = "🥀";
+    document.querySelector(".mensagem").innerText =
+      "Você deixou flores demais escaparem... tenta de novo linda 🌸";
+
+    document.getElementById("startButton").style.display = "inline-block";
+    document.getElementById("startButton").innerText = "Tentar de novo";
+  }
+</script>
