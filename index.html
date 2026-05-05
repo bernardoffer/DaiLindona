@@ -399,7 +399,7 @@
 
       document.getElementById("iconeFinal").innerText = "🌭";
 
-      intervaloItens = setInterval(criarItem, 600);
+      intervaloItens = setInterval(criarItem, 380);
 
       intervaloTempo = setInterval(() => {
         tempo--;
@@ -477,14 +477,13 @@
       item.style.fontSize = tamanho + "px";
 
       let velocidade;
-
-      if (fase === 1) {
-        velocidade = Math.random() * 1.4 + 2.8;
-      } else if (fase === 2) {
-        velocidade = Math.random() * 1.1 + 2.1;
-      } else {
-        velocidade = Math.random() * 0.9 + 1.5;
-      }
+if (fase === 1) {
+  velocidade = Math.random() * 0.9 + 1.8;
+} else if (fase === 2) {
+  velocidade = Math.random() * 0.7 + 1.4;
+} else {
+  velocidade = Math.random() * 0.5 + 1.0;
+}
 
       item.style.animationDuration = velocidade + "s";
 
