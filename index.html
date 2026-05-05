@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uma flor pra você, Dai</title>
+
+  <title>Missão: salvar a Dai da fome</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,10 +34,10 @@
 
     .card {
       width: 100%;
-      max-width: 720px;
+      max-width: 780px;
       padding: 38px 24px;
       border-radius: 34px;
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.68);
       border: 1px solid rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
       box-shadow: 0 30px 80px rgba(111, 64, 91, 0.22);
@@ -47,7 +48,7 @@
     }
 
     h1 {
-      font-size: clamp(2rem, 6vw, 4.2rem);
+      font-size: clamp(2rem, 6vw, 4rem);
       line-height: 1.05;
       color: #4b203b;
       margin-bottom: 18px;
@@ -58,8 +59,27 @@
       font-size: clamp(1rem, 2.3vw, 1.2rem);
       line-height: 1.7;
       color: #67475c;
-      max-width: 580px;
-      margin: 0 auto 24px;
+      max-width: 620px;
+      margin: 0 auto 20px;
+    }
+
+    .legend {
+      max-width: 640px;
+      margin: 0 auto 18px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .legend span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #7b3d62;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(128, 70, 105, 0.08);
     }
 
     .score {
@@ -67,9 +87,9 @@
       display: inline-block;
       padding: 10px 18px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.78);
       color: #7b3d62;
-      font-weight: 700;
+      font-weight: 800;
       box-shadow: 0 10px 30px rgba(128, 70, 105, 0.12);
     }
 
@@ -81,7 +101,7 @@
       background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
       color: white;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       box-shadow: 0 18px 35px rgba(255, 95, 162, 0.35);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       margin-top: 8px;
@@ -95,55 +115,107 @@
     .game-area {
       position: relative;
       width: 100%;
-      height: 330px;
+      height: 360px;
       margin-top: 28px;
       border-radius: 28px;
-      background: rgba(255, 255, 255, 0.45);
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.55), rgba(255,255,255,0.25)),
+        rgba(255, 255, 255, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.8);
       overflow: hidden;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
       display: none;
     }
 
-    .flower {
+    .item {
       position: absolute;
-      top: -50px;
-      font-size: 36px;
+      top: -60px;
+      font-size: 38px;
       cursor: pointer;
       user-select: none;
-      animation: cair 4s linear forwards;
+      animation: cair linear forwards;
       filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
+      transition: transform 0.15s ease;
+    }
+
+    .item:hover {
+      transform: scale(1.15);
+    }
+
+    .aviso {
+      display: none;
+      margin: 16px auto 0;
+      max-width: 520px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #6d3659;
+      font-weight: 700;
+      animation: aparecerAviso 0.3s ease both;
     }
 
     .final {
       display: none;
       margin-top: 28px;
-      animation: aparecerFlor 0.9s ease both;
+      animation: aparecerFinal 0.9s ease both;
     }
 
-    .flor-grande {
+    .icone-final {
       font-size: 6rem;
       animation: pulse 1.8s ease-in-out infinite;
       margin-bottom: 14px;
     }
 
     .mensagem {
-      max-width: 560px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 24px;
       border-radius: 26px;
-      background: rgba(255, 255, 255, 0.76);
+      background: rgba(255, 255, 255, 0.78);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 45px rgba(125, 68, 101, 0.13);
       color: #4d2d42;
-      font-size: clamp(1.1rem, 2.7vw, 1.45rem);
+      font-size: clamp(1.05rem, 2.7vw, 1.35rem);
       line-height: 1.6;
-      font-weight: 600;
+      font-weight: 650;
     }
 
     .assinatura {
       margin-top: 18px;
       color: #7b526b;
       font-size: 0.95rem;
+    }
+
+    .floating {
+      position: fixed;
+      font-size: 28px;
+      opacity: 0.35;
+      animation: flutuar 8s ease-in-out infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .floating:nth-child(1) {
+      top: 10%;
+      left: 8%;
+      animation-delay: 0s;
+    }
+
+    .floating:nth-child(2) {
+      top: 72%;
+      left: 12%;
+      animation-delay: 1s;
+    }
+
+    .floating:nth-child(3) {
+      top: 16%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .floating:nth-child(4) {
+      bottom: 12%;
+      right: 12%;
+      animation-delay: 3s;
     }
 
     @keyframes aparecer {
@@ -159,16 +231,16 @@
 
     @keyframes cair {
       from {
-        top: -50px;
+        top: -60px;
         transform: rotate(0deg);
       }
       to {
-        top: 110%;
-        transform: rotate(180deg);
+        top: 115%;
+        transform: rotate(220deg);
       }
     }
 
-    @keyframes aparecerFlor {
+    @keyframes aparecerFinal {
       from {
         opacity: 0;
         transform: translateY(22px) scale(0.92);
@@ -179,12 +251,32 @@
       }
     }
 
+    @keyframes aparecerAviso {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @keyframes pulse {
       0%, 100% {
         transform: scale(1);
       }
       50% {
         transform: scale(1.08);
+      }
+    }
+
+    @keyframes flutuar {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-18px) rotate(8deg);
       }
     }
 
@@ -199,242 +291,358 @@
       }
 
       .game-area {
-        height: 360px;
+        height: 390px;
+      }
+
+      .legend {
+        gap: 8px;
+      }
+
+      .legend span {
+        font-size: 0.78rem;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="floating">🌭</div>
+  <div class="floating">🍟</div>
+  <div class="floating">🥤</div>
+  <div class="floating">🌸</div>
+
   <main class="card">
-    <h1>Pra você Dai 🌸</h1>
+    <h1>Missão: salvar a Dai da fome 🌭</h1>
 
     <p class="subtitle" id="textoInicial">
-      PPara ganhar sua mensagem, você precisa vencer 3 fases e pegar 30 flores.
+      Para liberar sua mensagem, você precisa alimentar a Dai antes que a fome vença.
+      Pegue comidas, use os bônus e desvie dos inimigos.
     </p>
 
+    <div class="legend" id="legenda">
+      <span>🍟 +1 ponto</span>
+      <span>🌭 bônus</span>
+      <span>🥤 tempo extra</span>
+      <span>😵‍💫 fome</span>
+      <span>😡 mau humor</span>
+      <span>😴 sono</span>
+    </div>
+
     <div class="score" id="score">
-     Fase: 1/3 | Flores: 0/30 | Erros: 0/10 | Tempo: 60s
+      Fase: 1/3 | Comidinhas: 0/35 | Fome: 0/10 | Tempo: 60s
     </div>
 
     <br>
 
     <button id="startButton" onclick="iniciarJogo()">
-      Começar joguinho
+      Começar missão
     </button>
+
+    <div class="aviso" id="aviso"></div>
 
     <div class="game-area" id="gameArea"></div>
 
     <section class="final" id="final">
-      <div class="flor-grande">🌸</div>
+      <div class="icone-final" id="iconeFinal">🌭</div>
 
-      <div class="mensagem">
+      <div class="mensagem" id="mensagemFinal">
         Espero que seu dia seja maravilhoso como a mulher que você é.
       </div>
 
-      <p class="assinatura">
-        Minhas porcentagens subiram um pouquinho ?
+      <p class="assinatura" id="assinatura">
+        Missão concluída com sucesso.
       </p>
     </section>
   </main>
 
-<script>
-  let pontos = 0;
-  let erros = 0;
-  let tempo = 60;
-  let fase = 1;
+  <script>
+    let pontos = 0;
+    let erros = 0;
+    let tempo = 60;
+    let fase = 1;
+    let jogoAtivo = false;
 
-  let intervaloFlores;
-  let intervaloTempo;
+    let intervaloItens;
+    let intervaloTempo;
 
-  const totalFlores = 30;
-  const maxErros = 10;
+    const totalPontos = 35;
+    const maxFome = 10;
 
-  function iniciarJogo() {
-    pontos = 0;
-    erros = 0;
-    tempo = 60;
-    fase = 1;
-
-    document.getElementById("score").innerText =
-      "Fase: 1/3 | Flores: 0/30 | Erros: 0/10 | Tempo: 60s";
-
-    document.getElementById("gameArea").style.display = "block";
-    document.getElementById("final").style.display = "none";
-    document.getElementById("startButton").style.display = "none";
-    document.getElementById("textoInicial").innerText =
-      "Pegue as flores rosas 🌸, evite as falsas 🌺 e cuidado com o tempo!";
-
-    document.querySelector(".flor-grande").innerText = "🌸";
-
-    intervaloFlores = setInterval(criarFlor, 650);
-
-    intervaloTempo = setInterval(() => {
-      tempo--;
-      atualizarFase();
-      atualizarScore();
-
-      if (tempo <= 0) {
-        perderJogo("O tempo acabou 😭");
-      }
-    }, 1000);
-  }
-
-  function atualizarFase() {
-    if (pontos >= 20) {
-      fase = 3;
-    } else if (pontos >= 10) {
-      fase = 2;
-    } else {
+    function iniciarJogo() {
+      pontos = 0;
+      erros = 0;
+      tempo = 60;
       fase = 1;
-    }
-  }
+      jogoAtivo = true;
 
-  function atualizarScore() {
-    document.getElementById("score").innerText =
-      "Fase: " + fase + "/3 | Flores: " + pontos + "/30 | Erros: " + erros + "/10 | Tempo: " + tempo + "s";
-  }
+      limparItens();
 
-  function criarFlor() {
-    const gameArea = document.getElementById("gameArea");
-    const flor = document.createElement("div");
+      document.getElementById("score").innerText =
+        "Fase: 1/3 | Comidinhas: 0/35 | Fome: 0/10 | Tempo: 60s";
 
-    flor.classList.add("flower");
+      document.getElementById("gameArea").style.display = "block";
+      document.getElementById("final").style.display = "none";
+      document.getElementById("startButton").style.display = "none";
+      document.getElementById("aviso").style.display = "none";
 
-    const sorteio = Math.random();
+      document.getElementById("textoInicial").innerText =
+        "Pegue as comidas boas 🍟🌭, use o refri 🥤 e fuja da fome, do sono e do mau humor.";
 
-    let tipo = "normal";
+      document.getElementById("iconeFinal").innerText = "🌭";
 
-    if (sorteio < 0.25) {
-      tipo = "falsa";
-      flor.innerText = "🌺";
-    } else if (sorteio < 0.33) {
-      tipo = "especial";
-      flor.innerText = "💐";
-    } else if (sorteio < 0.40) {
-      tipo = "perigosa";
-      flor.innerText = "🥀";
-    } else {
-      tipo = "normal";
-      flor.innerText = "🌸";
-    }
+      intervaloItens = setInterval(criarItem, 600);
 
-    const larguraArea = gameArea.offsetWidth;
-    const posicaoX = Math.random() * (larguraArea - 50);
-
-    flor.style.left = posicaoX + "px";
-
-    const tamanho = Math.floor(Math.random() * 20) + 24;
-    flor.style.fontSize = tamanho + "px";
-
-    let velocidade;
-
-    if (fase === 1) {
-      velocidade = Math.random() * 1.4 + 2.6;
-    } else if (fase === 2) {
-      velocidade = Math.random() * 1.1 + 2.0;
-    } else {
-      velocidade = Math.random() * 0.9 + 1.5;
-    }
-
-    flor.style.animationDuration = velocidade + "s";
-
-    flor.onclick = function () {
-      if (tipo === "normal") {
-        pontos++;
-      }
-
-      if (tipo === "especial") {
-        pontos += 3;
-        tempo += 3;
-      }
-
-      if (tipo === "falsa") {
-        erros += 2;
-      }
-
-      if (tipo === "perigosa") {
-        erros += 3;
-        tempo -= 5;
-      }
-
-      atualizarFase();
-      atualizarScore();
-      flor.remove();
-
-      if (pontos >= totalFlores) {
-        finalizarJogo();
-      }
-
-      if (erros >= maxErros) {
-        perderJogo("Você errou flores demais 😭");
-      }
-
-      if (tempo <= 0) {
-        perderJogo("O tempo acabou 😭");
-      }
-    };
-
-    gameArea.appendChild(flor);
-
-    setTimeout(() => {
-      if (gameArea.contains(flor)) {
-        if (tipo === "normal") {
-          erros++;
-        }
-
-        if (tipo === "especial") {
-          erros++;
-        }
-
+      intervaloTempo = setInterval(() => {
+        tempo--;
+        atualizarFase();
         atualizarScore();
 
-        if (erros >= maxErros) {
-          perderJogo("Você deixou muitas flores escaparem 😭");
+        if (tempo <= 0) {
+          perderJogo("O tempo acabou e a fome venceu 😭");
+        }
+      }, 1000);
+    }
+
+    function atualizarFase() {
+      if (pontos >= 24) {
+        fase = 3;
+      } else if (pontos >= 12) {
+        fase = 2;
+      } else {
+        fase = 1;
+      }
+    }
+
+    function atualizarScore() {
+      document.getElementById("score").innerText =
+        "Fase: " + fase + "/3 | Comidinhas: " + pontos + "/35 | Fome: " + erros + "/10 | Tempo: " + tempo + "s";
+    }
+
+    function mostrarAviso(texto) {
+      const aviso = document.getElementById("aviso");
+      aviso.innerText = texto;
+      aviso.style.display = "block";
+
+      setTimeout(() => {
+        aviso.style.display = "none";
+      }, 1200);
+    }
+
+    function criarItem() {
+      if (!jogoAtivo) return;
+
+      const gameArea = document.getElementById("gameArea");
+      const item = document.createElement("div");
+
+      item.classList.add("item");
+
+      const sorteio = Math.random();
+      let tipo = "comida";
+
+      if (sorteio < 0.16) {
+        tipo = "fome";
+        item.innerText = "😵‍💫";
+      } else if (sorteio < 0.28) {
+        tipo = "mauHumor";
+        item.innerText = "😡";
+      } else if (sorteio < 0.38) {
+        tipo = "sono";
+        item.innerText = "😴";
+      } else if (sorteio < 0.52) {
+        tipo = "bonus";
+        item.innerText = "🌭";
+      } else if (sorteio < 0.62) {
+        tipo = "power";
+        item.innerText = "🥤";
+      } else {
+        tipo = "comida";
+        item.innerText = "🍟";
+      }
+
+      const larguraArea = gameArea.offsetWidth;
+      const posicaoX = Math.random() * (larguraArea - 50);
+
+      item.style.left = posicaoX + "px";
+
+      const tamanho = Math.floor(Math.random() * 20) + 28;
+      item.style.fontSize = tamanho + "px";
+
+      let velocidade;
+
+      if (fase === 1) {
+        velocidade = Math.random() * 1.4 + 2.8;
+      } else if (fase === 2) {
+        velocidade = Math.random() * 1.1 + 2.1;
+      } else {
+        velocidade = Math.random() * 0.9 + 1.5;
+      }
+
+      item.style.animationDuration = velocidade + "s";
+
+      item.onclick = function () {
+        if (!jogoAtivo) return;
+
+        if (tipo === "comida") {
+          pontos++;
+          mostrarAviso("+1 comidinha 🍟");
         }
 
-        flor.remove();
-      }
-    }, velocidade * 1000);
-  }
+        if (tipo === "bonus") {
+          pontos += 4;
+          tempo += 2;
+          mostrarAviso("Cachorro-quente bônus! +4 pontos 🌭");
+        }
+
+        if (tipo === "power") {
+          tempo += 5;
+          erros = Math.max(0, erros - 1);
+          mostrarAviso("Refri salvador! +5s e -1 fome 🥤");
+        }
+
+        if (tipo === "fome") {
+          erros += 2;
+          mostrarAviso("A fome atacou! +2 fome 😵‍💫");
+        }
+
+        if (tipo === "mauHumor") {
+          erros += 3;
+          tempo -= 3;
+          mostrarAviso("Mau humor apareceu! +3 fome e -3s 😡");
+        }
+
+        if (tipo === "sono") {
+          tempo -= 5;
+          mostrarAviso("O sono bateu! -5s 😴");
+        }
+
+        atualizarFase();
+        atualizarScore();
+        item.remove();
+
+        if (pontos >= totalPontos) {
+          finalizarJogo();
+        }
+
+        if (erros >= maxFome) {
+          perderJogo("A fome venceu 😭");
+        }
+
+        if (tempo <= 0) {
+          perderJogo("O tempo acabou e a fome venceu 😭");
+        }
+      };
+
+      gameArea.appendChild(item);
+
+      setTimeout(() => {
+        if (gameArea.contains(item)) {
+          if (tipo === "comida") {
+            erros++;
+          }
+
+          if (tipo === "bonus") {
+            erros++;
+          }
+
+          atualizarScore();
+
+          if (erros >= maxFome) {
+            perderJogo("Você deixou comida demais escapar 😭");
+          }
+
+          item.remove();
+        }
+      }, velocidade * 1000);
+    }
 
   function finalizarJogo() {
-    clearInterval(intervaloFlores);
+    jogoAtivo = false;
+
+    clearInterval(intervaloItens);
     clearInterval(intervaloTempo);
+
+    limparItens();
 
     document.getElementById("gameArea").style.display = "none";
     document.getElementById("final").style.display = "block";
+    document.getElementById("aviso").style.display = "none";
 
     document.getElementById("score").innerText =
-      "Você venceu! Pegou " + pontos + " flores 🌸";
+      "Você venceu! Alimentou a Dai com " + pontos + " comidinhas 🌭";
 
     document.getElementById("textoInicial").innerText =
-      "Você conseguiu passar todas as fases!";
+      "Missão concluída: a fome foi derrotada.";
 
-    document.querySelector(".flor-grande").innerText = "🌸";
+    document.getElementById("iconeFinal").innerText = "🌸";
 
-    document.querySelector(".mensagem").innerText =
-      "Espero que seu dia seja maravilhoso como a mulher que você é. Você venceu o joguinho, então oficialmente merece uma flor, um sorriso e umas porcentagens a mais comigo.";
+    document.getElementById("mensagemFinal").innerHTML =
+      `
+      <div style="font-size: 4rem; margin-bottom: 12px;">
+        🌸🌷🌸
+      </div>
+
+      <p>
+        Você venceu a fome, coletou os cachorros-quentes e salvou o dia.
+      </p>
+
+      <p style="margin-top: 14px;">
+        Como recompensa, você ganhou flores rosas e uma música para deixar seu dia mais bonito.
+      </p>
+
+      <a 
+        href="https://www.youtube.com/watch?v=UCENTf_LWYA&list=RDUCENTf_LWYA&start_radio=1" 
+        target="_blank"
+        style="
+          display: inline-block;
+          margin-top: 22px;
+          padding: 14px 22px;
+          border-radius: 999px;
+          background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
+          color: white;
+          text-decoration: none;
+          font-weight: 800;
+          box-shadow: 0 14px 30px rgba(255, 95, 162, 0.35);
+        "
+      >
+        Tocar música do seu dia 🎵
+      </a>
+      `;
+
+    document.getElementById("assinatura").innerText =
+      "Espero que seu dia seja ótimo ! E que a fome não te pegue hoje";
   }
 
-  function perderJogo(motivo) {
-    clearInterval(intervaloFlores);
-    clearInterval(intervaloTempo);
+    function perderJogo(motivo) {
+      jogoAtivo = false;
 
-    document.getElementById("gameArea").style.display = "none";
-    document.getElementById("final").style.display = "block";
+      clearInterval(intervaloItens);
+      clearInterval(intervaloTempo);
 
-    document.getElementById("score").innerText = motivo;
-    document.getElementById("textoInicial").innerText = "Quase conseguiu!";
+      limparItens();
 
-    document.querySelector(".flor-grande").innerText = "🥀";
+      document.getElementById("gameArea").style.display = "none";
+      document.getElementById("final").style.display = "block";
+      document.getElementById("aviso").style.display = "none";
 
-    document.querySelector(".mensagem").innerText =
-      "Você perdeu... mas como eu sou generoso, vou deixar você tentar de novo. A flor ainda está te esperando 🌸";
+      document.getElementById("score").innerText = motivo;
+      document.getElementById("textoInicial").innerText = "Quase conseguiu!";
 
-    document.getElementById("startButton").style.display = "inline-block";
-    document.getElementById("startButton").innerText = "Tentar de novo";
-  }
-</script>
+      document.getElementById("iconeFinal").innerText = "😵‍💫";
+
+      document.getElementById("mensagemFinal").innerText =
+        "Você perdeu... a fome foi forte dessa vez. Mas como a missão é importante, você pode tentar de novo e salvar o dia.";
+
+      document.getElementById("assinatura").innerText =
+        "A revanche está liberada.";
+
+      document.getElementById("startButton").style.display = "inline-block";
+      document.getElementById("startButton").innerText = "Tentar de novo";
+    }
+
+    function limparItens() {
+      const itens = document.querySelectorAll(".item");
+      itens.forEach(item => item.remove());
+    }
+  </script>
 </body>
 </html>
