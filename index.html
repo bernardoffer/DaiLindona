@@ -442,9 +442,9 @@
 
     <br>
 
-    <button id="startButton" onclick="iniciarJogo()">
-      Começar missão
-    </button>
+<button id="startButton">
+  Começar missão
+</button>
 
     <div class="aviso" id="aviso"></div>
 
@@ -479,13 +479,13 @@
     let jogoAtivo = false;
     let pulando = false;
 
-    let pontos = 0;
-    let hotdogs = 0;
-    let vidas = 3;
+let pontos = 0;
+let hotdogs = 0;
+let vidas = 3;
 
-    velocidade += 0.55;
-    let gravidade = 0.85;
-    let forcaPulo = 16;
+let velocidade = 6;
+let gravidade = 0.85;
+let forcaPulo = 16;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -731,6 +731,7 @@ if (objeto.dataset.tipo === "hotdog") {
       document.getElementById("assinatura").innerText =
         "Espero que seu dia seja ótimo! E que a fome não te pegue hoje.";
     }
+    
 
     function perderJogo() {
       jogoAtivo = false;
@@ -778,6 +779,20 @@ if (objeto.dataset.tipo === "hotdog") {
         event.preventDefault();
         pular();
       }
+      startButton.addEventListener("click", iniciarJogo);
+
+gameArea.addEventListener("click", pular);
+
+gameArea.addEventListener("touchstart", function (event) {
+  event.preventDefault();
+  pular();
+}, { passive: false });
+
+document.addEventListener("keydown", function (event) {
+  if (event.code === "Space" || event.code === "ArrowUp") {
+    event.preventDefault();
+    pular();
+  }
     });
   </script>
 </body>
