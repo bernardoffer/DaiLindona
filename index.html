@@ -442,9 +442,9 @@
 
     <br>
 
-<button id="startButton">
-  Começar missão
-</button>
+    <button id="startButton">
+      Começar missão
+    </button>
 
     <div class="aviso" id="aviso"></div>
 
@@ -479,13 +479,13 @@
     let jogoAtivo = false;
     let pulando = false;
 
-let pontos = 0;
-let hotdogs = 0;
-let vidas = 3;
+    let pontos = 0;
+    let hotdogs = 0;
+    let vidas = 3;
 
-let velocidade = 6;
-let gravidade = 0.85;
-let forcaPulo = 16;
+    let velocidade = 6;
+    let gravidade = 0.85;
+    let forcaPulo = 16;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -506,6 +506,9 @@ let forcaPulo = 16;
       vidas = 3;
 
       velocidade = 6;
+      gravidade = 0.85;
+      forcaPulo = 16;
+
       posicaoY = chao;
       velocidadeY = 0;
 
@@ -528,15 +531,18 @@ let forcaPulo = 16;
       clearInterval(intervaloPontuacao);
 
       intervaloLoop = setInterval(loopJogo, 16);
+
       intervaloCriacao = setInterval(criarObjeto, 1050);
+
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
 
         pontos++;
 
-if (pontos % 30 === 0) {
-  velocidade += 0.15;
-}
+        if (pontos % 30 === 0) {
+          velocidade += 0.15;
+        }
+
         atualizarScore();
       }, 650);
     }
@@ -631,20 +637,18 @@ if (pontos % 30 === 0) {
 
         if (!colidiu) return;
 
-if (objeto.dataset.tipo === "hotdog") {
-  hotdogs++;
-  pontos += 12;
+        if (objeto.dataset.tipo === "hotdog") {
+          hotdogs++;
+          pontos += 12;
+          velocidade += 0.35;
 
- 
-  velocidade += 0.55;
+          mostrarAviso("+1 hot dog 🌭 Velocidade aumentou!");
+          objeto.remove();
 
-  mostrarAviso("+1 hot dog 🌭 Velocidade aumentou!");
-  objeto.remove();
-
-  if (hotdogs >= totalHotdogs) {
-    finalizarJogo();
-  }
-}
+          if (hotdogs >= totalHotdogs) {
+            finalizarJogo();
+          }
+        }
 
         if (objeto.dataset.tipo === "fome") {
           vidas--;
@@ -731,7 +735,6 @@ if (objeto.dataset.tipo === "hotdog") {
       document.getElementById("assinatura").innerText =
         "Espero que seu dia seja ótimo! E que a fome não te pegue hoje.";
     }
-    
 
     function perderJogo() {
       jogoAtivo = false;
@@ -768,7 +771,10 @@ if (objeto.dataset.tipo === "hotdog") {
       objetos.forEach((objeto) => objeto.remove());
     }
 
+    startButton.addEventListener("click", iniciarJogo);
+
     gameArea.addEventListener("click", pular);
+
     gameArea.addEventListener("touchstart", function (event) {
       event.preventDefault();
       pular();
@@ -779,20 +785,6 @@ if (objeto.dataset.tipo === "hotdog") {
         event.preventDefault();
         pular();
       }
-      startButton.addEventListener("click", iniciarJogo);
-
-gameArea.addEventListener("click", pular);
-
-gameArea.addEventListener("touchstart", function (event) {
-  event.preventDefault();
-  pular();
-}, { passive: false });
-
-document.addEventListener("keydown", function (event) {
-  if (event.code === "Space" || event.code === "ArrowUp") {
-    event.preventDefault();
-    pular();
-  }
     });
   </script>
 </body>
