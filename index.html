@@ -483,7 +483,7 @@
     let hotdogs = 0;
     let vidas = 3;
 
-    let velocidade = 6;
+    velocidade += 0.55;
     let gravidade = 0.85;
     let forcaPulo = 16;
 
@@ -534,10 +534,9 @@
 
         pontos++;
 
-        if (pontos % 18 === 0) {
-          velocidade += 0.35;
-        }
-
+if (pontos % 30 === 0) {
+  velocidade += 0.15;
+}
         atualizarScore();
       }, 650);
     }
@@ -632,16 +631,20 @@
 
         if (!colidiu) return;
 
-        if (objeto.dataset.tipo === "hotdog") {
-          hotdogs++;
-          pontos += 12;
-          mostrarAviso("+1 hot dog 🌭");
-          objeto.remove();
+if (objeto.dataset.tipo === "hotdog") {
+  hotdogs++;
+  pontos += 12;
 
-          if (hotdogs >= totalHotdogs) {
-            finalizarJogo();
-          }
-        }
+ 
+  velocidade += 0.55;
+
+  mostrarAviso("+1 hot dog 🌭 Velocidade aumentou!");
+  objeto.remove();
+
+  if (hotdogs >= totalHotdogs) {
+    finalizarJogo();
+  }
+}
 
         if (objeto.dataset.tipo === "fome") {
           vidas--;
