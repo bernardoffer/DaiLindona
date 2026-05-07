@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <title>Missão: salvar a Dai da fome</title>
+  <title>Missão: aquecer o coração da Dai</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,12 @@
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -120,7 +126,7 @@
       margin-top: 24px;
       border-radius: 28px;
       background:
-        linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.28)),
+        linear-gradient(to bottom, rgba(230, 247, 255, 0.7), rgba(255,255,255,0.28)),
         linear-gradient(135deg, #ffe4f0, #ffc1dd);
       border: 1px solid rgba(255, 255, 255, 0.85);
       overflow: hidden;
@@ -135,18 +141,18 @@
       top: 34px;
       font-size: 34px;
       opacity: 0.35;
-      animation: nuvem 12s linear infinite;
+      animation: nuvem 10s linear infinite;
     }
 
     .cloud.um {
       left: 20%;
-      animation-duration: 16s;
+      animation-duration: 14s;
     }
 
     .cloud.dois {
       left: 68%;
       top: 68px;
-      animation-duration: 20s;
+      animation-duration: 17s;
     }
 
     .ground {
@@ -162,7 +168,7 @@
         transparent 28px,
         transparent 42px
       );
-      animation: moverChao 1.2s linear infinite;
+      animation: moverChao 0.75s linear infinite;
     }
 
     .player {
@@ -185,7 +191,7 @@
     }
 
     .obstaculo,
-    .hotdog {
+    .coracao {
       position: absolute;
       bottom: 54px;
       right: -80px;
@@ -199,9 +205,10 @@
       filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
     }
 
-    .hotdog {
+    .coracao {
       bottom: 122px;
       font-size: 38px;
+      animation: pulsarCoracao 0.8s ease-in-out infinite;
     }
 
     .aviso {
@@ -331,6 +338,16 @@
       }
     }
 
+    @keyframes pulsarCoracao {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
     @keyframes flutuar {
       0%, 100% {
         transform: translateY(0) rotate(0deg);
@@ -398,7 +415,7 @@
       }
 
       .obstaculo,
-      .hotdog {
+      .coracao {
         width: 44px;
         height: 44px;
         font-size: 38px;
@@ -416,28 +433,28 @@
 </head>
 
 <body>
-  <div class="floating">🌭</div>
-  <div class="floating">😵‍💫</div>
-  <div class="floating">🌸</div>
   <div class="floating">💗</div>
+  <div class="floating">❄️</div>
+  <div class="floating">🌸</div>
+  <div class="floating">💕</div>
 
   <main class="card">
-    <h1>Missão: salvar a Dai da fome 🌭</h1>
+    <h1>Missão: aquecer o coração da Dai 💗</h1>
 
     <p class="subtitle" id="textoInicial">
-      Agora a missão virou um joguinho de pular. Desvie da fome e pegue hot dogs para liberar sua recompensa.
+      Agora a missão é pular, fugir do frio e pegar corações para liberar sua recompensa.
     </p>
 
     <div class="legend" id="legenda">
       <span>👧 Dai correndo</span>
       <span>Toque na tela para pular</span>
-      <span>😵‍💫 desvie da fome</span>
-      <span>🌭 pegue hot dogs</span>
+      <span>❄️ desvie do frio</span>
+      <span>💗 pegue corações</span>
       <span>🌸 recompensa final</span>
     </div>
 
     <div class="score" id="score">
-      Pontos: 0 | Hot dogs: 0/10 | Vidas: 3
+      Pontos: 0 | Corações: 0/12 | Vidas: 3
     </div>
 
     <br>
@@ -456,7 +473,7 @@
     </div>
 
     <section class="final" id="final">
-      <div class="icone-final" id="iconeFinal">🌭</div>
+      <div class="icone-final" id="iconeFinal">💗</div>
 
       <div class="mensagem" id="mensagemFinal">
         Espero que seu dia seja maravilhoso como a mulher que você é.
@@ -480,12 +497,12 @@
     let pulando = false;
 
     let pontos = 0;
-    let hotdogs = 0;
+    let coracoes = 0;
     let vidas = 3;
 
-    let velocidade = 6;
-    let gravidade = 0.85;
-    let forcaPulo = 16;
+    let velocidade = 8.5;
+    let gravidade = 0.9;
+    let forcaPulo = 16.5;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -494,7 +511,7 @@
     let intervaloCriacao;
     let intervaloPontuacao;
 
-    const totalHotdogs = 10;
+    const totalCoracoes = 12;
     const chao = 54;
 
     function iniciarJogo() {
@@ -502,12 +519,12 @@
       pulando = false;
 
       pontos = 0;
-      hotdogs = 0;
+      coracoes = 0;
       vidas = 3;
 
-      velocidade = 6;
-      gravidade = 0.85;
-      forcaPulo = 16;
+      velocidade = 8.5;
+      gravidade = 0.9;
+      forcaPulo = 16.5;
 
       posicaoY = chao;
       velocidadeY = 0;
@@ -522,7 +539,7 @@
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Desvie da fome 😵‍💫 e pegue os hot dogs 🌭.";
+        "Toque na tela para pular. Desvie do frio ❄️ e pegue os corações 💗.";
 
       atualizarScore();
 
@@ -532,19 +549,19 @@
 
       intervaloLoop = setInterval(loopJogo, 16);
 
-      intervaloCriacao = setInterval(criarObjeto, 1050);
+      intervaloCriacao = setInterval(criarObjeto, 850);
 
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
 
         pontos++;
 
-        if (pontos % 30 === 0) {
-          velocidade += 0.15;
+        if (pontos % 20 === 0) {
+          velocidade += 0.25;
         }
 
         atualizarScore();
-      }, 650);
+      }, 500);
     }
 
     function pular() {
@@ -586,19 +603,20 @@
       if (!jogoAtivo) return;
 
       const objeto = document.createElement("div");
-
       const sorteio = Math.random();
 
-      if (sorteio < 0.65) {
+      if (sorteio < 0.68) {
         objeto.classList.add("obstaculo");
-        objeto.dataset.tipo = "fome";
+        objeto.dataset.tipo = "frio";
 
-        const inimigos = ["😵‍💫", "🍽️", "👿"];
+        const inimigos = ["❄️", "🥶", "🌬️", "🧊"];
         objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
       } else {
-        objeto.classList.add("hotdog");
-        objeto.dataset.tipo = "hotdog";
-        objeto.innerText = "🌭";
+        objeto.classList.add("coracao");
+        objeto.dataset.tipo = "coracao";
+
+        const coracoesLista = ["💗", "💖", "💕", "💘"];
+        objeto.innerText = coracoesLista[Math.floor(Math.random() * coracoesLista.length)];
 
         const alturaAleatoria = Math.random() < 0.5 ? 118 : 148;
         objeto.style.bottom = alturaAleatoria + "px";
@@ -609,7 +627,7 @@
     }
 
     function moverObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .hotdog");
+      const objetos = document.querySelectorAll(".obstaculo, .coracao");
 
       objetos.forEach((objeto) => {
         let rightAtual = parseFloat(objeto.style.right || "-70");
@@ -624,7 +642,7 @@
 
     function verificarColisoes() {
       const playerRect = player.getBoundingClientRect();
-      const objetos = document.querySelectorAll(".obstaculo, .hotdog");
+      const objetos = document.querySelectorAll(".obstaculo, .coracao");
 
       objetos.forEach((objeto) => {
         const objetoRect = objeto.getBoundingClientRect();
@@ -637,22 +655,22 @@
 
         if (!colidiu) return;
 
-        if (objeto.dataset.tipo === "hotdog") {
-          hotdogs++;
-          pontos += 12;
-          velocidade += 0.35;
+        if (objeto.dataset.tipo === "coracao") {
+          coracoes++;
+          pontos += 15;
+          velocidade += 0.45;
 
-          mostrarAviso("+1 hot dog 🌭 Velocidade aumentou!");
+          mostrarAviso("+1 coração 💗 Ficou mais rápido!");
           objeto.remove();
 
-          if (hotdogs >= totalHotdogs) {
+          if (coracoes >= totalCoracoes) {
             finalizarJogo();
           }
         }
 
-        if (objeto.dataset.tipo === "fome") {
+        if (objeto.dataset.tipo === "frio") {
           vidas--;
-          mostrarAviso("A fome encostou! -1 vida 😵‍💫");
+          mostrarAviso("O frio encostou! -1 vida 🥶");
           objeto.remove();
 
           if (vidas <= 0) {
@@ -666,7 +684,7 @@
 
     function atualizarScore() {
       scoreElement.innerText =
-        "Pontos: " + pontos + " | Hot dogs: " + hotdogs + "/" + totalHotdogs + " | Vidas: " + vidas;
+        "Pontos: " + pontos + " | Corações: " + coracoes + "/" + totalCoracoes + " | Vidas: " + vidas;
     }
 
     function mostrarAviso(texto) {
@@ -675,7 +693,7 @@
 
       setTimeout(() => {
         aviso.style.display = "none";
-      }, 950);
+      }, 850);
     }
 
     function finalizarJogo() {
@@ -692,25 +710,25 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "Você venceu! Pegou " + hotdogs + " hot dogs e fez " + pontos + " pontos 🌭";
+        "Você venceu! Pegou " + coracoes + " corações e fez " + pontos + " pontos 💗";
 
       document.getElementById("textoInicial").innerText =
-        "Missão concluída: a fome foi derrotada.";
+        "Missão concluída: o frio foi derrotado.";
 
       document.getElementById("iconeFinal").innerText = "🌸";
 
       document.getElementById("mensagemFinal").innerHTML =
         `
           <div style="font-size: 4rem; margin-bottom: 12px;">
-            🌸🌷🌸
+            🌸💗🌸
           </div>
 
           <p>
-            Você venceu a fome, pulou todos os perigos e coletou os hot dogs do dia.
+            Você venceu o frio, pulou todos os perigos e coletou todos os corações do caminho.
           </p>
 
           <p style="margin-top: 14px;">
-            Como recompensa, você ganhou flores rosas e uma música para deixar seu dia mais bonito.
+            Como recompensa, você ganhou flores rosas, carinho e uma música para deixar seu dia mais bonito.
           </p>
 
           <a 
@@ -733,7 +751,7 @@
         `;
 
       document.getElementById("assinatura").innerText =
-        "Espero que seu dia seja ótimo! E que a fome não te pegue hoje.";
+        "Espero que seu dia seja maravilhoso como a mulher que você é.";
     }
 
     function perderJogo() {
@@ -750,14 +768,14 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "A fome venceu dessa vez 😭 | Pontos: " + pontos + " | Hot dogs: " + hotdogs + "/" + totalHotdogs;
+        "O frio venceu dessa vez 🥶 | Pontos: " + pontos + " | Corações: " + coracoes + "/" + totalCoracoes;
 
       document.getElementById("textoInicial").innerText = "Quase conseguiu!";
 
-      document.getElementById("iconeFinal").innerText = "😵‍💫";
+      document.getElementById("iconeFinal").innerText = "🥶";
 
       document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... a fome foi forte dessa vez. Mas como a missão é importante, você pode tentar de novo e salvar o dia.";
+        "Você perdeu... o frio foi forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete os corações.";
 
       document.getElementById("assinatura").innerText =
         "A revanche está liberada.";
@@ -767,7 +785,7 @@
     }
 
     function limparObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .hotdog");
+      const objetos = document.querySelectorAll(".obstaculo, .coracao");
       objetos.forEach((objeto) => objeto.remove());
     }
 
