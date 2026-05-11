@@ -587,7 +587,7 @@
 
       intervaloLoop = setInterval(loopJogo, 16);
 
-      intervaloCriacao = setInterval(criarObjeto, 620);
+      intervaloCriacao = setInterval(criarObjeto, 850);
 
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
@@ -655,20 +655,14 @@
 
       const sorteio = Math.random();
 
-      if (sorteio < 0.82) {
+      if (sorteio < 0.72) {
         criarFrio();
-
-        if (Math.random() < 0.32) {
-          setTimeout(() => {
-            if (jogoAtivo) criarFrio(true);
-          }, 220);
-        }
       } else {
         criarCama();
       }
     }
 
-    function criarFrio(extra = false) {
+    function criarFrio() {
       const objeto = document.createElement("div");
       objeto.classList.add("obstaculo");
       objeto.dataset.tipo = "frio";
@@ -690,7 +684,7 @@
         objeto.style.bottom = "54px";
       }
 
-      objeto.style.right = extra ? "-130px" : "-75px";
+      objeto.style.right = "-75px";
       gameArea.appendChild(objeto);
     }
 
@@ -847,7 +841,7 @@
           </p>
 
           <a 
-            href="https://music.youtube.com/watch?v=e1bbTt_zFbc&si=njvXvx1fwLPMreL9" 
+            href="https://www.youtube.com/watch?v=y2bVIBwpCTA&list=RDy2bVIBwpCTA&start_radio=1" 
             target="_blank"
             style="
               display: inline-block;
