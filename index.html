@@ -175,7 +175,7 @@
         transparent 28px,
         transparent 42px
       );
-      animation: moverChao 0.38s linear infinite;
+      animation: moverChao 0.48s linear infinite;
     }
 
     .player {
@@ -536,9 +536,9 @@
     let camas = 0;
     let vidas = 2;
 
-    let velocidade = 13.5;
-    let gravidade = 1.15;
-    let forcaPulo = 17.2;
+    let velocidade = 9.5;
+    let gravidade = 1.05;
+    let forcaPulo = 16.8;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -559,9 +559,9 @@
       camas = 0;
       vidas = 2;
 
-      velocidade = 13.5;
-      gravidade = 1.15;
-      forcaPulo = 17.2;
+      velocidade = 9.5;
+      gravidade = 1.05;
+      forcaPulo = 16.8;
 
       posicaoY = chao;
       velocidadeY = 0;
@@ -587,15 +587,15 @@
 
       intervaloLoop = setInterval(loopJogo, 16);
 
-      intervaloCriacao = setInterval(criarObjeto, 420);
+      intervaloCriacao = setInterval(criarObjeto, 620);
 
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
 
         pontos++;
 
-        if (pontos % 10 === 0) {
-          velocidade += 0.28;
+        if (pontos % 18 === 0) {
+          velocidade += 0.18;
         }
 
         atualizarScore();
@@ -604,10 +604,10 @@
       intervaloDificuldade = setInterval(() => {
         if (!jogoAtivo) return;
 
-        velocidade += 0.7;
+        velocidade += 0.35;
 
-        if (gravidade < 1.45) {
-          gravidade += 0.03;
+        if (gravidade < 1.28) {
+          gravidade += 0.015;
         }
 
         mostrarAviso("O frio ficou mais agressivo 🥶");
@@ -661,7 +661,7 @@
         if (Math.random() < 0.32) {
           setTimeout(() => {
             if (jogoAtivo) criarFrio(true);
-          }, 180);
+          }, 220);
         }
       } else {
         criarCama();
@@ -678,13 +678,13 @@
 
       const chance = Math.random();
 
-      if (chance < 0.25) {
+      if (chance < 0.22) {
         objeto.classList.add("voador");
         objeto.style.bottom = "128px";
-      } else if (chance < 0.45) {
+      } else if (chance < 0.40) {
         objeto.classList.add("grande");
         objeto.style.bottom = "54px";
-      } else if (chance < 0.62) {
+      } else if (chance < 0.58) {
         objeto.style.bottom = "86px";
       } else {
         objeto.style.bottom = "54px";
@@ -702,7 +702,7 @@
       const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
       objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
 
-      const alturas = [132, 152, 172, 192, 212];
+      const alturas = [122, 142, 162, 182];
       const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
       objeto.style.bottom = alturaAleatoria + "px";
 
@@ -719,15 +719,15 @@
         let velocidadeObjeto = velocidade;
 
         if (objeto.dataset.tipo === "cama") {
-          velocidadeObjeto = velocidade + 1.2;
+          velocidadeObjeto = velocidade + 0.4;
         }
 
         if (objeto.classList.contains("voador")) {
-          velocidadeObjeto = velocidade + 1.8;
+          velocidadeObjeto = velocidade + 0.7;
         }
 
         if (objeto.classList.contains("grande")) {
-          velocidadeObjeto = velocidade + 0.8;
+          velocidadeObjeto = velocidade + 0.3;
         }
 
         rightAtual += velocidadeObjeto;
@@ -757,9 +757,9 @@
         if (objeto.dataset.tipo === "cama") {
           camas++;
           pontos += 25;
-          velocidade += 0.65;
+          velocidade += 0.25;
 
-          mostrarAviso("+1 cama 🛏️ Agora ficou mais rápido!");
+          mostrarAviso("+1 cama 🛏️ Agora ficou um pouco mais rápido!");
           objeto.remove();
 
           if (camas >= totalCamas) {
@@ -769,7 +769,7 @@
 
         if (objeto.dataset.tipo === "frio") {
           vidas--;
-          velocidade += 0.85;
+          velocidade += 0.35;
 
           mostrarAviso("O frio encostou! -1 vida 🥶");
           objeto.remove();
@@ -786,11 +786,11 @@
     function atualizarScore() {
       let nivel = "Difícil";
 
-      if (velocidade >= 18) {
+      if (velocidade >= 14) {
         nivel = "Muito difícil";
       }
 
-      if (velocidade >= 23) {
+      if (velocidade >= 18) {
         nivel = "Insano";
       }
 
