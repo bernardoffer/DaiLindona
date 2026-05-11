@@ -175,7 +175,7 @@
         transparent 28px,
         transparent 42px
       );
-      animation: moverChao 0.55s linear infinite;
+      animation: moverChao 0.38s linear infinite;
     }
 
     .player {
@@ -194,7 +194,7 @@
     }
 
     .player.pulando {
-      animation: brilhoPulo 0.25s ease;
+      animation: brilhoPulo 0.22s ease;
     }
 
     .obstaculo,
@@ -212,10 +212,22 @@
       filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
     }
 
+    .obstaculo.voador {
+      bottom: 126px;
+      font-size: 38px;
+      animation: tremerFrio 0.35s ease-in-out infinite;
+    }
+
+    .obstaculo.grande {
+      width: 58px;
+      height: 58px;
+      font-size: 48px;
+    }
+
     .cama {
       bottom: 122px;
       font-size: 38px;
-      animation: pulsarCama 0.8s ease-in-out infinite;
+      animation: pulsarCama 0.65s ease-in-out infinite;
     }
 
     .aviso {
@@ -351,7 +363,17 @@
       }
 
       50% {
-        transform: scale(1.15);
+        transform: scale(1.18);
+      }
+    }
+
+    @keyframes tremerFrio {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
       }
     }
 
@@ -428,6 +450,12 @@
         font-size: 38px;
       }
 
+      .obstaculo.grande {
+        width: 54px;
+        height: 54px;
+        font-size: 45px;
+      }
+
       .legend {
         gap: 8px;
       }
@@ -449,25 +477,26 @@
     <h1>Missão: aquecer o coração da Dai 💗</h1>
 
     <p class="subtitle" id="textoInicial">
-      Agora a missão é pular, fugir do frio e pegar camas para liberar sua recompensa.
+      Agora a missão ficou difícil: pule, fuja do frio e pegue camas para liberar sua recompensa.
     </p>
 
     <div class="legend" id="legenda">
       <span>👧 Dai correndo</span>
       <span>Toque na tela para pular</span>
       <span>❄️ desvie do frio</span>
+      <span>🧊 cuidado com o frio voador</span>
       <span>🛏️ pegue camas</span>
       <span>🌸 recompensa final</span>
     </div>
 
     <div class="score" id="score">
-      Pontos: 0 | Camas: 0/20 | Vidas: 3
+      Pontos: 0 | Camas: 0/25 | Vidas: 2 | Nível: Difícil
     </div>
 
     <br>
 
     <button id="startButton">
-      Começar missão
+      Começar missão difícil
     </button>
 
     <div class="aviso" id="aviso"></div>
@@ -505,11 +534,11 @@
 
     let pontos = 0;
     let camas = 0;
-    let vidas = 3;
+    let vidas = 2;
 
-    let velocidade = 10;
-    let gravidade = 1;
-    let forcaPulo = 16.2;
+    let velocidade = 13.5;
+    let gravidade = 1.15;
+    let forcaPulo = 17.2;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -517,8 +546,9 @@
     let intervaloLoop;
     let intervaloCriacao;
     let intervaloPontuacao;
+    let intervaloDificuldade;
 
-    const totalCamas = 20;
+    const totalCamas = 25;
     const chao = 54;
 
     function iniciarJogo() {
@@ -527,11 +557,11 @@
 
       pontos = 0;
       camas = 0;
-      vidas = 3;
+      vidas = 2;
 
-      velocidade = 10;
-      gravidade = 1;
-      forcaPulo = 16.2;
+      velocidade = 13.5;
+      gravidade = 1.15;
+      forcaPulo = 17.2;
 
       posicaoY = chao;
       velocidadeY = 0;
@@ -546,29 +576,43 @@
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Fuja do frio ❄️ e colete 20 camas 🛏️ para vencer.";
+        "Modo difícil ativado: toque para pular, desvie do frio e colete 25 camas para vencer.";
 
       atualizarScore();
 
       clearInterval(intervaloLoop);
       clearInterval(intervaloCriacao);
       clearInterval(intervaloPontuacao);
+      clearInterval(intervaloDificuldade);
 
       intervaloLoop = setInterval(loopJogo, 16);
 
-      intervaloCriacao = setInterval(criarObjeto, 650);
+      intervaloCriacao = setInterval(criarObjeto, 420);
 
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
 
         pontos++;
 
-        if (pontos % 15 === 0) {
-          velocidade += 0.35;
+        if (pontos % 10 === 0) {
+          velocidade += 0.28;
         }
 
         atualizarScore();
-      }, 450);
+      }, 320);
+
+      intervaloDificuldade = setInterval(() => {
+        if (!jogoAtivo) return;
+
+        velocidade += 0.7;
+
+        if (gravidade < 1.45) {
+          gravidade += 0.03;
+        }
+
+        mostrarAviso("O frio ficou mais agressivo 🥶");
+        atualizarScore();
+      }, 7000);
     }
 
     function pular() {
@@ -581,7 +625,7 @@
 
         setTimeout(() => {
           player.classList.remove("pulando");
-        }, 260);
+        }, 220);
       }
     }
 
@@ -609,32 +653,60 @@
     function criarObjeto() {
       if (!jogoAtivo) return;
 
-      const objeto = document.createElement("div");
       const sorteio = Math.random();
 
-      if (sorteio < 0.76) {
-        objeto.classList.add("obstaculo");
-        objeto.dataset.tipo = "frio";
+      if (sorteio < 0.82) {
+        criarFrio();
 
-        const inimigos = ["❄️", "🥶", "🌬️", "🧊"];
-        objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
-
-        if (Math.random() < 0.22) {
-          objeto.style.bottom = "88px";
+        if (Math.random() < 0.32) {
+          setTimeout(() => {
+            if (jogoAtivo) criarFrio(true);
+          }, 180);
         }
       } else {
-        objeto.classList.add("cama");
-        objeto.dataset.tipo = "cama";
+        criarCama();
+      }
+    }
 
-        const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
-        objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
+    function criarFrio(extra = false) {
+      const objeto = document.createElement("div");
+      objeto.classList.add("obstaculo");
+      objeto.dataset.tipo = "frio";
 
-        const alturas = [112, 132, 152, 170];
-        const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
-        objeto.style.bottom = alturaAleatoria + "px";
+      const inimigos = ["❄️", "🥶", "🌬️", "🧊", "☃️"];
+      objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
+
+      const chance = Math.random();
+
+      if (chance < 0.25) {
+        objeto.classList.add("voador");
+        objeto.style.bottom = "128px";
+      } else if (chance < 0.45) {
+        objeto.classList.add("grande");
+        objeto.style.bottom = "54px";
+      } else if (chance < 0.62) {
+        objeto.style.bottom = "86px";
+      } else {
+        objeto.style.bottom = "54px";
       }
 
-      objeto.style.right = "-70px";
+      objeto.style.right = extra ? "-130px" : "-75px";
+      gameArea.appendChild(objeto);
+    }
+
+    function criarCama() {
+      const objeto = document.createElement("div");
+      objeto.classList.add("cama");
+      objeto.dataset.tipo = "cama";
+
+      const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
+      objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
+
+      const alturas = [132, 152, 172, 192, 212];
+      const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
+      objeto.style.bottom = alturaAleatoria + "px";
+
+      objeto.style.right = "-80px";
       gameArea.appendChild(objeto);
     }
 
@@ -643,10 +715,25 @@
 
       objetos.forEach((objeto) => {
         let rightAtual = parseFloat(objeto.style.right || "-70");
-        rightAtual += velocidade;
+
+        let velocidadeObjeto = velocidade;
+
+        if (objeto.dataset.tipo === "cama") {
+          velocidadeObjeto = velocidade + 1.2;
+        }
+
+        if (objeto.classList.contains("voador")) {
+          velocidadeObjeto = velocidade + 1.8;
+        }
+
+        if (objeto.classList.contains("grande")) {
+          velocidadeObjeto = velocidade + 0.8;
+        }
+
+        rightAtual += velocidadeObjeto;
         objeto.style.right = rightAtual + "px";
 
-        if (rightAtual > gameArea.offsetWidth + 100) {
+        if (rightAtual > gameArea.offsetWidth + 130) {
           objeto.remove();
         }
       });
@@ -660,19 +747,19 @@
         const objetoRect = objeto.getBoundingClientRect();
 
         const colidiu =
-          playerRect.left < objetoRect.right - 8 &&
-          playerRect.right > objetoRect.left + 8 &&
-          playerRect.top < objetoRect.bottom - 8 &&
-          playerRect.bottom > objetoRect.top + 8;
+          playerRect.left < objetoRect.right - 12 &&
+          playerRect.right > objetoRect.left + 12 &&
+          playerRect.top < objetoRect.bottom - 12 &&
+          playerRect.bottom > objetoRect.top + 12;
 
         if (!colidiu) return;
 
         if (objeto.dataset.tipo === "cama") {
           camas++;
-          pontos += 20;
-          velocidade += 0.5;
+          pontos += 25;
+          velocidade += 0.65;
 
-          mostrarAviso("+1 cama 🛏️ O frio ficou mais rápido!");
+          mostrarAviso("+1 cama 🛏️ Agora ficou mais rápido!");
           objeto.remove();
 
           if (camas >= totalCamas) {
@@ -682,7 +769,7 @@
 
         if (objeto.dataset.tipo === "frio") {
           vidas--;
-          velocidade += 0.35;
+          velocidade += 0.85;
 
           mostrarAviso("O frio encostou! -1 vida 🥶");
           objeto.remove();
@@ -697,8 +784,21 @@
     }
 
     function atualizarScore() {
+      let nivel = "Difícil";
+
+      if (velocidade >= 18) {
+        nivel = "Muito difícil";
+      }
+
+      if (velocidade >= 23) {
+        nivel = "Insano";
+      }
+
       scoreElement.innerText =
-        "Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas + " | Vidas: " + vidas;
+        "Pontos: " + pontos +
+        " | Camas: " + camas + "/" + totalCamas +
+        " | Vidas: " + vidas +
+        " | Nível: " + nivel;
     }
 
     function mostrarAviso(texto) {
@@ -707,7 +807,7 @@
 
       setTimeout(() => {
         aviso.style.display = "none";
-      }, 850);
+      }, 750);
     }
 
     function finalizarJogo() {
@@ -716,6 +816,7 @@
       clearInterval(intervaloLoop);
       clearInterval(intervaloCriacao);
       clearInterval(intervaloPontuacao);
+      clearInterval(intervaloDificuldade);
 
       limparObjetos();
 
@@ -724,10 +825,10 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "Você venceu! Pegou " + camas + " camas e fez " + pontos + " pontos 🛏️";
+        "Você venceu no modo difícil! Pegou " + camas + " camas e fez " + pontos + " pontos 🛏️";
 
       document.getElementById("textoInicial").innerText =
-        "Missão concluída: o frio foi derrotado.";
+        "Missão concluída: até o frio mais difícil foi derrotado.";
 
       document.getElementById("iconeFinal").innerText = "🌸";
 
@@ -738,7 +839,7 @@
           </div>
 
           <p>
-            Você venceu o frio, pulou todos os perigos e coletou as 20 camas do caminho.
+            Você venceu o modo difícil, desviou do frio mais agressivo e coletou todas as 25 camas do caminho.
           </p>
 
           <p style="margin-top: 14px;">
@@ -774,6 +875,7 @@
       clearInterval(intervaloLoop);
       clearInterval(intervaloCriacao);
       clearInterval(intervaloPontuacao);
+      clearInterval(intervaloDificuldade);
 
       limparObjetos();
 
@@ -789,10 +891,10 @@
       document.getElementById("iconeFinal").innerText = "🥶";
 
       document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... o frio foi forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete as 20 camas.";
+        "Você perdeu... o frio estava muito forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete as 25 camas.";
 
       document.getElementById("assinatura").innerText =
-        "A revanche está liberada.";
+        "A revanche no modo difícil está liberada.";
 
       startButton.style.display = "inline-block";
       startButton.innerText = "Tentar de novo";
