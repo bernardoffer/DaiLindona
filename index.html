@@ -10,13 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-
   <script>
-    window.va = window.va || function () { 
-      (window.vaq = window.vaq || []).push(arguments); 
+    window.va = window.va || function () {
+      (window.vaq = window.vaq || []).push(arguments);
     };
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -175,7 +175,7 @@
         transparent 28px,
         transparent 42px
       );
-      animation: moverChao 0.75s linear infinite;
+      animation: moverChao 0.55s linear infinite;
     }
 
     .player {
@@ -198,7 +198,7 @@
     }
 
     .obstaculo,
-    .coracao {
+    .cama {
       position: absolute;
       bottom: 54px;
       right: -80px;
@@ -212,10 +212,10 @@
       filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
     }
 
-    .coracao {
+    .cama {
       bottom: 122px;
       font-size: 38px;
-      animation: pulsarCoracao 0.8s ease-in-out infinite;
+      animation: pulsarCama 0.8s ease-in-out infinite;
     }
 
     .aviso {
@@ -345,7 +345,7 @@
       }
     }
 
-    @keyframes pulsarCoracao {
+    @keyframes pulsarCama {
       0%, 100% {
         transform: scale(1);
       }
@@ -422,7 +422,7 @@
       }
 
       .obstaculo,
-      .coracao {
+      .cama {
         width: 44px;
         height: 44px;
         font-size: 38px;
@@ -442,26 +442,26 @@
 <body>
   <div class="floating">💗</div>
   <div class="floating">❄️</div>
-  <div class="floating">🌸</div>
+  <div class="floating">🛏️</div>
   <div class="floating">💕</div>
 
   <main class="card">
     <h1>Missão: aquecer o coração da Dai 💗</h1>
 
     <p class="subtitle" id="textoInicial">
-      Agora a missão é pular, fugir do frio e pegar corações para liberar sua recompensa.
+      Agora a missão é pular, fugir do frio e pegar camas para liberar sua recompensa.
     </p>
 
     <div class="legend" id="legenda">
       <span>👧 Dai correndo</span>
       <span>Toque na tela para pular</span>
       <span>❄️ desvie do frio</span>
-      <span>💗 pegue corações</span>
+      <span>🛏️ pegue camas</span>
       <span>🌸 recompensa final</span>
     </div>
 
     <div class="score" id="score">
-      Pontos: 0 | Corações: 0/15 | Vidas: 3
+      Pontos: 0 | Camas: 0/20 | Vidas: 3
     </div>
 
     <br>
@@ -504,12 +504,12 @@
     let pulando = false;
 
     let pontos = 0;
-    let coracoes = 0;
+    let camas = 0;
     let vidas = 3;
 
-    let velocidade = 8.5;
-    let gravidade = 0.9;
-    let forcaPulo = 16.5;
+    let velocidade = 10;
+    let gravidade = 1;
+    let forcaPulo = 16.2;
 
     let posicaoY = 54;
     let velocidadeY = 0;
@@ -518,7 +518,7 @@
     let intervaloCriacao;
     let intervaloPontuacao;
 
-    const totalCoracoes = 15;
+    const totalCamas = 20;
     const chao = 54;
 
     function iniciarJogo() {
@@ -526,12 +526,12 @@
       pulando = false;
 
       pontos = 0;
-      coracoes = 0;
+      camas = 0;
       vidas = 3;
 
-      velocidade = 8.5;
-      gravidade = 0.9;
-      forcaPulo = 16.5;
+      velocidade = 10;
+      gravidade = 1;
+      forcaPulo = 16.2;
 
       posicaoY = chao;
       velocidadeY = 0;
@@ -546,7 +546,7 @@
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Desvie do frio ❄️ e pegue os corações 💗.";
+        "Toque na tela para pular. Fuja do frio ❄️ e colete 20 camas 🛏️ para vencer.";
 
       atualizarScore();
 
@@ -556,19 +556,19 @@
 
       intervaloLoop = setInterval(loopJogo, 16);
 
-      intervaloCriacao = setInterval(criarObjeto, 850);
+      intervaloCriacao = setInterval(criarObjeto, 650);
 
       intervaloPontuacao = setInterval(() => {
         if (!jogoAtivo) return;
 
         pontos++;
 
-        if (pontos % 20 === 0) {
-          velocidade += 0.25;
+        if (pontos % 15 === 0) {
+          velocidade += 0.35;
         }
 
         atualizarScore();
-      }, 500);
+      }, 450);
     }
 
     function pular() {
@@ -612,20 +612,25 @@
       const objeto = document.createElement("div");
       const sorteio = Math.random();
 
-      if (sorteio < 0.68) {
+      if (sorteio < 0.76) {
         objeto.classList.add("obstaculo");
         objeto.dataset.tipo = "frio";
 
         const inimigos = ["❄️", "🥶", "🌬️", "🧊"];
         objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
+
+        if (Math.random() < 0.22) {
+          objeto.style.bottom = "88px";
+        }
       } else {
-        objeto.classList.add("coracao");
-        objeto.dataset.tipo = "coracao";
+        objeto.classList.add("cama");
+        objeto.dataset.tipo = "cama";
 
-        const coracoesLista = ["💗", "💖", "💕", "💘"];
-        objeto.innerText = coracoesLista[Math.floor(Math.random() * coracoesLista.length)];
+        const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
+        objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
 
-        const alturaAleatoria = Math.random() < 0.5 ? 118 : 148;
+        const alturas = [112, 132, 152, 170];
+        const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
         objeto.style.bottom = alturaAleatoria + "px";
       }
 
@@ -634,7 +639,7 @@
     }
 
     function moverObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .coracao");
+      const objetos = document.querySelectorAll(".obstaculo, .cama");
 
       objetos.forEach((objeto) => {
         let rightAtual = parseFloat(objeto.style.right || "-70");
@@ -649,7 +654,7 @@
 
     function verificarColisoes() {
       const playerRect = player.getBoundingClientRect();
-      const objetos = document.querySelectorAll(".obstaculo, .coracao");
+      const objetos = document.querySelectorAll(".obstaculo, .cama");
 
       objetos.forEach((objeto) => {
         const objetoRect = objeto.getBoundingClientRect();
@@ -662,21 +667,23 @@
 
         if (!colidiu) return;
 
-        if (objeto.dataset.tipo === "coracao") {
-          coracoes++;
-          pontos += 15;
-          velocidade += 0.45;
+        if (objeto.dataset.tipo === "cama") {
+          camas++;
+          pontos += 20;
+          velocidade += 0.5;
 
-          mostrarAviso("+1 coração 💗 Ficou mais rápido!");
+          mostrarAviso("+1 cama 🛏️ O frio ficou mais rápido!");
           objeto.remove();
 
-          if (coracoes >= totalCoracoes) {
+          if (camas >= totalCamas) {
             finalizarJogo();
           }
         }
 
         if (objeto.dataset.tipo === "frio") {
           vidas--;
+          velocidade += 0.35;
+
           mostrarAviso("O frio encostou! -1 vida 🥶");
           objeto.remove();
 
@@ -691,7 +698,7 @@
 
     function atualizarScore() {
       scoreElement.innerText =
-        "Pontos: " + pontos + " | Corações: " + coracoes + "/" + totalCoracoes + " | Vidas: " + vidas;
+        "Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas + " | Vidas: " + vidas;
     }
 
     function mostrarAviso(texto) {
@@ -717,7 +724,7 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "Você venceu! Pegou " + coracoes + " corações e fez " + pontos + " pontos 💗";
+        "Você venceu! Pegou " + camas + " camas e fez " + pontos + " pontos 🛏️";
 
       document.getElementById("textoInicial").innerText =
         "Missão concluída: o frio foi derrotado.";
@@ -727,15 +734,15 @@
       document.getElementById("mensagemFinal").innerHTML =
         `
           <div style="font-size: 4rem; margin-bottom: 12px;">
-            🌸💗🌸
+            🛏️🌸💗🌸🛏️
           </div>
 
           <p>
-            Você venceu o frio, pulou todos os perigos e coletou todos os corações do caminho.
+            Você venceu o frio, pulou todos os perigos e coletou as 20 camas do caminho.
           </p>
 
           <p style="margin-top: 14px;">
-            Como recompensa, você ganhou flores rosas, carinho e uma música para deixar seu dia mais bonito.
+            Como recompensa, você ganhou flores rosas, carinho, descanso merecido e uma música para deixar seu dia mais bonito.
           </p>
 
           <a 
@@ -775,14 +782,14 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "O frio venceu dessa vez 🥶 | Pontos: " + pontos + " | Corações: " + coracoes + "/" + totalCoracoes;
+        "O frio venceu dessa vez 🥶 | Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas;
 
       document.getElementById("textoInicial").innerText = "Quase conseguiu!";
 
       document.getElementById("iconeFinal").innerText = "🥶";
 
       document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... o frio foi forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete os corações.";
+        "Você perdeu... o frio foi forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete as 20 camas.";
 
       document.getElementById("assinatura").innerText =
         "A revanche está liberada.";
@@ -792,7 +799,7 @@
     }
 
     function limparObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .coracao");
+      const objetos = document.querySelectorAll(".obstaculo, .cama");
       objetos.forEach((objeto) => objeto.remove());
     }
 
