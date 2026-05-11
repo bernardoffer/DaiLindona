@@ -1,823 +1,326 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<script>
+  const gameArea = document.getElementById("gameArea");
+  const player = document.getElementById("player");
+  const scoreElement = document.getElementById("score");
+  const startButton = document.getElementById("startButton");
+  const finalSection = document.getElementById("final");
+  const aviso = document.getElementById("aviso");
 
-  <title>Missão: aquecer o coração da Dai</title>
+  let jogoAtivo = false;
+  let pulando = false;
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  let pontos = 0;
+  let camas = 0;
+  let vidas = 1;
 
-  <script>
-    window.va = window.va || function () {
-      (window.vaq = window.vaq || []).push(arguments);
-    };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
+  let velocidade = 11;
+  let gravidade = 1;
+  let forcaPulo = 16.2;
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+  let posicaoY = 54;
+  let velocidadeY = 0;
 
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      overflow-x: hidden;
-    }
+  let intervaloLoop;
+  let intervaloCriacao;
+  let intervaloPontuacao;
 
-    body {
-      min-height: 100vh;
-      font-family: 'Poppins', sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(255, 150, 196, 0.75), transparent 35%),
-        linear-gradient(135deg, #ffd1e6 0%, #ffb3d1 45%, #ff8fbd 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      color: #442236;
-      overflow-x: hidden;
-    }
+  const totalCamas = 30;
+  const chao = 54;
 
-    .card {
-      width: 100%;
-      max-width: 820px;
-      padding: 30px 20px;
-      border-radius: 34px;
-      background: rgba(255, 255, 255, 0.68);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 30px 80px rgba(111, 64, 91, 0.22);
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      animation: aparecer 0.9s ease both;
-    }
+  function iniciarJogo() {
+    jogoAtivo = true;
+    pulando = false;
 
-    h1 {
-      font-size: clamp(1.9rem, 6vw, 3.7rem);
-      line-height: 1.05;
-      color: #4b203b;
-      margin-bottom: 14px;
-      letter-spacing: -1px;
-    }
+    pontos = 0;
+    camas = 0;
+    vidas = 1;
 
-    .subtitle {
-      font-size: clamp(0.95rem, 2.3vw, 1.12rem);
-      line-height: 1.6;
-      color: #67475c;
-      max-width: 640px;
-      margin: 0 auto 16px;
-    }
+    velocidade = 11;
+    gravidade = 1;
+    forcaPulo = 16.2;
 
-    .legend {
-      max-width: 680px;
-      margin: 0 auto 14px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    posicaoY = chao;
+    velocidadeY = 0;
 
-    .legend span {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.72);
-      color: #7b3d62;
-      font-size: 0.84rem;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(128, 70, 105, 0.08);
-    }
+    limparObjetos();
 
-    .score {
-      margin: 14px auto;
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #7b3d62;
-      font-weight: 800;
-      box-shadow: 0 10px 30px rgba(128, 70, 105, 0.12);
-    }
+    player.style.bottom = chao + "px";
 
-    button {
-      border: none;
-      cursor: pointer;
-      padding: 15px 25px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
-      color: white;
-      font-size: 1rem;
-      font-weight: 800;
-      box-shadow: 0 18px 35px rgba(255, 95, 162, 0.35);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      margin-top: 8px;
-    }
+    gameArea.style.display = "block";
+    finalSection.style.display = "none";
+    startButton.style.display = "none";
+    aviso.style.display = "none";
 
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 24px 45px rgba(255, 95, 162, 0.45);
-    }
+    document.getElementById("textoInicial").innerText =
+      "Toque na tela para pular. Fuja do frio ❄️ e colete 30 camas 🛏️ para vencer.";
 
-    .game-area {
-      position: relative;
-      width: 100%;
-      height: 330px;
-      margin-top: 24px;
-      border-radius: 28px;
-      background:
-        linear-gradient(to bottom, rgba(230, 247, 255, 0.7), rgba(255,255,255,0.28)),
-        linear-gradient(135deg, #ffe4f0, #ffc1dd);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      overflow: hidden;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
-      display: none;
-      touch-action: manipulation;
-      user-select: none;
-    }
+    atualizarScore();
 
-    .cloud {
-      position: absolute;
-      top: 34px;
-      font-size: 34px;
-      opacity: 0.35;
-      animation: nuvem 10s linear infinite;
-    }
+    clearInterval(intervaloLoop);
+    clearInterval(intervaloCriacao);
+    clearInterval(intervaloPontuacao);
 
-    .cloud.um {
-      left: 20%;
-      animation-duration: 14s;
-    }
+    intervaloLoop = setInterval(loopJogo, 16);
 
-    .cloud.dois {
-      left: 68%;
-      top: 68px;
-      animation-duration: 17s;
-    }
+    intervaloCriacao = setInterval(criarObjeto, 650);
 
-    .ground {
-      position: absolute;
-      left: 0;
-      bottom: 48px;
-      width: 200%;
-      height: 5px;
-      background: repeating-linear-gradient(
-        to right,
-        rgba(123, 61, 98, 0.35) 0,
-        rgba(123, 61, 98, 0.35) 28px,
-        transparent 28px,
-        transparent 42px
-      );
-      animation: moverChao 0.55s linear infinite;
-    }
+    intervaloPontuacao = setInterval(() => {
+      if (!jogoAtivo) return;
 
-    .player {
-      position: absolute;
-      left: 58px;
-      bottom: 54px;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-      z-index: 5;
-      filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
-    }
+      pontos++;
 
-    .player.pulando {
-      animation: brilhoPulo 0.25s ease;
-    }
-
-    .obstaculo,
-    .cama {
-      position: absolute;
-      bottom: 54px;
-      right: -80px;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      z-index: 4;
-      filter: drop-shadow(0 8px 10px rgba(130, 53, 92, 0.18));
-    }
-
-    .cama {
-      bottom: 122px;
-      font-size: 38px;
-      animation: pulsarCama 0.8s ease-in-out infinite;
-    }
-
-    .aviso {
-      position: fixed;
-      top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 999;
-      display: none;
-      max-width: 90%;
-      padding: 12px 18px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.94);
-      color: #6d3659;
-      font-weight: 800;
-      box-shadow: 0 12px 30px rgba(128, 70, 105, 0.22);
-      animation: aparecerAviso 0.25s ease both;
-    }
-
-    .final {
-      display: none;
-      margin-top: 26px;
-      animation: aparecerFinal 0.8s ease both;
-    }
-
-    .icone-final {
-      font-size: 5.5rem;
-      animation: pulse 1.8s ease-in-out infinite;
-      margin-bottom: 12px;
-    }
-
-    .mensagem {
-      max-width: 620px;
-      margin: 0 auto;
-      padding: 24px;
-      border-radius: 26px;
-      background: rgba(255, 255, 255, 0.78);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 45px rgba(125, 68, 101, 0.13);
-      color: #4d2d42;
-      font-size: clamp(1.02rem, 2.7vw, 1.25rem);
-      line-height: 1.6;
-      font-weight: 650;
-    }
-
-    .assinatura {
-      margin-top: 18px;
-      color: #7b526b;
-      font-size: 0.95rem;
-    }
-
-    .floating {
-      position: fixed;
-      font-size: 28px;
-      opacity: 0.35;
-      animation: flutuar 8s ease-in-out infinite;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .floating:nth-child(1) {
-      top: 10%;
-      left: 8%;
-      animation-delay: 0s;
-    }
-
-    .floating:nth-child(2) {
-      top: 72%;
-      left: 12%;
-      animation-delay: 1s;
-    }
-
-    .floating:nth-child(3) {
-      top: 16%;
-      right: 10%;
-      animation-delay: 2s;
-    }
-
-    .floating:nth-child(4) {
-      bottom: 12%;
-      right: 12%;
-      animation-delay: 3s;
-    }
-
-    @keyframes aparecer {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
+      if (pontos % 15 === 0) {
+        velocidade += 0.35;
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes aparecerFinal {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.94);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes aparecerAviso {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    @keyframes pulsarCama {
-      0%, 100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.15);
-      }
-    }
-
-    @keyframes flutuar {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
-      }
-
-      50% {
-        transform: translateY(-18px) rotate(8deg);
-      }
-    }
-
-    @keyframes moverChao {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-84px);
-      }
-    }
-
-    @keyframes nuvem {
-      from {
-        transform: translateX(620px);
-      }
-
-      to {
-        transform: translateX(-820px);
-      }
-    }
-
-    @keyframes brilhoPulo {
-      0%, 100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    @media (max-width: 600px) {
-      body {
-        align-items: flex-start;
-        padding: 12px;
-      }
-
-      .card {
-        padding: 24px 14px;
-        border-radius: 28px;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .game-area {
-        height: 360px;
-      }
-
-      .player {
-        left: 34px;
-        width: 50px;
-        height: 50px;
-        font-size: 40px;
-      }
-
-      .obstaculo,
-      .cama {
-        width: 44px;
-        height: 44px;
-        font-size: 38px;
-      }
-
-      .legend {
-        gap: 8px;
-      }
-
-      .legend span {
-        font-size: 0.76rem;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="floating">💗</div>
-  <div class="floating">❄️</div>
-  <div class="floating">🛏️</div>
-  <div class="floating">💕</div>
-
-  <main class="card">
-    <h1>Missão: aquecer o coração da Dai 💗</h1>
-
-    <p class="subtitle" id="textoInicial">
-      Agora a missão é pular, fugir do frio e pegar camas para liberar sua recompensa.
-    </p>
-
-    <div class="legend" id="legenda">
-      <span>👧 Dai correndo</span>
-      <span>Toque na tela para pular</span>
-      <span>❄️ desvie do frio</span>
-      <span>🛏️ pegue camas</span>
-      <span>🌸 recompensa final</span>
-    </div>
-
-    <div class="score" id="score">
-      Pontos: 0 | Camas: 0/20 | Vidas: 3
-    </div>
-
-    <br>
-
-    <button id="startButton">
-      Começar missão
-    </button>
-
-    <div class="aviso" id="aviso"></div>
-
-    <div class="game-area" id="gameArea">
-      <div class="cloud um">☁️</div>
-      <div class="cloud dois">☁️</div>
-      <div class="ground"></div>
-      <div class="player" id="player">👧</div>
-    </div>
-
-    <section class="final" id="final">
-      <div class="icone-final" id="iconeFinal">💗</div>
-
-      <div class="mensagem" id="mensagemFinal">
-        Espero que seu dia seja maravilhoso como a mulher que você é.
-      </div>
-
-      <p class="assinatura" id="assinatura">
-        Missão concluída com sucesso.
-      </p>
-    </section>
-  </main>
-
-  <script>
-    const gameArea = document.getElementById("gameArea");
-    const player = document.getElementById("player");
-    const scoreElement = document.getElementById("score");
-    const startButton = document.getElementById("startButton");
-    const finalSection = document.getElementById("final");
-    const aviso = document.getElementById("aviso");
-
-    let jogoAtivo = false;
-    let pulando = false;
-
-    let pontos = 0;
-    let camas = 0;
-    let vidas = 3;
-
-    let velocidade = 10;
-    let gravidade = 1;
-    let forcaPulo = 16.2;
-
-    let posicaoY = 54;
-    let velocidadeY = 0;
-
-    let intervaloLoop;
-    let intervaloCriacao;
-    let intervaloPontuacao;
-
-    const totalCamas = 20;
-    const chao = 54;
-
-    function iniciarJogo() {
-      jogoAtivo = true;
-      pulando = false;
-
-      pontos = 0;
-      camas = 0;
-      vidas = 3;
-
-      velocidade = 10;
-      gravidade = 1;
-      forcaPulo = 16.2;
-
-      posicaoY = chao;
-      velocidadeY = 0;
-
-      limparObjetos();
-
-      player.style.bottom = chao + "px";
-
-      gameArea.style.display = "block";
-      finalSection.style.display = "none";
-      startButton.style.display = "none";
-      aviso.style.display = "none";
-
-      document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Fuja do frio ❄️ e colete 20 camas 🛏️ para vencer.";
 
       atualizarScore();
+    }, 450);
+  }
 
-      clearInterval(intervaloLoop);
-      clearInterval(intervaloCriacao);
-      clearInterval(intervaloPontuacao);
+  function pular() {
+    if (!jogoAtivo) return;
 
-      intervaloLoop = setInterval(loopJogo, 16);
-
-      intervaloCriacao = setInterval(criarObjeto, 650);
-
-      intervaloPontuacao = setInterval(() => {
-        if (!jogoAtivo) return;
-
-        pontos++;
-
-        if (pontos % 15 === 0) {
-          velocidade += 0.35;
-        }
-
-        atualizarScore();
-      }, 450);
-    }
-
-    function pular() {
-      if (!jogoAtivo) return;
-
-      if (!pulando) {
-        pulando = true;
-        velocidadeY = forcaPulo;
-        player.classList.add("pulando");
-
-        setTimeout(() => {
-          player.classList.remove("pulando");
-        }, 260);
-      }
-    }
-
-    function loopJogo() {
-      aplicarFisica();
-      moverObjetos();
-      verificarColisoes();
-    }
-
-    function aplicarFisica() {
-      if (pulando) {
-        posicaoY += velocidadeY;
-        velocidadeY -= gravidade;
-
-        if (posicaoY <= chao) {
-          posicaoY = chao;
-          velocidadeY = 0;
-          pulando = false;
-        }
-
-        player.style.bottom = posicaoY + "px";
-      }
-    }
-
-    function criarObjeto() {
-      if (!jogoAtivo) return;
-
-      const objeto = document.createElement("div");
-      const sorteio = Math.random();
-
-      if (sorteio < 0.76) {
-        objeto.classList.add("obstaculo");
-        objeto.dataset.tipo = "frio";
-
-        const inimigos = ["❄️", "🥶", "🌬️", "🧊"];
-        objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
-
-        if (Math.random() < 0.22) {
-          objeto.style.bottom = "88px";
-        }
-      } else {
-        objeto.classList.add("cama");
-        objeto.dataset.tipo = "cama";
-
-        const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
-        objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
-
-        const alturas = [112, 132, 152, 170];
-        const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
-        objeto.style.bottom = alturaAleatoria + "px";
-      }
-
-      objeto.style.right = "-70px";
-      gameArea.appendChild(objeto);
-    }
-
-    function moverObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .cama");
-
-      objetos.forEach((objeto) => {
-        let rightAtual = parseFloat(objeto.style.right || "-70");
-        rightAtual += velocidade;
-        objeto.style.right = rightAtual + "px";
-
-        if (rightAtual > gameArea.offsetWidth + 100) {
-          objeto.remove();
-        }
-      });
-    }
-
-    function verificarColisoes() {
-      const playerRect = player.getBoundingClientRect();
-      const objetos = document.querySelectorAll(".obstaculo, .cama");
-
-      objetos.forEach((objeto) => {
-        const objetoRect = objeto.getBoundingClientRect();
-
-        const colidiu =
-          playerRect.left < objetoRect.right - 8 &&
-          playerRect.right > objetoRect.left + 8 &&
-          playerRect.top < objetoRect.bottom - 8 &&
-          playerRect.bottom > objetoRect.top + 8;
-
-        if (!colidiu) return;
-
-        if (objeto.dataset.tipo === "cama") {
-          camas++;
-          pontos += 20;
-          velocidade += 0.5;
-
-          mostrarAviso("+1 cama 🛏️ O frio ficou mais rápido!");
-          objeto.remove();
-
-          if (camas >= totalCamas) {
-            finalizarJogo();
-          }
-        }
-
-        if (objeto.dataset.tipo === "frio") {
-          vidas--;
-          velocidade += 0.35;
-
-          mostrarAviso("O frio encostou! -1 vida 🥶");
-          objeto.remove();
-
-          if (vidas <= 0) {
-            perderJogo();
-          }
-        }
-
-        atualizarScore();
-      });
-    }
-
-    function atualizarScore() {
-      scoreElement.innerText =
-        "Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas + " | Vidas: " + vidas;
-    }
-
-    function mostrarAviso(texto) {
-      aviso.innerText = texto;
-      aviso.style.display = "block";
+    if (!pulando) {
+      pulando = true;
+      velocidadeY = forcaPulo;
+      player.classList.add("pulando");
 
       setTimeout(() => {
-        aviso.style.display = "none";
-      }, 850);
+        player.classList.remove("pulando");
+      }, 260);
+    }
+  }
+
+  function loopJogo() {
+    aplicarFisica();
+    moverObjetos();
+    verificarColisoes();
+  }
+
+  function aplicarFisica() {
+    if (pulando) {
+      posicaoY += velocidadeY;
+      velocidadeY -= gravidade;
+
+      if (posicaoY <= chao) {
+        posicaoY = chao;
+        velocidadeY = 0;
+        pulando = false;
+      }
+
+      player.style.bottom = posicaoY + "px";
+    }
+  }
+
+  function criarObjeto() {
+    if (!jogoAtivo) return;
+
+    const objeto = document.createElement("div");
+    const sorteio = Math.random();
+
+    if (sorteio < 0.74) {
+      objeto.classList.add("obstaculo");
+      objeto.dataset.tipo = "frio";
+
+      const inimigos = ["❄️", "🥶", "🌬️", "🧊"];
+      objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
+
+      if (Math.random() < 0.22) {
+        objeto.style.bottom = "88px";
+      }
+    } else {
+      objeto.classList.add("cama");
+      objeto.dataset.tipo = "cama";
+
+      const camasLista = ["🛏️", "🛌", "🛏️", "🛌"];
+      objeto.innerText = camasLista[Math.floor(Math.random() * camasLista.length)];
+
+      const alturas = [112, 132, 152, 170];
+      const alturaAleatoria = alturas[Math.floor(Math.random() * alturas.length)];
+      objeto.style.bottom = alturaAleatoria + "px";
     }
 
-    function finalizarJogo() {
-      jogoAtivo = false;
+    objeto.style.right = "-70px";
+    gameArea.appendChild(objeto);
+  }
 
-      clearInterval(intervaloLoop);
-      clearInterval(intervaloCriacao);
-      clearInterval(intervaloPontuacao);
+  function moverObjetos() {
+    const objetos = document.querySelectorAll(".obstaculo, .cama");
 
-      limparObjetos();
+    objetos.forEach((objeto) => {
+      let rightAtual = parseFloat(objeto.style.right || "-70");
+      rightAtual += velocidade;
+      objeto.style.right = rightAtual + "px";
 
-      gameArea.style.display = "none";
-      finalSection.style.display = "block";
-      aviso.style.display = "none";
-
-      scoreElement.innerText =
-        "Você venceu! Pegou " + camas + " camas e fez " + pontos + " pontos 🛏️";
-
-      document.getElementById("textoInicial").innerText =
-        "Missão concluída: o frio foi derrotado.";
-
-      document.getElementById("iconeFinal").innerText = "🌸";
-
-      document.getElementById("mensagemFinal").innerHTML =
-        `
-          <div style="font-size: 4rem; margin-bottom: 12px;">
-            🛏️🌸💗🌸🛏️
-          </div>
-
-          <p>
-            Você venceu o frio, pulou todos os perigos e coletou as 20 camas do caminho.
-          </p>
-
-          <p style="margin-top: 14px;">
-            Como recompensa, você ganhou flores rosas, carinho, descanso merecido e uma música para deixar seu dia mais bonito.
-          </p>
-
-          <a 
-            href="https://www.youtube.com/watch?v=y2bVIBwpCTA&list=RDy2bVIBwpCTA&start_radio=1" 
-            target="_blank"
-            style="
-              display: inline-block;
-              margin-top: 22px;
-              padding: 14px 22px;
-              border-radius: 999px;
-              background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
-              color: white;
-              text-decoration: none;
-              font-weight: 800;
-              box-shadow: 0 14px 30px rgba(255, 95, 162, 0.35);
-            "
-          >
-            Tocar música do seu dia 🎵
-          </a>
-        `;
-
-      document.getElementById("assinatura").innerText =
-        "Espero que seu dia seja maravilhoso como a mulher que você é.";
-    }
-
-    function perderJogo() {
-      jogoAtivo = false;
-
-      clearInterval(intervaloLoop);
-      clearInterval(intervaloCriacao);
-      clearInterval(intervaloPontuacao);
-
-      limparObjetos();
-
-      gameArea.style.display = "none";
-      finalSection.style.display = "block";
-      aviso.style.display = "none";
-
-      scoreElement.innerText =
-        "O frio venceu dessa vez 🥶 | Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas;
-
-      document.getElementById("textoInicial").innerText = "Quase conseguiu!";
-
-      document.getElementById("iconeFinal").innerText = "🥶";
-
-      document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... o frio foi forte dessa vez. Mas a missão ainda pode ser vencida: tente de novo e colete as 20 camas.";
-
-      document.getElementById("assinatura").innerText =
-        "A revanche está liberada.";
-
-      startButton.style.display = "inline-block";
-      startButton.innerText = "Tentar de novo";
-    }
-
-    function limparObjetos() {
-      const objetos = document.querySelectorAll(".obstaculo, .cama");
-      objetos.forEach((objeto) => objeto.remove());
-    }
-
-    startButton.addEventListener("click", iniciarJogo);
-
-    gameArea.addEventListener("click", pular);
-
-    gameArea.addEventListener("touchstart", function (event) {
-      event.preventDefault();
-      pular();
-    }, { passive: false });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.code === "Space" || event.code === "ArrowUp") {
-        event.preventDefault();
-        pular();
+      if (rightAtual > gameArea.offsetWidth + 100) {
+        objeto.remove();
       }
     });
-  </script>
-</body>
-</html>
+  }
+
+  function verificarColisoes() {
+    const playerRect = player.getBoundingClientRect();
+    const objetos = document.querySelectorAll(".obstaculo, .cama");
+
+    objetos.forEach((objeto) => {
+      const objetoRect = objeto.getBoundingClientRect();
+
+      const colidiu =
+        playerRect.left < objetoRect.right - 8 &&
+        playerRect.right > objetoRect.left + 8 &&
+        playerRect.top < objetoRect.bottom - 8 &&
+        playerRect.bottom > objetoRect.top + 8;
+
+      if (!colidiu) return;
+
+      if (objeto.dataset.tipo === "cama") {
+        camas++;
+        pontos += 20;
+        velocidade += 0.45;
+
+        mostrarAviso("+1 cama 🛏️ O frio ficou um pouco mais rápido!");
+        objeto.remove();
+
+        if (camas >= totalCamas) {
+          finalizarJogo();
+        }
+      }
+
+      if (objeto.dataset.tipo === "frio") {
+        vidas--;
+
+        mostrarAviso("O frio encostou! 🥶");
+        objeto.remove();
+
+        if (vidas <= 0) {
+          perderJogo();
+        }
+      }
+
+      atualizarScore();
+    });
+  }
+
+  function atualizarScore() {
+    scoreElement.innerText =
+      "Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas + " | Vidas: " + vidas;
+  }
+
+  function mostrarAviso(texto) {
+    aviso.innerText = texto;
+    aviso.style.display = "block";
+
+    setTimeout(() => {
+      aviso.style.display = "none";
+    }, 850);
+  }
+
+  function finalizarJogo() {
+    jogoAtivo = false;
+
+    clearInterval(intervaloLoop);
+    clearInterval(intervaloCriacao);
+    clearInterval(intervaloPontuacao);
+
+    limparObjetos();
+
+    gameArea.style.display = "none";
+    finalSection.style.display = "block";
+    aviso.style.display = "none";
+
+    scoreElement.innerText =
+      "Você venceu! Pegou " + camas + " camas e fez " + pontos + " pontos 🛏️";
+
+    document.getElementById("textoInicial").innerText =
+      "Missão concluída: o frio foi derrotado.";
+
+    document.getElementById("iconeFinal").innerText = "🌸";
+
+    document.getElementById("mensagemFinal").innerHTML =
+      `
+        <div style="font-size: 4rem; margin-bottom: 12px;">
+          🛏️🌸💗🌸🛏️
+        </div>
+
+        <p>
+          Você venceu o frio, pulou todos os perigos e coletou as 30 camas do caminho.
+        </p>
+
+        <p style="margin-top: 14px;">
+          Como recompensa, você ganhou flores rosas, carinho, descanso merecido e uma música para deixar seu dia mais bonito.
+        </p>
+
+        <a 
+          href="https://www.youtube.com/watch?v=y2bVIBwpCTA&list=RDy2bVIBwpCTA&start_radio=1" 
+          target="_blank"
+          style="
+            display: inline-block;
+            margin-top: 22px;
+            padding: 14px 22px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            box-shadow: 0 14px 30px rgba(255, 95, 162, 0.35);
+          "
+        >
+          Tocar música do seu dia 🎵
+        </a>
+      `;
+
+    document.getElementById("assinatura").innerText =
+      "Espero que seu dia seja maravilhoso como a mulher que você é.";
+  }
+
+  function perderJogo() {
+    jogoAtivo = false;
+
+    clearInterval(intervaloLoop);
+    clearInterval(intervaloCriacao);
+    clearInterval(intervaloPontuacao);
+
+    limparObjetos();
+
+    gameArea.style.display = "none";
+    finalSection.style.display = "block";
+    aviso.style.display = "none";
+
+    scoreElement.innerText =
+      "O frio venceu dessa vez 🥶 | Pontos: " + pontos + " | Camas: " + camas + "/" + totalCamas;
+
+    document.getElementById("textoInicial").innerText = "Quase conseguiu!";
+
+    document.getElementById("iconeFinal").innerText = "🥶";
+
+    document.getElementById("mensagemFinal").innerText =
+      "Você perdeu... o frio foi forte dessa vez. Agora só tem 1 vida, então precisa desviar com cuidado e coletar as 30 camas.";
+
+    document.getElementById("assinatura").innerText =
+      "A revanche está liberada.";
+
+    startButton.style.display = "inline-block";
+    startButton.innerText = "Tentar de novo";
+  }
+
+  function limparObjetos() {
+    const objetos = document.querySelectorAll(".obstaculo, .cama");
+    objetos.forEach((objeto) => objeto.remove());
+  }
+
+  startButton.addEventListener("click", iniciarJogo);
+
+  gameArea.addEventListener("click", pular);
+
+  gameArea.addEventListener("touchstart", function (event) {
+    event.preventDefault();
+    pular();
+  }, { passive: false });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.code === "Space" || event.code === "ArrowUp") {
+      event.preventDefault();
+      pular();
+    }
+  });
+</script>
