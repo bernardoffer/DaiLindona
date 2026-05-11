@@ -461,7 +461,7 @@
   <div class="floating">💕</div>
 
   <main class="card">
-    <h1>Missão: encontrar o Bernardo 💗</h1>
+    <h1>Missão: encontrar Bernardo para socar</h1>
 
     <p class="subtitle" id="textoInicial">
       Agora a missão é pular, fugir da raiva e pegar Bernardos para liberar sua recompensa.
@@ -472,11 +472,11 @@
       <span>Toque na tela para pular</span>
       <span>😡 desvie da raiva</span>
       <span>🧑🏻 pegue Bernardo</span>
-      <span>🌸 recompensa final</span>
+      <span>🥊 recompensa final</span>
     </div>
 
     <div class="score" id="score">
-      Pontos: 0 | Bernardos: 0/30 | Vidas: 1
+      Pontos: 0 | Bernardos: 0/15 | Vidas: 1
     </div>
 
     <br>
@@ -533,7 +533,7 @@
     let intervaloCriacao;
     let intervaloPontuacao;
 
-    const totalBernardos = 30;
+    const totalBernardos = 15;
     const chao = 54;
 
     function iniciarJogo() {
@@ -561,7 +561,7 @@
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Fuja da raiva 😡 e colete 30 Bernardos 🧑🏻 para vencer.";
+        "Toque na tela para pular. Fuja da raiva 😡 e colete 15 Bernardos 🧑🏻 para vencer.";
 
       atualizarScore();
 
@@ -746,12 +746,12 @@
       document.getElementById("textoInicial").innerText =
         "Missão concluída: a raiva foi derrotada.";
 
-      document.getElementById("iconeFinal").innerText = "🌸";
+      document.getElementById("iconeFinal").innerText = "🥊";
 
       document.getElementById("mensagemFinal").innerHTML =
         `
           <div style="font-size: 4rem; margin-bottom: 12px;">
-            🧑🏻🌸💗🌸🧑🏻
+            🧑🏻🥊💗🥊🧑🏻
           </div>
 
           <p>
@@ -759,7 +759,7 @@
           </p>
 
           <p style="margin-top: 14px;">
-            Como recompensa, você ganhou flores rosas, carinho, paz no coração e uma música para deixar seu dia mais bonito.
+            Como recompensa, você ganhou o direito oficial de socar o Bernardo, mas só de brincadeira, com carinho e sem dano real 😌🥊.
           </p>
 
           <a 
@@ -806,7 +806,7 @@
       document.getElementById("iconeFinal").innerText = "😡";
 
       document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... a raiva foi forte dessa vez. Agora só tem 1 vida, então precisa desviar com cuidado e coletar os 30 Bernardos.";
+        "Você perdeu... a raiva foi forte dessa vez. Agora só tem 1 vida, então precisa desviar com cuidado e coletar os 15 Bernardos.";
 
       document.getElementById("assinatura").innerText =
         "A revanche está liberada.";
