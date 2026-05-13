@@ -410,6 +410,235 @@
       }
     }
 
+    /* ====== Modo Boxe ====== */
+    .boxe-area {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.55), transparent 55%),
+        linear-gradient(135deg, #ffe4f0, #ffc1dd 60%, #ff9cc4);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><text y='32' font-size='32'>🥊</text></svg>") 16 16, pointer;
+    }
+
+    .ringe {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 70px;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(123, 61, 98, 0.65) 0 14px,
+          rgba(255, 255, 255, 0.85) 14px 28px);
+      box-shadow: inset 0 6px 0 rgba(123, 61, 98, 0.55);
+    }
+
+    .ringe::before,
+    .ringe::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 0 1px rgba(123, 61, 98, 0.45);
+    }
+
+    .ringe::before { top: -22px; }
+    .ringe::after  { top: -44px; }
+
+    .bernardo-box {
+      position: absolute;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%);
+      font-size: 110px;
+      line-height: 1;
+      z-index: 4;
+      filter: drop-shadow(0 14px 18px rgba(130, 53, 92, 0.25));
+      transition: transform 0.1s ease;
+    }
+
+    .bernardo-box .nome-box {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #7b3d62;
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(128, 70, 105, 0.18);
+    }
+
+    .bernardo-box.tomou {
+      animation: tomarSoco 0.28s ease;
+    }
+
+    .balao-ai {
+      position: absolute;
+      padding: 10px 16px;
+      border-radius: 22px;
+      background: white;
+      color: #c4317a;
+      font-weight: 900;
+      font-size: 1.4rem;
+      box-shadow: 0 14px 28px rgba(128, 70, 105, 0.25);
+      pointer-events: none;
+      transform: translate(-50%, 0);
+      animation: balaoSubir 1s ease-out forwards;
+      z-index: 6;
+    }
+
+    .balao-ai::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 12px solid white;
+    }
+
+    .impacto {
+      position: absolute;
+      font-size: 3rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: impactoFlash 0.45s ease-out forwards;
+      z-index: 7;
+    }
+
+    .luva-flutu {
+      position: absolute;
+      font-size: 2.6rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: socarLuva 0.32s ease-out forwards;
+      z-index: 8;
+      filter: drop-shadow(0 6px 8px rgba(130, 53, 92, 0.3));
+    }
+
+    .contador-socos {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #7b3d62;
+      font-weight: 800;
+      font-size: 0.95rem;
+      box-shadow: 0 10px 24px rgba(128, 70, 105, 0.15);
+      z-index: 9;
+    }
+
+    .dica-boxe {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #7b3d62;
+      font-weight: 700;
+      font-size: 0.8rem;
+      box-shadow: 0 10px 24px rgba(128, 70, 105, 0.15);
+      z-index: 9;
+    }
+
+    .modos {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .botao-secundario {
+      background: linear-gradient(135deg, #7b3d62, #b85a8c);
+      box-shadow: 0 18px 35px rgba(123, 61, 98, 0.35);
+    }
+
+    @keyframes tomarSoco {
+      0% {
+        transform: translateX(-50%) scale(1) rotate(0);
+      }
+      30% {
+        transform: translateX(-58%) scale(0.92) rotate(-6deg);
+      }
+      60% {
+        transform: translateX(-46%) scale(1.05) rotate(4deg);
+      }
+      100% {
+        transform: translateX(-50%) scale(1) rotate(0);
+      }
+    }
+
+    @keyframes balaoSubir {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 10px) scale(0.6);
+      }
+      20% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1.1);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -30px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -70px) scale(0.95);
+      }
+    }
+
+    @keyframes impactoFlash {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4) rotate(-10deg);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5) rotate(10deg);
+      }
+    }
+
+    @keyframes socarLuva {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 40px) scale(0.6) rotate(-25deg);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.3) rotate(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -70%) scale(0.9) rotate(15deg);
+      }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -450,6 +679,15 @@
       .legend span {
         font-size: 0.76rem;
       }
+
+      .boxe-area {
+        height: 360px;
+      }
+
+      .bernardo-box {
+        font-size: 90px;
+        bottom: 72px;
+      }
     }
   </style>
 </head>
@@ -481,9 +719,15 @@
 
     <br>
 
-    <button id="startButton">
-      Começar missão
-    </button>
+    <div class="modos">
+      <button id="startButton">
+        Começar missão
+      </button>
+
+      <button id="boxeButton" class="botao-secundario">
+        Modo boxe 🥊
+      </button>
+    </div>
 
     <div class="aviso" id="aviso"></div>
 
@@ -492,6 +736,16 @@
       <div class="cloud dois">☁️</div>
       <div class="ground"></div>
       <div class="player" id="player">👧</div>
+    </div>
+
+    <div class="boxe-area" id="boxeArea">
+      <div class="contador-socos" id="contadorSocos">Socos: 0</div>
+      <div class="dica-boxe">Toque no Bernardo 🥊</div>
+      <div class="ringe"></div>
+      <div class="bernardo-box" id="bernardoBox">
+        <span class="nome-box">Bernardo</span>
+        🧑🏻
+      </div>
     </div>
 
     <section class="final" id="final">
@@ -558,6 +812,8 @@
       gameArea.style.display = "block";
       finalSection.style.display = "none";
       startButton.style.display = "none";
+      document.getElementById("boxeButton").style.display = "none";
+      document.getElementById("boxeArea").style.display = "none";
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
@@ -813,6 +1069,7 @@
 
       startButton.style.display = "inline-block";
       startButton.innerText = "Tentar de novo";
+      document.getElementById("boxeButton").style.display = "inline-block";
     }
 
     function limparObjetos() {
@@ -835,6 +1092,116 @@
         pular();
       }
     });
+
+    /* ====== Modo Boxe ====== */
+    const boxeArea = document.getElementById("boxeArea");
+    const bernardoBox = document.getElementById("bernardoBox");
+    const boxeButton = document.getElementById("boxeButton");
+    const contadorSocos = document.getElementById("contadorSocos");
+
+    let socos = 0;
+    let modoBoxeAtivo = false;
+
+    const frasesAi = ["Ai!", "Ai!!", "Aiii!", "Ai 😖", "Ai não!", "Aii 💢", "Aiai!"];
+
+    function iniciarModoBoxe() {
+      // Garante que o modo corrida está parado
+      jogoAtivo = false;
+      clearInterval(intervaloLoop);
+      clearInterval(intervaloCriacao);
+      clearInterval(intervaloPontuacao);
+      limparObjetos();
+
+      modoBoxeAtivo = true;
+      socos = 0;
+      contadorSocos.innerText = "Socos: 0";
+
+      gameArea.style.display = "none";
+      finalSection.style.display = "none";
+      boxeArea.style.display = "block";
+
+      startButton.style.display = "none";
+      boxeButton.style.display = "none";
+
+      document.getElementById("textoInicial").innerText =
+        "Modo boxe ativado! Toque no Bernardo para dar socos. Cada soco solta um 'Ai'.";
+
+      scoreElement.innerText = "Modo boxe 🥊 — desconte a raiva no Bernardo";
+    }
+
+    function darSoco(event) {
+      if (!modoBoxeAtivo) return;
+
+      socos++;
+      contadorSocos.innerText = "Socos: " + socos;
+
+      // Posição do clique dentro da boxe-area
+      const rect = boxeArea.getBoundingClientRect();
+      let clickX, clickY;
+
+      if (event.touches && event.touches[0]) {
+        clickX = event.touches[0].clientX - rect.left;
+        clickY = event.touches[0].clientY - rect.top;
+      } else {
+        clickX = event.clientX - rect.left;
+        clickY = event.clientY - rect.top;
+      }
+
+      // Animação no Bernardo
+      bernardoBox.classList.remove("tomou");
+      // força reflow para reiniciar a animação
+      void bernardoBox.offsetWidth;
+      bernardoBox.classList.add("tomou");
+
+      // Posição do Bernardo (para o balão)
+      const bernardoRect = bernardoBox.getBoundingClientRect();
+      const bernardoCentroX = bernardoRect.left + bernardoRect.width / 2 - rect.left;
+      const bernardoTopo = bernardoRect.top - rect.top;
+
+      // Balão de "Ai"
+      const balao = document.createElement("div");
+      balao.classList.add("balao-ai");
+      const variacaoX = (Math.random() - 0.5) * 60;
+      balao.style.left = (bernardoCentroX + variacaoX) + "px";
+      balao.style.top = (bernardoTopo - 10) + "px";
+      balao.innerText = frasesAi[Math.floor(Math.random() * frasesAi.length)];
+      boxeArea.appendChild(balao);
+      setTimeout(() => balao.remove(), 1000);
+
+      // Efeito de impacto no local do clique
+      const impacto = document.createElement("div");
+      impacto.classList.add("impacto");
+      impacto.style.left = clickX + "px";
+      impacto.style.top = clickY + "px";
+      const impactos = ["💥", "💢", "✨", "🌟"];
+      impacto.innerText = impactos[Math.floor(Math.random() * impactos.length)];
+      boxeArea.appendChild(impacto);
+      setTimeout(() => impacto.remove(), 460);
+
+      // Luvinha de boxe voando
+      const luva = document.createElement("div");
+      luva.classList.add("luva-flutu");
+      luva.style.left = clickX + "px";
+      luva.style.top = clickY + "px";
+      luva.innerText = "🥊";
+      boxeArea.appendChild(luva);
+      setTimeout(() => luva.remove(), 340);
+
+      // Marcos divertidos
+      if (socos === 10) mostrarAviso("10 socos! O Bernardo já tá tonto 😵");
+      if (socos === 25) mostrarAviso("25 socos! Calma aí campeã 🥊");
+      if (socos === 50) mostrarAviso("50 socos! Ele vai precisar de beijos 💗");
+      if (socos === 100) mostrarAviso("100 socos! Lenda viva 🏆");
+    }
+
+    boxeButton.addEventListener("click", iniciarModoBoxe);
+
+    boxeArea.addEventListener("click", darSoco);
+
+    boxeArea.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      darSoco(event);
+    }, { passive: false });
   </script>
 </body>
 </html>
