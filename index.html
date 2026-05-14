@@ -639,6 +639,232 @@
       }
     }
 
+    /* ====== Modo Coletar Remédios (Mario-style) ====== */
+    .remedio-area {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        linear-gradient(to bottom,
+          #9be0ff 0%,
+          #c9eeff 55%,
+          #ffe7b8 55%,
+          #ffd58a 70%,
+          #74c46a 70%,
+          #4ea845 100%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .nuvem-mario {
+      position: absolute;
+      top: 22px;
+      font-size: 42px;
+      animation: nuvem 16s linear infinite;
+      opacity: 0.95;
+    }
+
+    .nuvem-mario.a { left: 14%; animation-duration: 18s; }
+    .nuvem-mario.b { left: 60%; top: 56px; animation-duration: 22s; }
+    .nuvem-mario.c { left: 80%; top: 90px; animation-duration: 26s; font-size: 36px; }
+
+    .morro {
+      position: absolute;
+      bottom: 18%;
+      width: 220px;
+      height: 90px;
+      background: #3f9a36;
+      border-radius: 50% 50% 0 0 / 80% 80% 0 0;
+      box-shadow: inset -10px -6px 0 rgba(0,0,0,0.08);
+    }
+
+    .morro.um { left: -40px; }
+    .morro.dois { right: -40px; width: 180px; height: 70px; }
+
+    .chao-mario {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 200%;
+      height: 30%;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(0,0,0,0.08) 0 1px,
+          transparent 1px 24px),
+        linear-gradient(to bottom, #74c46a 0%, #4ea845 100%);
+      animation: moverChaoMario 0.55s linear infinite;
+    }
+
+    .dai-player {
+      position: absolute;
+      left: 48px;
+      bottom: 30%;
+      width: 70px;
+      height: 88px;
+      background-image: url("dai.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 5;
+      filter: drop-shadow(0 8px 10px rgba(60, 40, 50, 0.25));
+    }
+
+    /* Fallback caso a imagem não carregue */
+    .dai-player::after {
+      content: "👧🏻";
+      font-size: 60px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .dai-player.sem-imagem::after {
+      opacity: 1;
+    }
+
+    .dai-player.sem-imagem {
+      background-image: none;
+    }
+
+    .dai-player.pulando {
+      animation: brilhoPulo 0.25s ease;
+    }
+
+    .remedio {
+      position: absolute;
+      bottom: 30%;
+      right: -60px;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      z-index: 4;
+      filter: drop-shadow(0 6px 8px rgba(60, 40, 50, 0.2));
+      animation: girarRemedio 1.4s ease-in-out infinite;
+    }
+
+    .bloco {
+      position: absolute;
+      bottom: 30%;
+      right: -70px;
+      width: 46px;
+      height: 46px;
+      background:
+        linear-gradient(135deg, #d97a2a 0%, #b45a16 60%, #8d3f08 100%);
+      border: 2px solid #5b2a05;
+      border-radius: 6px;
+      box-shadow:
+        inset 2px 2px 0 rgba(255,255,255,0.25),
+        inset -2px -2px 0 rgba(0,0,0,0.2),
+        0 6px 0 #5b2a05;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff8c4;
+      font-weight: 900;
+      font-size: 1.4rem;
+      z-index: 3;
+    }
+
+    .bloco::before {
+      content: "?";
+      text-shadow: 1px 1px 0 #5b2a05;
+    }
+
+    .virus {
+      position: absolute;
+      bottom: 30%;
+      right: -60px;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      z-index: 4;
+      filter: drop-shadow(0 6px 8px rgba(60, 40, 50, 0.2));
+      animation: balancarVirus 0.6s ease-in-out infinite alternate;
+    }
+
+    .ponto-flutu {
+      position: absolute;
+      color: #6b3a06;
+      font-weight: 900;
+      font-size: 1.3rem;
+      text-shadow: 2px 2px 0 #fff7c4;
+      pointer-events: none;
+      transform: translate(-50%, 0);
+      animation: subirPontos 0.9s ease-out forwards;
+      z-index: 8;
+    }
+
+    .hud-remedio {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .hud-remedio span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #5b2a05;
+      font-weight: 800;
+      font-size: 0.85rem;
+      box-shadow: 0 8px 20px rgba(60, 40, 50, 0.18);
+    }
+
+    .botao-mario {
+      background: linear-gradient(135deg, #ff6b6b, #e53935);
+      box-shadow: 0 18px 35px rgba(229, 57, 53, 0.35);
+    }
+
+    @keyframes moverChaoMario {
+      from { transform: translateX(0); }
+      to { transform: translateX(-72px); }
+    }
+
+    @keyframes girarRemedio {
+      0%, 100% { transform: translateY(0) rotate(-10deg); }
+      50% { transform: translateY(-8px) rotate(10deg); }
+    }
+
+    @keyframes balancarVirus {
+      0% { transform: translateY(0) rotate(-6deg); }
+      100% { transform: translateY(-6px) rotate(6deg); }
+    }
+
+    @keyframes subirPontos {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.6);
+      }
+      30% {
+        opacity: 1;
+        transform: translate(-50%, -10px) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -60px) scale(1);
+      }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -688,6 +914,24 @@
         font-size: 90px;
         bottom: 72px;
       }
+
+      .remedio-area {
+        height: 380px;
+      }
+
+      .dai-player {
+        left: 28px;
+        width: 60px;
+        height: 76px;
+      }
+
+      .remedio,
+      .virus,
+      .bloco {
+        width: 42px;
+        height: 42px;
+        font-size: 32px;
+      }
     }
   </style>
 </head>
@@ -727,6 +971,10 @@
       <button id="boxeButton" class="botao-secundario">
         Modo boxe 🥊
       </button>
+
+      <button id="remedioButton" class="botao-mario">
+        Modo remédios 💊
+      </button>
     </div>
 
     <div class="aviso" id="aviso"></div>
@@ -746,6 +994,20 @@
         <span class="nome-box">Bernardo</span>
         🧑🏻
       </div>
+    </div>
+
+    <div class="remedio-area" id="remedioArea">
+      <div class="hud-remedio">
+        <span id="hudRemedios">💊 0/20</span>
+        <span id="hudVidasMario">❤️ 3</span>
+      </div>
+      <div class="nuvem-mario a">☁️</div>
+      <div class="nuvem-mario b">☁️</div>
+      <div class="nuvem-mario c">☁️</div>
+      <div class="morro um"></div>
+      <div class="morro dois"></div>
+      <div class="chao-mario"></div>
+      <div class="dai-player" id="daiPlayer"></div>
     </div>
 
     <section class="final" id="final">
@@ -814,6 +1076,8 @@
       startButton.style.display = "none";
       document.getElementById("boxeButton").style.display = "none";
       document.getElementById("boxeArea").style.display = "none";
+      document.getElementById("remedioButton").style.display = "none";
+      document.getElementById("remedioArea").style.display = "none";
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
@@ -1070,6 +1334,7 @@
       startButton.style.display = "inline-block";
       startButton.innerText = "Tentar de novo";
       document.getElementById("boxeButton").style.display = "inline-block";
+      document.getElementById("remedioButton").style.display = "inline-block";
     }
 
     function limparObjetos() {
@@ -1119,9 +1384,11 @@
       gameArea.style.display = "none";
       finalSection.style.display = "none";
       boxeArea.style.display = "block";
+      document.getElementById("remedioArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
+      document.getElementById("remedioButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo boxe ativado! Toque no Bernardo para dar socos. Cada soco solta um 'Ai'.";
@@ -1202,6 +1469,296 @@
       event.preventDefault();
       darSoco(event);
     }, { passive: false });
+
+    /* ====== Modo Coletar Remédios (Mario-style) ====== */
+    const remedioArea = document.getElementById("remedioArea");
+    const daiPlayer = document.getElementById("daiPlayer");
+    const remedioButton = document.getElementById("remedioButton");
+    const hudRemedios = document.getElementById("hudRemedios");
+    const hudVidasMario = document.getElementById("hudVidasMario");
+
+    let modoRemedioAtivo = false;
+    let remediosColetados = 0;
+    let vidasMario = 3;
+    let pontosMario = 0;
+
+    let pulandoMario = false;
+    let posicaoYMario = 0;
+    let velocidadeYMario = 0;
+    const gravidadeMario = 1.1;
+    const forcaPuloMario = 18;
+    const chaoMario = 0; // bottom offset relative ao 30% do chão
+    let velocidadeMario = 8;
+    const totalRemedios = 20;
+
+    let loopMario, criadorMario, tempoMario;
+
+    // Detecta se a imagem dai.png existe; senão usa fallback emoji
+    (function verificarImagemDai() {
+      const teste = new Image();
+      teste.onload = function () {
+        daiPlayer.classList.remove("sem-imagem");
+      };
+      teste.onerror = function () {
+        daiPlayer.classList.add("sem-imagem");
+      };
+      teste.src = "dai.png";
+    })();
+
+    function iniciarModoRemedio() {
+      // Para outros jogos
+      jogoAtivo = false;
+      modoBoxeAtivo = false;
+      clearInterval(intervaloLoop);
+      clearInterval(intervaloCriacao);
+      clearInterval(intervaloPontuacao);
+      limparObjetos();
+
+      modoRemedioAtivo = true;
+      remediosColetados = 0;
+      vidasMario = 3;
+      pontosMario = 0;
+      velocidadeMario = 8;
+
+      pulandoMario = false;
+      posicaoYMario = 0;
+      velocidadeYMario = 0;
+
+      limparRemedios();
+
+      daiPlayer.style.bottom = "30%";
+
+      gameArea.style.display = "none";
+      boxeArea.style.display = "none";
+      finalSection.style.display = "none";
+      remedioArea.style.display = "block";
+
+      startButton.style.display = "none";
+      boxeButton.style.display = "none";
+      remedioButton.style.display = "none";
+
+      document.getElementById("textoInicial").innerText =
+        "Modo remédio 💊 — Toque na tela para a Dai pular. Pegue 20 remédios e desvie dos vírus!";
+
+      atualizarHudRemedio();
+      scoreElement.innerText = "Modo Mario 💊 — colete remédios!";
+
+      clearInterval(loopMario);
+      clearInterval(criadorMario);
+      clearInterval(tempoMario);
+
+      loopMario = setInterval(loopJogoMario, 16);
+      criadorMario = setInterval(criarObjetoMario, 750);
+      tempoMario = setInterval(() => {
+        if (!modoRemedioAtivo) return;
+        pontosMario++;
+        if (pontosMario % 25 === 0) velocidadeMario += 0.3;
+      }, 500);
+    }
+
+    function pularMario() {
+      if (!modoRemedioAtivo) return;
+      if (!pulandoMario) {
+        pulandoMario = true;
+        velocidadeYMario = forcaPuloMario;
+        daiPlayer.classList.add("pulando");
+        setTimeout(() => daiPlayer.classList.remove("pulando"), 260);
+      }
+    }
+
+    function loopJogoMario() {
+      aplicarFisicaMario();
+      moverObjetosMario();
+      verificarColisoesMario();
+    }
+
+    function aplicarFisicaMario() {
+      if (pulandoMario) {
+        posicaoYMario += velocidadeYMario;
+        velocidadeYMario -= gravidadeMario;
+
+        if (posicaoYMario <= chaoMario) {
+          posicaoYMario = chaoMario;
+          velocidadeYMario = 0;
+          pulandoMario = false;
+        }
+
+        daiPlayer.style.bottom = "calc(30% + " + posicaoYMario + "px)";
+      }
+    }
+
+    function criarObjetoMario() {
+      if (!modoRemedioAtivo) return;
+
+      const sorteio = Math.random();
+      const objeto = document.createElement("div");
+
+      if (sorteio < 0.55) {
+        // Remédio voando
+        objeto.classList.add("remedio");
+        objeto.dataset.tipo = "remedio";
+        const remedios = ["💊", "🩹", "💉", "🧪", "🩺"];
+        objeto.innerText = remedios[Math.floor(Math.random() * remedios.length)];
+        const alturas = ["calc(30% + 10px)", "calc(30% + 70px)", "calc(30% + 130px)", "calc(30% + 180px)"];
+        objeto.style.bottom = alturas[Math.floor(Math.random() * alturas.length)];
+      } else if (sorteio < 0.85) {
+        // Vírus (inimigo)
+        objeto.classList.add("virus");
+        objeto.dataset.tipo = "virus";
+        const inimigos = ["🦠", "🤧", "🤒", "👾"];
+        objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
+        objeto.style.bottom = Math.random() < 0.7 ? "30%" : "calc(30% + 70px)";
+      } else {
+        // Bloco "?" surpresa
+        objeto.classList.add("bloco");
+        objeto.dataset.tipo = "bloco";
+        objeto.style.bottom = "calc(30% + 90px)";
+      }
+
+      objeto.style.right = "-70px";
+      remedioArea.appendChild(objeto);
+    }
+
+    function moverObjetosMario() {
+      const objetos = remedioArea.querySelectorAll(".remedio, .virus, .bloco");
+      objetos.forEach((obj) => {
+        let r = parseFloat(obj.style.right || "-70");
+        r += velocidadeMario;
+        obj.style.right = r + "px";
+        if (r > remedioArea.offsetWidth + 100) obj.remove();
+      });
+    }
+
+    function verificarColisoesMario() {
+      const playerRect = daiPlayer.getBoundingClientRect();
+      const objetos = remedioArea.querySelectorAll(".remedio, .virus, .bloco");
+
+      objetos.forEach((obj) => {
+        const objRect = obj.getBoundingClientRect();
+        const colidiu =
+          playerRect.left < objRect.right - 8 &&
+          playerRect.right > objRect.left + 8 &&
+          playerRect.top < objRect.bottom - 8 &&
+          playerRect.bottom > objRect.top + 8;
+
+        if (!colidiu) return;
+
+        const tipo = obj.dataset.tipo;
+
+        if (tipo === "remedio") {
+          remediosColetados++;
+          pontosMario += 50;
+          mostrarPontoFlutu(obj, "+50");
+          obj.remove();
+          if (remediosColetados >= totalRemedios) {
+            vencerModoRemedio();
+          }
+        } else if (tipo === "bloco") {
+          // Bloco surpresa solta um remédio extra
+          remediosColetados++;
+          pontosMario += 100;
+          mostrarPontoFlutu(obj, "💊 +100");
+          obj.remove();
+          if (remediosColetados >= totalRemedios) {
+            vencerModoRemedio();
+          }
+        } else if (tipo === "virus") {
+          vidasMario--;
+          mostrarPontoFlutu(obj, "Ai! -1 ❤️");
+          obj.remove();
+          if (vidasMario <= 0) {
+            perderModoRemedio();
+          }
+        }
+
+        atualizarHudRemedio();
+      });
+    }
+
+    function mostrarPontoFlutu(obj, texto) {
+      const rect = obj.getBoundingClientRect();
+      const areaRect = remedioArea.getBoundingClientRect();
+      const p = document.createElement("div");
+      p.classList.add("ponto-flutu");
+      p.style.left = (rect.left + rect.width / 2 - areaRect.left) + "px";
+      p.style.top = (rect.top - areaRect.top) + "px";
+      p.innerText = texto;
+      remedioArea.appendChild(p);
+      setTimeout(() => p.remove(), 900);
+    }
+
+    function atualizarHudRemedio() {
+      hudRemedios.innerText = "💊 " + remediosColetados + "/" + totalRemedios;
+      hudVidasMario.innerText = "❤️ ".repeat(Math.max(vidasMario, 0)).trim() || "💔";
+      scoreElement.innerText =
+        "Pontos: " + pontosMario + " | Remédios: " + remediosColetados + "/" + totalRemedios + " | Vidas: " + vidasMario;
+    }
+
+    function limparRemedios() {
+      const objetos = remedioArea.querySelectorAll(".remedio, .virus, .bloco, .ponto-flutu");
+      objetos.forEach((o) => o.remove());
+    }
+
+    function pararModoRemedio() {
+      modoRemedioAtivo = false;
+      clearInterval(loopMario);
+      clearInterval(criadorMario);
+      clearInterval(tempoMario);
+      limparRemedios();
+      remedioArea.style.display = "none";
+    }
+
+    function vencerModoRemedio() {
+      pararModoRemedio();
+      finalSection.style.display = "block";
+      document.getElementById("iconeFinal").innerText = "💊";
+      document.getElementById("textoInicial").innerText = "Você juntou todos os remédios!";
+      document.getElementById("mensagemFinal").innerHTML = `
+        <div style="font-size: 4rem; margin-bottom: 12px;">💊💗💊💗💊</div>
+        <p>Você correu, pulou e juntou todos os remédios do caminho!</p>
+        <p style="margin-top: 14px;">A Dai tá oficialmente abastecida e mais forte que qualquer vírus 🦠</p>
+      `;
+      document.getElementById("assinatura").innerText = "Saúde em primeiro lugar 💗";
+      scoreElement.innerText = "Vitória! Pontos: " + pontosMario;
+      startButton.style.display = "inline-block";
+      startButton.innerText = "Jogar de novo";
+      boxeButton.style.display = "inline-block";
+      remedioButton.style.display = "inline-block";
+    }
+
+    function perderModoRemedio() {
+      pararModoRemedio();
+      finalSection.style.display = "block";
+      document.getElementById("iconeFinal").innerText = "🦠";
+      document.getElementById("textoInicial").innerText = "Os vírus venceram dessa vez...";
+      document.getElementById("mensagemFinal").innerHTML = `
+        <p>Os vírus pegaram a Dai antes dela completar os 20 remédios.</p>
+        <p style="margin-top: 14px;">Remédios coletados: <strong>${remediosColetados}/${totalRemedios}</strong></p>
+        <p style="margin-top: 14px;">Tenta de novo, agora com mais cuidado nos pulos 💪</p>
+      `;
+      document.getElementById("assinatura").innerText = "A revanche tá liberada.";
+      scoreElement.innerText = "Pontos: " + pontosMario + " | Remédios: " + remediosColetados + "/" + totalRemedios;
+      startButton.style.display = "inline-block";
+      startButton.innerText = "Tentar de novo";
+      boxeButton.style.display = "inline-block";
+      remedioButton.style.display = "inline-block";
+    }
+
+    remedioButton.addEventListener("click", iniciarModoRemedio);
+
+    remedioArea.addEventListener("click", pularMario);
+
+    remedioArea.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      pularMario();
+    }, { passive: false });
+
+    document.addEventListener("keydown", function (event) {
+      if ((event.code === "Space" || event.code === "ArrowUp") && modoRemedioAtivo) {
+        event.preventDefault();
+        pularMario();
+      }
+    });
   </script>
 </body>
 </html>
