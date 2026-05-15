@@ -865,6 +865,211 @@
       }
     }
 
+    /* ====== Modo Revolução (Dai vs Patriarcado) ====== */
+    .revolucao-area {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      margin-top: 24px;
+      border-radius: 28px;
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(255, 220, 60, 0.18), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(255, 90, 90, 0.25), transparent 50%),
+        linear-gradient(135deg, #2a0e1c 0%, #3a1126 45%, #6d1a3a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+      cursor: crosshair;
+    }
+
+    .bandeira-rev {
+      position: absolute;
+      top: 14px;
+      font-size: 22px;
+      opacity: 0.6;
+      animation: tremerBandeira 1.6s ease-in-out infinite;
+    }
+
+    .bandeira-rev.um { left: 8%; animation-delay: 0s; }
+    .bandeira-rev.dois { left: 50%; animation-delay: 0.4s; }
+    .bandeira-rev.tres { right: 12%; animation-delay: 0.8s; }
+
+    .estrela-rev {
+      position: absolute;
+      font-size: 14px;
+      opacity: 0.45;
+      animation: piscarEstrela 2.2s ease-in-out infinite;
+    }
+
+    .dai-revolucao {
+      position: absolute;
+      left: 22px;
+      bottom: 60px;
+      width: 78px;
+      height: 96px;
+      background-image: url("daiarma.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 6;
+      filter: drop-shadow(0 0 14px rgba(255, 95, 162, 0.5));
+      transition: top 0.18s ease, bottom 0.18s ease;
+    }
+
+    .dai-revolucao::after {
+      content: "👧🏻";
+      font-size: 70px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .dai-revolucao.sem-imagem::after { opacity: 1; }
+    .dai-revolucao.sem-imagem { background-image: none; }
+
+    .dai-revolucao.atirando {
+      animation: tremorAtirar 0.18s ease;
+    }
+
+    .projetil {
+      position: absolute;
+      font-size: 28px;
+      z-index: 5;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(255, 120, 180, 0.8));
+      transform: translate(-50%, -50%);
+    }
+
+    .inimigo-patri {
+      position: absolute;
+      font-size: 42px;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4));
+      animation: balancarPatri 0.9s ease-in-out infinite alternate;
+    }
+
+    .inimigo-patri .rotulo {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255, 95, 162, 0.95);
+      color: white;
+      font-size: 0.62rem;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .inimigo-patri.derrotado {
+      animation: explodirPatri 0.35s ease-out forwards;
+    }
+
+    .explosao-rev {
+      position: absolute;
+      font-size: 2.4rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: explosaoRevAnim 0.5s ease-out forwards;
+      z-index: 7;
+    }
+
+    .hud-rev {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .hud-rev span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      color: #6d1a3a;
+      font-weight: 800;
+      font-size: 0.82rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .dica-rev {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffd6e6;
+      font-weight: 700;
+      font-size: 0.72rem;
+      backdrop-filter: blur(8px);
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .botao-revolucao {
+      background: linear-gradient(135deg, #d63384, #6f1d1b);
+      box-shadow: 0 18px 35px rgba(214, 51, 132, 0.4);
+    }
+
+    @keyframes tremerBandeira {
+      0%, 100% { transform: rotate(-6deg) translateY(0); }
+      50% { transform: rotate(6deg) translateY(-3px); }
+    }
+
+    @keyframes piscarEstrela {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes tremorAtirar {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes balancarPatri {
+      0% { transform: translateY(0) rotate(-4deg); }
+      100% { transform: translateY(-4px) rotate(4deg); }
+    }
+
+    @keyframes explodirPatri {
+      0% { transform: scale(1) rotate(0); opacity: 1; }
+      100% { transform: scale(1.6) rotate(40deg); opacity: 0; }
+    }
+
+    @keyframes explosaoRevAnim {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4) rotate(-20deg);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.3) rotate(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.7) rotate(25deg);
+      }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -932,6 +1137,22 @@
         height: 42px;
         font-size: 32px;
       }
+
+      .revolucao-area {
+        height: 380px;
+      }
+
+      .dai-revolucao {
+        left: 14px;
+        width: 64px;
+        height: 80px;
+      }
+
+      .inimigo-patri {
+        font-size: 36px;
+        width: 48px;
+        height: 48px;
+      }
     }
   </style>
 </head>
@@ -975,6 +1196,10 @@
       <button id="remedioButton" class="botao-mario">
         Modo remédios 💊
       </button>
+
+      <button id="revolucaoButton" class="botao-revolucao">
+        Modo revolução ✊
+      </button>
     </div>
 
     <div class="aviso" id="aviso"></div>
@@ -1008,6 +1233,22 @@
       <div class="morro dois"></div>
       <div class="chao-mario"></div>
       <div class="dai-player" id="daiPlayer"></div>
+    </div>
+
+    <div class="revolucao-area" id="revolucaoArea">
+      <div class="hud-rev">
+        <span id="hudPatri">✊ 0/30</span>
+        <span id="hudVidasRev">❤️ 3</span>
+      </div>
+      <div class="bandeira-rev um">🚩</div>
+      <div class="bandeira-rev dois">✊</div>
+      <div class="bandeira-rev tres">🚩</div>
+      <div class="estrela-rev" style="top: 20%; left: 30%;">✨</div>
+      <div class="estrela-rev" style="top: 35%; left: 70%; animation-delay: 0.6s;">✨</div>
+      <div class="estrela-rev" style="top: 60%; left: 45%; animation-delay: 1.2s;">⭐</div>
+      <div class="estrela-rev" style="top: 28%; left: 85%; animation-delay: 1.6s;">✨</div>
+      <div class="dai-revolucao" id="daiRevolucao"></div>
+      <div class="dica-rev">Toque na tela para atirar 💋</div>
     </div>
 
     <section class="final" id="final">
@@ -1078,6 +1319,8 @@
       document.getElementById("boxeArea").style.display = "none";
       document.getElementById("remedioButton").style.display = "none";
       document.getElementById("remedioArea").style.display = "none";
+      document.getElementById("revolucaoButton").style.display = "none";
+      document.getElementById("revolucaoArea").style.display = "none";
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
@@ -1335,6 +1578,7 @@
       startButton.innerText = "Tentar de novo";
       document.getElementById("boxeButton").style.display = "inline-block";
       document.getElementById("remedioButton").style.display = "inline-block";
+      document.getElementById("revolucaoButton").style.display = "inline-block";
     }
 
     function limparObjetos() {
@@ -1385,10 +1629,12 @@
       finalSection.style.display = "none";
       boxeArea.style.display = "block";
       document.getElementById("remedioArea").style.display = "none";
+      document.getElementById("revolucaoArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
       document.getElementById("remedioButton").style.display = "none";
+      document.getElementById("revolucaoButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo boxe ativado! Toque no Bernardo para dar socos. Cada soco solta um 'Ai'.";
@@ -1532,10 +1778,12 @@
       boxeArea.style.display = "none";
       finalSection.style.display = "none";
       remedioArea.style.display = "block";
+      document.getElementById("revolucaoArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
       remedioButton.style.display = "none";
+      document.getElementById("revolucaoButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo remédio 💊 — Toque na tela para a Dai pular. Pegue 20 remédios e desvie dos vírus!";
@@ -1730,6 +1978,7 @@
       startButton.innerText = "Jogar de novo";
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
+      document.getElementById("revolucaoButton").style.display = "inline-block";
     }
 
     function perderModoRemedio() {
@@ -1748,6 +1997,7 @@
       startButton.innerText = "Tentar de novo";
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
+      document.getElementById("revolucaoButton").style.display = "inline-block";
     }
 
     remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -1765,6 +2015,330 @@
         pularMario();
       }
     });
+
+    /* ====== Modo Revolução (Dai vs Patriarcado) ====== */
+    const revolucaoArea = document.getElementById("revolucaoArea");
+    const daiRevolucao = document.getElementById("daiRevolucao");
+    const revolucaoButton = document.getElementById("revolucaoButton");
+    const hudPatri = document.getElementById("hudPatri");
+    const hudVidasRev = document.getElementById("hudVidasRev");
+
+    let modoRevolucaoAtivo = false;
+    let patriarcadosDerrotados = 0;
+    let vidasRev = 3;
+    let pontosRev = 0;
+    let velocidadeInimigo = 4.2;
+    const totalPatriarcado = 30;
+
+    let loopRev, criadorInimigos, tempoRev;
+
+    const inimigosPatriarcado = [
+      { emoji: "👔", rotulo: "machismo" },
+      { emoji: "🎩", rotulo: "velha guarda" },
+      { emoji: "🚬", rotulo: "macho" },
+      { emoji: "💼", rotulo: "chefe abusivo" },
+      { emoji: "👨‍⚖️", rotulo: "lei injusta" },
+      { emoji: "🏛️", rotulo: "sistema" },
+      { emoji: "📰", rotulo: "fake news" },
+      { emoji: "👹", rotulo: "misoginia" },
+      { emoji: "🤡", rotulo: "incel" },
+    ];
+
+    // Detecta imagem daiarma.png para o modo revolução
+    (function verificarImagemDaiRev() {
+      const teste = new Image();
+      teste.onload = () => daiRevolucao.classList.remove("sem-imagem");
+      teste.onerror = () => daiRevolucao.classList.add("sem-imagem");
+      teste.src = "daiarma.png";
+    })();
+
+    function iniciarModoRevolucao() {
+      // Para todos os outros modos
+      jogoAtivo = false;
+      modoBoxeAtivo = false;
+      modoRemedioAtivo = false;
+      clearInterval(intervaloLoop);
+      clearInterval(intervaloCriacao);
+      clearInterval(intervaloPontuacao);
+      clearInterval(loopMario);
+      clearInterval(criadorMario);
+      clearInterval(tempoMario);
+      limparObjetos();
+      limparRemedios();
+
+      modoRevolucaoAtivo = true;
+      patriarcadosDerrotados = 0;
+      vidasRev = 3;
+      pontosRev = 0;
+      velocidadeInimigo = 4.2;
+
+      limparRevolucao();
+
+      gameArea.style.display = "none";
+      boxeArea.style.display = "none";
+      remedioArea.style.display = "none";
+      finalSection.style.display = "none";
+      revolucaoArea.style.display = "block";
+
+      startButton.style.display = "none";
+      boxeButton.style.display = "none";
+      remedioButton.style.display = "none";
+      revolucaoButton.style.display = "none";
+
+      document.getElementById("textoInicial").innerText =
+        "Modo revolução ✊ — Toque na tela para a Dai atirar nos símbolos do patriarcado!";
+
+      atualizarHudRev();
+      scoreElement.innerText = "Modo revolução ✊ — Dai vs Patriarcado";
+
+      clearInterval(loopRev);
+      clearInterval(criadorInimigos);
+      clearInterval(tempoRev);
+
+      loopRev = setInterval(loopJogoRevolucao, 16);
+      criadorInimigos = setInterval(criarInimigoPatri, 950);
+      tempoRev = setInterval(() => {
+        if (!modoRevolucaoAtivo) return;
+        pontosRev++;
+        if (pontosRev % 30 === 0) velocidadeInimigo += 0.25;
+      }, 500);
+    }
+
+    function loopJogoRevolucao() {
+      moverInimigosPatri();
+      moverProjeteis();
+      verificarColisoesRev();
+    }
+
+    function criarInimigoPatri() {
+      if (!modoRevolucaoAtivo) return;
+
+      const escolhido = inimigosPatriarcado[Math.floor(Math.random() * inimigosPatriarcado.length)];
+      const inimigo = document.createElement("div");
+      inimigo.classList.add("inimigo-patri");
+      inimigo.dataset.tipo = "patri";
+
+      inimigo.innerHTML = `
+        <span class="rotulo">${escolhido.rotulo}</span>
+        <span>${escolhido.emoji}</span>
+      `;
+
+      const alturaArea = revolucaoArea.offsetHeight;
+      const topAleatorio = 50 + Math.random() * (alturaArea - 130);
+      inimigo.style.top = topAleatorio + "px";
+      inimigo.style.right = "-60px";
+      revolucaoArea.appendChild(inimigo);
+    }
+
+    function moverInimigosPatri() {
+      const inimigos = revolucaoArea.querySelectorAll(".inimigo-patri");
+      inimigos.forEach((inim) => {
+        if (inim.classList.contains("derrotado")) return;
+        let r = parseFloat(inim.style.right || "-60");
+        r += velocidadeInimigo;
+        inim.style.right = r + "px";
+
+        // Se chegou no lado esquerdo onde está a Dai, tira uma vida
+        if (r > revolucaoArea.offsetWidth - 110) {
+          inim.remove();
+          vidasRev--;
+          mostrarAviso("O patriarcado te alcançou! 😡");
+          atualizarHudRev();
+          if (vidasRev <= 0) {
+            perderRevolucao();
+          }
+        }
+      });
+    }
+
+    function atirar(event) {
+      if (!modoRevolucaoAtivo) return;
+
+      const rect = revolucaoArea.getBoundingClientRect();
+      let alvoX, alvoY;
+
+      if (event.touches && event.touches[0]) {
+        alvoX = event.touches[0].clientX - rect.left;
+        alvoY = event.touches[0].clientY - rect.top;
+      } else {
+        alvoX = event.clientX - rect.left;
+        alvoY = event.clientY - rect.top;
+      }
+
+      // Reposiciona a Dai verticalmente perto do alvo (suaviza)
+      const novaAltura = Math.max(20, Math.min(rect.height - 110, alvoY - 40));
+      daiRevolucao.style.bottom = "auto";
+      daiRevolucao.style.top = novaAltura + "px";
+
+      // Origem do tiro (centro/face da Dai)
+      const daiRect = daiRevolucao.getBoundingClientRect();
+      const origemX = daiRect.right - rect.left - 10;
+      const origemY = daiRect.top + daiRect.height / 2 - rect.top;
+
+      // Cria projétil
+      const projetil = document.createElement("div");
+      projetil.classList.add("projetil");
+      const tiposProj = ["💋", "💗", "✨", "♀️", "🌹"];
+      projetil.innerText = tiposProj[Math.floor(Math.random() * tiposProj.length)];
+      projetil.style.left = origemX + "px";
+      projetil.style.top = origemY + "px";
+
+      // Calcula vetor direcional
+      const dx = alvoX - origemX;
+      const dy = alvoY - origemY;
+      const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 0.001);
+      const velProjetil = 14;
+      projetil.dataset.vx = (dx / dist) * velProjetil;
+      projetil.dataset.vy = (dy / dist) * velProjetil;
+      projetil.dataset.x = origemX;
+      projetil.dataset.y = origemY;
+
+      revolucaoArea.appendChild(projetil);
+
+      daiRevolucao.classList.remove("atirando");
+      void daiRevolucao.offsetWidth;
+      daiRevolucao.classList.add("atirando");
+    }
+
+    function moverProjeteis() {
+      const projeteis = revolucaoArea.querySelectorAll(".projetil");
+      const areaW = revolucaoArea.offsetWidth;
+      const areaH = revolucaoArea.offsetHeight;
+
+      projeteis.forEach((p) => {
+        let x = parseFloat(p.dataset.x);
+        let y = parseFloat(p.dataset.y);
+        const vx = parseFloat(p.dataset.vx);
+        const vy = parseFloat(p.dataset.vy);
+        x += vx;
+        y += vy;
+        p.dataset.x = x;
+        p.dataset.y = y;
+        p.style.left = x + "px";
+        p.style.top = y + "px";
+
+        if (x < -40 || x > areaW + 40 || y < -40 || y > areaH + 40) {
+          p.remove();
+        }
+      });
+    }
+
+    function verificarColisoesRev() {
+      const projeteis = revolucaoArea.querySelectorAll(".projetil");
+      const inimigos = revolucaoArea.querySelectorAll(".inimigo-patri:not(.derrotado)");
+
+      projeteis.forEach((proj) => {
+        const pRect = proj.getBoundingClientRect();
+        inimigos.forEach((inim) => {
+          const iRect = inim.getBoundingClientRect();
+          const colidiu =
+            pRect.left < iRect.right - 6 &&
+            pRect.right > iRect.left + 6 &&
+            pRect.top < iRect.bottom - 6 &&
+            pRect.bottom > iRect.top + 6;
+
+          if (!colidiu) return;
+
+          // Derrota o inimigo
+          inim.classList.add("derrotado");
+          patriarcadosDerrotados++;
+          pontosRev += 30;
+
+          // Explosão
+          const areaRect = revolucaoArea.getBoundingClientRect();
+          const exp = document.createElement("div");
+          exp.classList.add("explosao-rev");
+          exp.style.left = (iRect.left + iRect.width / 2 - areaRect.left) + "px";
+          exp.style.top = (iRect.top + iRect.height / 2 - areaRect.top) + "px";
+          const explosoes = ["💥", "✊", "💗", "🔥"];
+          exp.innerText = explosoes[Math.floor(Math.random() * explosoes.length)];
+          revolucaoArea.appendChild(exp);
+          setTimeout(() => exp.remove(), 500);
+
+          proj.remove();
+          setTimeout(() => inim.remove(), 320);
+
+          atualizarHudRev();
+
+          if (patriarcadosDerrotados >= totalPatriarcado) {
+            vencerRevolucao();
+          }
+        });
+      });
+    }
+
+    function atualizarHudRev() {
+      hudPatri.innerText = "✊ " + patriarcadosDerrotados + "/" + totalPatriarcado;
+      hudVidasRev.innerText = vidasRev > 0 ? "❤️ ".repeat(vidasRev).trim() : "💔";
+      scoreElement.innerText =
+        "Pontos: " + pontosRev + " | Derrotados: " + patriarcadosDerrotados + "/" + totalPatriarcado + " | Vidas: " + vidasRev;
+    }
+
+    function limparRevolucao() {
+      const objetos = revolucaoArea.querySelectorAll(".inimigo-patri, .projetil, .explosao-rev");
+      objetos.forEach((o) => o.remove());
+    }
+
+    function pararModoRevolucao() {
+      modoRevolucaoAtivo = false;
+      clearInterval(loopRev);
+      clearInterval(criadorInimigos);
+      clearInterval(tempoRev);
+      limparRevolucao();
+      revolucaoArea.style.display = "none";
+    }
+
+    function vencerRevolucao() {
+      pararModoRevolucao();
+      finalSection.style.display = "block";
+      document.getElementById("iconeFinal").innerText = "✊";
+      document.getElementById("textoInicial").innerText = "A revolução venceu!";
+      document.getElementById("mensagemFinal").innerHTML = `
+        <div style="font-size: 4rem; margin-bottom: 12px;">✊💗🚩💗✊</div>
+        <p>Você derrotou ${totalPatriarcado} símbolos do patriarcado e fez ${pontosRev} pontos.</p>
+        <p style="margin-top: 14px; font-weight: 700;">
+          O futuro é delas. Sem pedir licença, sem pedir desculpa.
+        </p>
+        <p style="margin-top: 14px;">
+          A Dai liderou a revolta e venceu. 💋
+        </p>
+      `;
+      document.getElementById("assinatura").innerText = "Pelas que vieram antes, e pelas que virão depois. ✊";
+      scoreElement.innerText = "Vitória da revolução! Pontos: " + pontosRev;
+      startButton.style.display = "inline-block";
+      startButton.innerText = "Jogar de novo";
+      boxeButton.style.display = "inline-block";
+      remedioButton.style.display = "inline-block";
+      revolucaoButton.style.display = "inline-block";
+    }
+
+    function perderRevolucao() {
+      pararModoRevolucao();
+      finalSection.style.display = "block";
+      document.getElementById("iconeFinal").innerText = "🚩";
+      document.getElementById("textoInicial").innerText = "O patriarcado resistiu dessa vez...";
+      document.getElementById("mensagemFinal").innerHTML = `
+        <p>Eles te cercaram antes da revolução completar.</p>
+        <p style="margin-top: 14px;">Derrotados: <strong>${patriarcadosDerrotados}/${totalPatriarcado}</strong></p>
+        <p style="margin-top: 14px;">Toda revolução tem recuo. Volta com mais força. ✊</p>
+      `;
+      document.getElementById("assinatura").innerText = "A luta continua.";
+      scoreElement.innerText = "Pontos: " + pontosRev + " | Derrotados: " + patriarcadosDerrotados + "/" + totalPatriarcado;
+      startButton.style.display = "inline-block";
+      startButton.innerText = "Tentar de novo";
+      boxeButton.style.display = "inline-block";
+      remedioButton.style.display = "inline-block";
+      revolucaoButton.style.display = "inline-block";
+    }
+
+    revolucaoButton.addEventListener("click", iniciarModoRevolucao);
+
+    revolucaoArea.addEventListener("click", atirar);
+
+    revolucaoArea.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      atirar(event);
+    }, { passive: false });
   </script>
 </body>
 </html>
