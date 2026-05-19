@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <title>Missão: encontrar o Bernardo</title>
+  <title>Missão: Dai vs Assistente Prof</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1159,27 +1159,27 @@
 
 <body>
   <div class="floating">💗</div>
-  <div class="floating">😡</div>
-  <div class="floating">🧑🏻</div>
+  <div class="floating">🍔</div>
+  <div class="floating">👩‍🏫</div>
   <div class="floating">💕</div>
 
   <main class="card">
-    <h1>Missão: encontrar Bernardo para socar</h1>
+    <h1>Missão: Dai vs Assistente Prof</h1>
 
     <p class="subtitle" id="textoInicial">
-      Agora a missão é pular, fugir da raiva e pegar Bernardos para liberar sua recompensa.
+      Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.
     </p>
 
     <div class="legend" id="legenda">
       <span>👧 Dai correndo</span>
       <span>Toque na tela para pular</span>
-      <span>😡 desvie da raiva</span>
-      <span>🧑🏻 pegue Bernardo</span>
-      <span>🥊 recompensa final</span>
+      <span>🍔 desvie do lanche</span>
+      <span>😵‍💫 fuja da fome</span>
+      <span>👩‍🏫 pegue e bata na Assistente Prof</span>
     </div>
 
     <div class="score" id="score">
-      Pontos: 0 | Bernardos: 0/15 | Vidas: 1
+      Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3
     </div>
 
     <br>
@@ -1277,7 +1277,7 @@
 
     let pontos = 0;
     let bernardos = 0;
-    let vidas = 1;
+    let vidas = 3;
 
     let velocidade = 11;
     let gravidade = 1;
@@ -1290,7 +1290,7 @@
     let intervaloCriacao;
     let intervaloPontuacao;
 
-    const totalBernardos = 15;
+    const totalBernardos = 15; // total de Assistentes Prof para vencer
     const chao = 54;
 
     function iniciarJogo() {
@@ -1299,7 +1299,7 @@
 
       pontos = 0;
       bernardos = 0;
-      vidas = 1;
+      vidas = 3;
 
       velocidade = 11;
       gravidade = 1;
@@ -1324,7 +1324,7 @@
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
-        "Toque na tela para pular. Fuja da raiva 😡 e colete 15 Bernardos 🧑🏻 para vencer.";
+        "Toque na tela para pular. Fuja do lanche 🍔 e da fome 😵‍💫, e colete 15 Assistentes Prof 👩‍🏫 para vencer.";
 
       atualizarScore();
 
@@ -1394,7 +1394,7 @@
         objeto.classList.add("obstaculo");
         objeto.dataset.tipo = "raiva";
 
-        const inimigos = ["😡", "🤬", "💢", "🔥"];
+        const inimigos = ["🍔", "🍟", "🌭", "😵‍💫", "🤤"];
         objeto.innerText = inimigos[Math.floor(Math.random() * inimigos.length)];
 
         if (Math.random() < 0.22) {
@@ -1404,9 +1404,9 @@
         objeto.classList.add("bernardo");
         objeto.dataset.tipo = "bernardo";
 
-        const bernardosLista = ["🧑🏻", "🙋🏻‍♂️", "💗", "🧑🏻"];
+        const bernardosLista = ["👩‍🏫", "📚", "📝", "👩‍🏫"];
         objeto.innerHTML = `
-          <span class="nome">Bernardo</span>
+          <span class="nome">Assistente Prof</span>
           <span>${bernardosLista[Math.floor(Math.random() * bernardosLista.length)]}</span>
         `;
 
@@ -1453,7 +1453,7 @@
           pontos += 20;
           velocidade += 0.45;
 
-          mostrarAviso("+1 Bernardo 🧑🏻 A raiva ficou um pouco mais rápida!");
+          mostrarAviso("+1 Assistente Prof 👩‍🏫 O lanche e a fome ficaram mais rápidos!");
           objeto.remove();
 
           if (bernardos >= totalBernardos) {
@@ -1464,7 +1464,7 @@
         if (objeto.dataset.tipo === "raiva") {
           vidas--;
 
-          mostrarAviso("A raiva encostou! 😡");
+          mostrarAviso("O lanche ou a fome encostou! 🍔😵‍💫");
           objeto.remove();
 
           if (vidas <= 0) {
@@ -1478,7 +1478,7 @@
 
     function atualizarScore() {
       scoreElement.innerText =
-        "Pontos: " + pontos + " | Bernardos: " + bernardos + "/" + totalBernardos + " | Vidas: " + vidas;
+        "Pontos: " + pontos + " | Assistentes Prof: " + bernardos + "/" + totalBernardos + " | Vidas: " + vidas;
     }
 
     function mostrarAviso(texto) {
@@ -1504,29 +1504,29 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "Você venceu! Pegou " + bernardos + " Bernardos e fez " + pontos + " pontos 🧑🏻";
+        "Você venceu! Pegou " + bernardos + " Assistentes Prof e fez " + pontos + " pontos 👩‍🏫";
 
       document.getElementById("textoInicial").innerText =
-        "Missão concluída: a raiva foi derrotada.";
+        "Missão concluída: o lanche e a fome foram derrotados.";
 
-      document.getElementById("iconeFinal").innerText = "🥊";
+      document.getElementById("iconeFinal").innerText = "👩‍🏫";
 
       document.getElementById("mensagemFinal").innerHTML =
         `
           <div style="font-size: 4rem; margin-bottom: 12px;">
-            🧑🏻🥊💗🥊🧑🏻
+            👧📚💗👩‍🏫✨
           </div>
 
           <p>
-            Você venceu a raiva, pulou todos os perigos e encontrou todos os Bernardos do caminho.
+            A Dai venceu o lanche, segurou a fome e encontrou todas as Assistentes Prof do caminho.
           </p>
 
           <p style="margin-top: 14px;">
-            Como recompensa, você ganhou o direito oficial de socar o Bernardo, mas ele vai precisar de beijos depois.
+            Como recompensa, a Assistente Prof foi oficialmente derrotada com estilo, foco e zero espaço para a fome atrapalhar.
           </p>
 
           <a 
-            href="https://www.youtube.com/watch?v=Iv_xiCxXxR0" 
+            href="https://music.youtube.com/search?q=good+old+fashioned+lover+boy" 
             target="_blank"
             style="
               display: inline-block;
@@ -1562,14 +1562,14 @@
       aviso.style.display = "none";
 
       scoreElement.innerText =
-        "A raiva venceu dessa vez 😡 | Pontos: " + pontos + " | Bernardos: " + bernardos + "/" + totalBernardos;
+        "O lanche e a fome venceram dessa vez 🍔😵‍💫 | Pontos: " + pontos + " | Assistentes Prof: " + bernardos + "/" + totalBernardos;
 
       document.getElementById("textoInicial").innerText = "Quase conseguiu!";
 
-      document.getElementById("iconeFinal").innerText = "😡";
+      document.getElementById("iconeFinal").innerText = "🍔";
 
       document.getElementById("mensagemFinal").innerText =
-        "Você perdeu... a raiva foi forte dessa vez. Agora só tem 1 vida, então precisa desviar com cuidado e coletar os 15 Bernardos.";
+        "Você perdeu... o lanche e a fome foram fortes dessa vez. Agora só tem 1 vida, então precisa desviar com cuidado e bater nas 15 Assistentes Prof.";
 
       document.getElementById("assinatura").innerText =
         "A revanche está liberada.";
