@@ -1070,6 +1070,339 @@
       }
     }
 
+    /* ====== Modo Combate (Dai vs Assistente) ====== */
+    .combate-area {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      margin-top: 24px;
+      border-radius: 28px;
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255, 230, 130, 0.45), transparent 55%),
+        linear-gradient(180deg, #6b2a4d 0%, #4a1a36 60%, #2a0e1c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><text y='32' font-size='32'>🥊</text></svg>") 16 16, pointer;
+    }
+
+    .hp-container {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hp-bar {
+      flex: 1;
+      max-width: 48%;
+    }
+
+    .hp-nome {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      margin-bottom: 3px;
+    }
+
+    .assist-hp .hp-nome {
+      text-align: right;
+    }
+
+    .hp-fundo {
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .hp-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    .dai-hp .hp-fill {
+      background: linear-gradient(90deg, #ff5fa2, #ff8fbd);
+    }
+
+    .assist-hp .hp-fill {
+      background: linear-gradient(270deg, #ffa500, #ff4d4d);
+      float: right;
+    }
+
+    .hp-fill.critico {
+      background: linear-gradient(90deg, #c1121f, #780000) !important;
+      animation: piscarCritico 0.4s ease-in-out infinite;
+    }
+
+    .ringe-combate {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 60px;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(192, 100, 145, 0.85) 0 16px,
+          rgba(255, 240, 245, 0.95) 16px 32px);
+      box-shadow: inset 0 6px 0 rgba(123, 61, 98, 0.55);
+    }
+
+    .ringe-combate::before,
+    .ringe-combate::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 0 1px rgba(123, 61, 98, 0.45);
+    }
+
+    .ringe-combate::before { top: -24px; }
+    .ringe-combate::after  { top: -48px; }
+
+    .dai-combate {
+      position: absolute;
+      left: 50px;
+      bottom: 60px;
+      width: 110px;
+      height: 130px;
+      background-image: url("daiboxe.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 6;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+      transition: transform 0.15s ease;
+    }
+
+    .dai-combate::after {
+      content: "👧🏻";
+      font-size: 90px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .dai-combate.sem-imagem::after { opacity: 1; }
+    .dai-combate.sem-imagem { background-image: none; }
+
+    .dai-combate.atacando {
+      animation: socarDai 0.28s ease;
+    }
+
+    .dai-combate.tomando {
+      animation: tomarDano 0.32s ease;
+    }
+
+    .assist-combate {
+      position: absolute;
+      right: 50px;
+      bottom: 60px;
+      width: 110px;
+      height: 130px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-size: 96px;
+      line-height: 1;
+      z-index: 6;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+      transition: transform 0.15s ease;
+    }
+
+    .assist-combate .nome-combate {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 200, 60, 0.95);
+      color: #5a2200;
+      font-size: 0.65rem;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .assist-combate.atacando {
+      animation: socarAssist 0.3s ease;
+    }
+
+    .assist-combate.tomando {
+      animation: tomarDanoAssist 0.32s ease;
+    }
+
+    .balao-fala {
+      position: absolute;
+      padding: 8px 14px;
+      border-radius: 18px;
+      background: white;
+      color: #4b203b;
+      font-weight: 800;
+      font-size: 0.92rem;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      animation: balaoCombate 1.4s ease-out forwards;
+      z-index: 11;
+      max-width: 180px;
+      text-align: center;
+    }
+
+    .balao-fala.dai {
+      left: 80px;
+      bottom: 200px;
+      color: #c4317a;
+    }
+
+    .balao-fala.assist {
+      right: 80px;
+      bottom: 200px;
+      color: #c1121f;
+    }
+
+    .balao-fala::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 10px solid white;
+    }
+
+    .balao-fala.dai::after { left: 20px; }
+    .balao-fala.assist::after { right: 20px; }
+
+    .hit-fx {
+      position: absolute;
+      font-size: 2.6rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: hitFxAnim 0.45s ease-out forwards;
+      z-index: 9;
+    }
+
+    .dica-combate {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffe1ee;
+      font-weight: 700;
+      font-size: 0.7rem;
+      backdrop-filter: blur(8px);
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .placar-rounds {
+      position: absolute;
+      top: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.55);
+      color: #ffd166;
+      font-weight: 900;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .botao-combate {
+      background: linear-gradient(135deg, #ff8c42, #c1121f);
+      box-shadow: 0 18px 35px rgba(193, 18, 31, 0.4);
+    }
+
+    @keyframes piscarCritico {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes socarDai {
+      0% { transform: translateX(0) scale(1); }
+      40% { transform: translateX(40px) scale(1.05); }
+      100% { transform: translateX(0) scale(1); }
+    }
+
+    @keyframes socarAssist {
+      0% { transform: translateX(0) scale(1); }
+      40% { transform: translateX(-40px) scale(1.05); }
+      100% { transform: translateX(0) scale(1); }
+    }
+
+    @keyframes tomarDano {
+      0% { transform: translateX(0) rotate(0); }
+      30% { transform: translateX(-12px) rotate(-6deg); }
+      60% { transform: translateX(6px) rotate(3deg); }
+      100% { transform: translateX(0) rotate(0); }
+    }
+
+    @keyframes tomarDanoAssist {
+      0% { transform: translateX(0) rotate(0); }
+      30% { transform: translateX(14px) rotate(8deg); }
+      60% { transform: translateX(-6px) rotate(-4deg); }
+      100% { transform: translateX(0) rotate(0); }
+    }
+
+    @keyframes balaoCombate {
+      0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.5);
+      }
+      20% {
+        opacity: 1;
+        transform: translateY(0) scale(1.1);
+      }
+      80% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-25px) scale(0.95);
+      }
+    }
+
+    @keyframes hitFxAnim {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4) rotate(-15deg);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.4) rotate(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.7) rotate(20deg);
+      }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -1153,6 +1486,27 @@
         width: 48px;
         height: 48px;
       }
+
+      .combate-area {
+        height: 420px;
+      }
+
+      .dai-combate,
+      .assist-combate {
+        width: 90px;
+        height: 110px;
+      }
+
+      .dai-combate { left: 22px; }
+      .assist-combate {
+        right: 22px;
+        font-size: 80px;
+      }
+
+      .balao-fala {
+        font-size: 0.78rem;
+        max-width: 140px;
+      }
     }
   </style>
 </head>
@@ -1199,6 +1553,10 @@
 
       <button id="revolucaoButton" class="botao-revolucao">
         Modo revolução ✊
+      </button>
+
+      <button id="combateButton" class="botao-combate">
+        Modo combate 🥊👩‍🏫
       </button>
     </div>
 
@@ -1249,6 +1607,27 @@
       <div class="estrela-rev" style="top: 28%; left: 85%; animation-delay: 1.6s;">✨</div>
       <div class="dai-revolucao" id="daiRevolucao"></div>
       <div class="dica-rev">Toque na tela para atirar 💋</div>
+    </div>
+
+    <div class="combate-area" id="combateArea">
+      <div class="hp-container">
+        <div class="hp-bar dai-hp">
+          <span class="hp-nome">💗 Profa Dai</span>
+          <div class="hp-fundo"><div class="hp-fill" id="daiHpFill"></div></div>
+        </div>
+        <div class="hp-bar assist-hp">
+          <span class="hp-nome">Assistente insubordinada 🙄</span>
+          <div class="hp-fundo"><div class="hp-fill" id="assistHpFill"></div></div>
+        </div>
+      </div>
+      <div class="placar-rounds" id="placarRounds">ROUND 1</div>
+      <div class="ringe-combate"></div>
+      <div class="dai-combate" id="daiCombate"></div>
+      <div class="assist-combate" id="assistCombate">
+        <span class="nome-combate">Assistente que não obedece</span>
+        🙄
+      </div>
+      <div class="dica-combate">Toque para socar a insubordinada 🥊</div>
     </div>
 
     <section class="final" id="final">
@@ -1321,6 +1700,8 @@
       document.getElementById("remedioArea").style.display = "none";
       document.getElementById("revolucaoButton").style.display = "none";
       document.getElementById("revolucaoArea").style.display = "none";
+      document.getElementById("combateButton").style.display = "none";
+      document.getElementById("combateArea").style.display = "none";
       aviso.style.display = "none";
 
       document.getElementById("textoInicial").innerText =
@@ -1579,6 +1960,7 @@
       document.getElementById("boxeButton").style.display = "inline-block";
       document.getElementById("remedioButton").style.display = "inline-block";
       document.getElementById("revolucaoButton").style.display = "inline-block";
+      document.getElementById("combateButton").style.display = "inline-block";
     }
 
     function limparObjetos() {
@@ -1630,11 +2012,13 @@
       boxeArea.style.display = "block";
       document.getElementById("remedioArea").style.display = "none";
       document.getElementById("revolucaoArea").style.display = "none";
+      document.getElementById("combateArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
       document.getElementById("remedioButton").style.display = "none";
       document.getElementById("revolucaoButton").style.display = "none";
+      document.getElementById("combateButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo boxe ativado! Toque no Bernardo para dar socos. Cada soco solta um 'Ai'.";
@@ -1779,11 +2163,13 @@
       finalSection.style.display = "none";
       remedioArea.style.display = "block";
       document.getElementById("revolucaoArea").style.display = "none";
+      document.getElementById("combateArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
       remedioButton.style.display = "none";
       document.getElementById("revolucaoButton").style.display = "none";
+      document.getElementById("combateButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo remédio 💊 — Toque na tela para a Dai pular. Pegue 20 remédios e desvie dos vírus!";
@@ -1979,6 +2365,7 @@
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
       document.getElementById("revolucaoButton").style.display = "inline-block";
+      document.getElementById("combateButton").style.display = "inline-block";
     }
 
     function perderModoRemedio() {
@@ -1998,6 +2385,7 @@
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
       document.getElementById("revolucaoButton").style.display = "inline-block";
+      document.getElementById("combateButton").style.display = "inline-block";
     }
 
     remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -2079,11 +2467,13 @@
       remedioArea.style.display = "none";
       finalSection.style.display = "none";
       revolucaoArea.style.display = "block";
+      document.getElementById("combateArea").style.display = "none";
 
       startButton.style.display = "none";
       boxeButton.style.display = "none";
       remedioButton.style.display = "none";
       revolucaoButton.style.display = "none";
+      document.getElementById("combateButton").style.display = "none";
 
       document.getElementById("textoInicial").innerText =
         "Modo revolução ✊ — Toque na tela para a Dai atirar nos símbolos do patriarcado!";
@@ -2310,6 +2700,7 @@
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
+      document.getElementById("combateButton").style.display = "inline-block";
     }
 
     function perderRevolucao() {
@@ -2329,6 +2720,7 @@
       boxeButton.style.display = "inline-block";
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
+      document.getElementById("combateButton").style.display = "inline-block";
     }
 
     revolucaoButton.addEventListener("click", iniciarModoRevolucao);
@@ -2338,6 +2730,363 @@
     revolucaoArea.addEventListener("touchstart", function (event) {
       event.preventDefault();
       atirar(event);
+    }, { passive: false });
+
+    /* ====== Modo Combate (Dai vs Assistente da Profa) ====== */
+    const combateArea = document.getElementById("combateArea");
+    const daiCombate = document.getElementById("daiCombate");
+    const assistCombate = document.getElementById("assistCombate");
+    const combateButton = document.getElementById("combateButton");
+    const daiHpFill = document.getElementById("daiHpFill");
+    const assistHpFill = document.getElementById("assistHpFill");
+    const placarRounds = document.getElementById("placarRounds");
+
+    let modoCombateAtivo = false;
+    let daiHp = 100;
+    let assistHp = 100;
+    let roundAtual = 1;
+    let podeSocar = true;
+    let timerAssistAtaque;
+
+    // Frases da Assistente: nunca obedece, não escuta, sempre se recusa
+    const falasAssist = [
+      "Não vou fazer!",
+      "Tô ocupada...",
+      "Faz você!",
+      "Não escutei!",
+      "Hã? O quê?",
+      "Tanto faz...",
+      "Depois eu faço",
+      "Não é minha função",
+      "Tô no celular",
+      "Pergunta pra outra",
+      "Esqueci 🤷",
+      "Não sabia disso",
+      "Tô de boa",
+      "Amanhã eu vejo",
+    ];
+
+    // Frases da Dai (professora) atacando — pedindo, mandando, exigindo
+    const falasDai = [
+      "FAZ O QUE EU PEDI!",
+      "ESCUTA!",
+      "ME OBEDECE!",
+      "EU SOU A PROFESSORA!",
+      "FAZ O RELATÓRIO!",
+      "PRESTA ATENÇÃO!",
+      "CUMPRE A TAREFA!",
+      "É PRA ONTEM!",
+      "LARGA O CELULAR!",
+      "ANOTA ISSO!",
+    ];
+
+    // Frases da Dai apanhando (frustrada com a insubordinação)
+    const falasDaiTomando = [
+      "Ai meu Deus...",
+      "De novo?!",
+      "Não acredito...",
+      "Aff...",
+      "Cansei!",
+      "Por que eu te contratei?",
+    ];
+
+    // Frases da Assistente apanhando (cínica, displicente)
+    const falasAssistTomando = [
+      "Eita!",
+      "Calma!",
+      "Tá nervosa por quê?",
+      "Não fiz nada!",
+      "Hã?? Pq?",
+      "Tô de boa, prof",
+    ];
+
+    // Detecta imagem daiboxe.png para o modo combate
+    (function verificarImagemDaiCombate() {
+      const teste = new Image();
+      teste.onload = () => daiCombate.classList.remove("sem-imagem");
+      teste.onerror = () => daiCombate.classList.add("sem-imagem");
+      teste.src = "daiboxe.png";
+    })();
+
+    function iniciarModoCombate() {
+      // Para todos os outros
+      jogoAtivo = false;
+      modoBoxeAtivo = false;
+      modoRemedioAtivo = false;
+      modoRevolucaoAtivo = false;
+      clearInterval(intervaloLoop);
+      clearInterval(intervaloCriacao);
+      clearInterval(intervaloPontuacao);
+      clearInterval(loopMario);
+      clearInterval(criadorMario);
+      clearInterval(tempoMario);
+      clearInterval(loopRev);
+      clearInterval(criadorInimigos);
+      clearInterval(tempoRev);
+      limparObjetos();
+      limparRemedios();
+      limparRevolucao();
+
+      modoCombateAtivo = true;
+      daiHp = 100;
+      assistHp = 100;
+      roundAtual = 1;
+      podeSocar = true;
+
+      gameArea.style.display = "none";
+      boxeArea.style.display = "none";
+      remedioArea.style.display = "none";
+      revolucaoArea.style.display = "none";
+      finalSection.style.display = "none";
+      combateArea.style.display = "block";
+
+      startButton.style.display = "none";
+      boxeButton.style.display = "none";
+      remedioButton.style.display = "none";
+      revolucaoButton.style.display = "none";
+      combateButton.style.display = "none";
+
+      document.getElementById("textoInicial").innerText =
+        "Modo combate 🥊 — A assistente nunca te obedece. Hora de mostrar quem manda!";
+
+      atualizarHpBarras();
+      scoreElement.innerText = "Profa Dai 💗 vs Assistente que não obedece 🙄";
+
+      placarRounds.innerText = "ROUND 1 — FIGHT!";
+      setTimeout(() => {
+        placarRounds.innerText = "ROUND 1";
+      }, 1400);
+
+      limparAvisosCombate();
+
+      // Inicia ataques da assistente
+      agendarProximoAtaqueAssist();
+    }
+
+    function agendarProximoAtaqueAssist() {
+      clearTimeout(timerAssistAtaque);
+      const delay = 1300 + Math.random() * 1100;
+      timerAssistAtaque = setTimeout(() => {
+        if (!modoCombateAtivo) return;
+        assistAtacar();
+        agendarProximoAtaqueAssist();
+      }, delay);
+    }
+
+    function daiSocar() {
+      if (!modoCombateAtivo || !podeSocar) return;
+      if (assistHp <= 0) return;
+
+      podeSocar = false;
+      setTimeout(() => (podeSocar = true), 220);
+
+      daiCombate.classList.remove("atacando");
+      void daiCombate.offsetWidth;
+      daiCombate.classList.add("atacando");
+
+      // Aplica dano variável
+      const dano = 7 + Math.floor(Math.random() * 6); // 7-12
+      assistHp = Math.max(0, assistHp - dano);
+
+      // FX de impacto no meio entre os dois
+      criarHitFx("meio", ["💥", "✊", "💗"][Math.floor(Math.random() * 3)]);
+
+      // Reação da assistente
+      assistCombate.classList.remove("tomando");
+      void assistCombate.offsetWidth;
+      assistCombate.classList.add("tomando");
+
+      // Falas
+      if (Math.random() < 0.55) {
+        mostrarBalao("dai", falasDai[Math.floor(Math.random() * falasDai.length)]);
+      }
+      if (Math.random() < 0.75) {
+        mostrarBalao("assist", falasAssistTomando[Math.floor(Math.random() * falasAssistTomando.length)]);
+      }
+
+      atualizarHpBarras();
+
+      if (assistHp <= 0) {
+        venceuCombate();
+      }
+    }
+
+    function assistAtacar() {
+      if (!modoCombateAtivo || daiHp <= 0 || assistHp <= 0) return;
+
+      assistCombate.classList.remove("atacando");
+      void assistCombate.offsetWidth;
+      assistCombate.classList.add("atacando");
+
+      // Dano variável (um pouco mais baixo que o da Dai pra ser justo)
+      const dano = 5 + Math.floor(Math.random() * 6); // 5-10
+      daiHp = Math.max(0, daiHp - dano);
+
+      criarHitFx("meio", ["💢", "📚", "❌"][Math.floor(Math.random() * 3)]);
+
+      // Reação da Dai
+      daiCombate.classList.remove("tomando");
+      void daiCombate.offsetWidth;
+      daiCombate.classList.add("tomando");
+
+      mostrarBalao("assist", falasAssist[Math.floor(Math.random() * falasAssist.length)]);
+      if (Math.random() < 0.6) {
+        setTimeout(() => {
+          mostrarBalao("dai", falasDaiTomando[Math.floor(Math.random() * falasDaiTomando.length)]);
+        }, 250);
+      }
+
+      atualizarHpBarras();
+
+      if (daiHp <= 0) {
+        perdeuCombate();
+      }
+    }
+
+    function criarHitFx(posicao, emoji) {
+      const rect = combateArea.getBoundingClientRect();
+      const daiRect = daiCombate.getBoundingClientRect();
+      const assistRect = assistCombate.getBoundingClientRect();
+
+      const meioX = ((daiRect.right + assistRect.left) / 2) - rect.left;
+      const meioY = ((daiRect.top + daiRect.bottom) / 2) - rect.top - 10;
+
+      const fx = document.createElement("div");
+      fx.classList.add("hit-fx");
+      fx.style.left = meioX + "px";
+      fx.style.top = meioY + "px";
+      fx.innerText = emoji;
+      combateArea.appendChild(fx);
+      setTimeout(() => fx.remove(), 460);
+    }
+
+    function mostrarBalao(quem, texto) {
+      // Remove balão anterior do mesmo personagem
+      const anteriores = combateArea.querySelectorAll(".balao-fala." + quem);
+      anteriores.forEach((b) => b.remove());
+
+      const balao = document.createElement("div");
+      balao.classList.add("balao-fala", quem);
+      balao.innerText = texto;
+      combateArea.appendChild(balao);
+      setTimeout(() => balao.remove(), 1400);
+    }
+
+    function atualizarHpBarras() {
+      daiHpFill.style.width = daiHp + "%";
+      assistHpFill.style.width = assistHp + "%";
+
+      if (daiHp <= 25) daiHpFill.classList.add("critico");
+      else daiHpFill.classList.remove("critico");
+
+      if (assistHp <= 25) assistHpFill.classList.add("critico");
+      else assistHpFill.classList.remove("critico");
+
+      scoreElement.innerText =
+        "Profa Dai HP " + daiHp + " | Assistente HP " + assistHp;
+    }
+
+    function limparAvisosCombate() {
+      combateArea.querySelectorAll(".balao-fala, .hit-fx").forEach((e) => e.remove());
+    }
+
+    function pararModoCombate() {
+      modoCombateAtivo = false;
+      clearTimeout(timerAssistAtaque);
+      limparAvisosCombate();
+      combateArea.style.display = "none";
+    }
+
+    function venceuCombate() {
+      modoCombateAtivo = false;
+      clearTimeout(timerAssistAtaque);
+      placarRounds.innerText = "K.O.! PROFA DAI VENCEU 🏆";
+
+      mostrarBalao("dai", "Agora você OBEDECE!");
+      mostrarBalao("assist", "Tá bom, tá bom...");
+
+      setTimeout(() => {
+        pararModoCombate();
+        finalSection.style.display = "block";
+        document.getElementById("iconeFinal").innerText = "🏆";
+        document.getElementById("textoInicial").innerText = "Você nocauteou a assistente insubordinada!";
+        document.getElementById("mensagemFinal").innerHTML = `
+          <div style="font-size: 4rem; margin-bottom: 12px;">🥊💗🏆💗🥊</div>
+          <p>A Profa Dai finalmente fez a assistente entender quem manda.</p>
+          <p style="margin-top: 14px; font-weight: 700;">
+            Agora ela vai obedecer. 💋
+          </p>
+          <p style="margin-top: 14px;">
+            HP final: Profa Dai ${daiHp} ❤️ | Assistente 0 💔
+          </p>
+          <p style="margin-top: 18px; font-weight: 700; color: #c4317a;">
+            Como recompensa, mais uma música pra você 🎵
+          </p>
+          <a
+            href="https://music.youtube.com/watch?v=sx4aj9KmzzA&list=LM"
+            target="_blank"
+            style="
+              display: inline-block;
+              margin-top: 14px;
+              padding: 14px 22px;
+              border-radius: 999px;
+              background: linear-gradient(135deg, #ff8c42, #c1121f);
+              color: white;
+              text-decoration: none;
+              font-weight: 800;
+              box-shadow: 0 14px 30px rgba(193, 18, 31, 0.4);
+            "
+          >
+            🎁 Tocar a música da vitória 🎵
+          </a>
+        `;
+        document.getElementById("assinatura").innerText = "Disciplina aplicada. Hierarquia restaurada. 🥊";
+        scoreElement.innerText = "K.O.! Profa Dai vence com " + daiHp + " HP";
+        startButton.style.display = "inline-block";
+        startButton.innerText = "Jogar de novo";
+        boxeButton.style.display = "inline-block";
+        remedioButton.style.display = "inline-block";
+        revolucaoButton.style.display = "inline-block";
+        combateButton.style.display = "inline-block";
+      }, 1600);
+    }
+
+    function perdeuCombate() {
+      modoCombateAtivo = false;
+      clearTimeout(timerAssistAtaque);
+      placarRounds.innerText = "K.O.! A INSUBORDINADA VENCEU 🙄";
+
+      mostrarBalao("assist", "Tô de boa, prof 🙄");
+      mostrarBalao("dai", "Aff... revanche!");
+
+      setTimeout(() => {
+        pararModoCombate();
+        finalSection.style.display = "block";
+        document.getElementById("iconeFinal").innerText = "🙄";
+        document.getElementById("textoInicial").innerText = "A assistente venceu pelo cansaço dessa vez...";
+        document.getElementById("mensagemFinal").innerHTML = `
+          <p>Ela te esgotou de tanto não fazer nada do que você pediu.</p>
+          <p style="margin-top: 14px;">HP final: Profa Dai 0 💔 | Assistente ${assistHp} ❤️</p>
+          <p style="margin-top: 14px;">Volta mais brava. Ela precisa aprender a escutar. 🥊</p>
+        `;
+        document.getElementById("assinatura").innerText = "A revanche está agendada.";
+        scoreElement.innerText = "Derrota — Assistente: " + assistHp + " HP";
+        startButton.style.display = "inline-block";
+        startButton.innerText = "Tentar de novo";
+        boxeButton.style.display = "inline-block";
+        remedioButton.style.display = "inline-block";
+        revolucaoButton.style.display = "inline-block";
+        combateButton.style.display = "inline-block";
+      }, 1600);
+    }
+
+    combateButton.addEventListener("click", iniciarModoCombate);
+
+    combateArea.addEventListener("click", daiSocar);
+
+    combateArea.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      daiSocar();
     }, { passive: false });
   </script>
 </body>
