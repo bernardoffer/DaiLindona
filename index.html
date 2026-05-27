@@ -1689,20 +1689,21 @@
         <span class="nome-box">Bernardo</span>
         🧑🏻
       </div>
-      <div class="recompensa-500" id="recompensa500" style="display:none;">
+      <div class="recompensa-500" id="recompensa500" style="display:none;" onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();">
         <div class="recompensa-500-conteudo">
           <div class="recompensa-500-emoji">👑🥊👑</div>
           <p class="recompensa-500-titulo">500 socos!</p>
           <p class="recompensa-500-texto">receba essa música minha rainha 🎶💗</p>
           <a
-            href="https://www.youtube.com/watch?v=QBgl4rVz3Ks"
+            href="https://www.youtube.com/watch?v=QBgl4rVz3Ks&list=RDQBgl4rVz3Ks&start_radio=1"
             target="_blank"
+            rel="noopener"
             class="recompensa-500-link"
-            onclick="fecharRecompensa500()"
+            onclick="event.stopPropagation(); fecharRecompensa500();"
           >
             Ouvir música 🎵
           </a>
-          <button class="recompensa-500-fechar" onclick="fecharRecompensa500()">continuar socando 🥊</button>
+          <button class="recompensa-500-fechar" onclick="event.stopPropagation(); fecharRecompensa500();">continuar socando 🥊</button>
         </div>
       </div>
     </div>
