@@ -639,6 +639,118 @@
       }
     }
 
+    /* ====== Recompensa 500 socos ====== */
+    .recompensa-500 {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 200, 230, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+    }
+
+    .recompensa-500-conteudo {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 28px 24px 22px;
+      max-width: 88%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(128, 70, 105, 0.28), 0 0 0 2px rgba(255, 95, 162, 0.25);
+    }
+
+    .recompensa-500-emoji {
+      font-size: 2.6rem;
+      margin-bottom: 8px;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .recompensa-500-titulo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #c4317a;
+      margin-bottom: 6px;
+    }
+
+    .recompensa-500-texto {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #4d2d42;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .recompensa-500-link {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1rem;
+      box-shadow: 0 14px 30px rgba(255, 95, 162, 0.35);
+      margin-bottom: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .recompensa-500-link:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 18px 38px rgba(255, 95, 162, 0.45);
+    }
+
+    .recompensa-500-fechar {
+      display: block;
+      margin: 0 auto;
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: #a0607e;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 12px;
+      margin-top: 2px;
+    }
+
+    .recompensa-500-fechar:hover {
+      transform: none;
+      box-shadow: none;
+      color: #c4317a;
+    }
+
+    .recompensa-entrando {
+      animation: recompensaEntrar 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .recompensa-saindo {
+      animation: recompensaSair 0.45s ease-in both;
+    }
+
+    @keyframes recompensaEntrar {
+      from {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes recompensaSair {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.88);
+      }
+    }
+
     /* ====== Modo Coletar Remédios (Mario-style) ====== */
     .remedio-area {
       position: relative;
@@ -1577,6 +1689,22 @@
         <span class="nome-box">Bernardo</span>
         🧑🏻
       </div>
+      <div class="recompensa-500" id="recompensa500" style="display:none;">
+        <div class="recompensa-500-conteudo">
+          <div class="recompensa-500-emoji">👑🥊👑</div>
+          <p class="recompensa-500-titulo">500 socos!</p>
+          <p class="recompensa-500-texto">receba essa música minha rainha 🎶💗</p>
+          <a
+            href="https://www.youtube.com/watch?v=QBgl4rVz3Ks"
+            target="_blank"
+            class="recompensa-500-link"
+            onclick="fecharRecompensa500()"
+          >
+            Ouvir música 🎵
+          </a>
+          <button class="recompensa-500-fechar" onclick="fecharRecompensa500()">continuar socando 🥊</button>
+        </div>
+      </div>
     </div>
 
     <div class="remedio-area" id="remedioArea">
@@ -2089,6 +2217,25 @@
       if (socos === 25) mostrarAviso("25 socos! Calma aí campeã 🥊");
       if (socos === 50) mostrarAviso("50 socos! Ele vai precisar de beijos 💗");
       if (socos === 100) mostrarAviso("100 socos! Lenda viva 🏆");
+      if (socos === 500) mostrarRecompensa500();
+    }
+
+    function mostrarRecompensa500() {
+      const recompensa = document.getElementById("recompensa500");
+      recompensa.style.display = "flex";
+      recompensa.classList.remove("recompensa-saindo");
+      void recompensa.offsetWidth;
+      recompensa.classList.add("recompensa-entrando");
+    }
+
+    function fecharRecompensa500() {
+      const recompensa = document.getElementById("recompensa500");
+      recompensa.classList.remove("recompensa-entrando");
+      recompensa.classList.add("recompensa-saindo");
+      setTimeout(() => {
+        recompensa.style.display = "none";
+        recompensa.classList.remove("recompensa-saindo");
+      }, 500);
     }
 
     boxeButton.addEventListener("click", iniciarModoBoxe);
