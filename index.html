@@ -2235,9 +2235,9 @@
     document.getElementById("combateButton").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
-      "Modo boxe ativado! Faça combos rápidos, pegue bônus x2 e chegue aos 500 socos para deixar o Bernardo triste e liberar o bônus até x10.";
+      "Modo boxe ativado! Faça combos rápidos, pegue bônus x2, bônus x5 aos 100 socos e chegue aos 500 para deixar o Bernardo triste e liberar o bônus até x10.";
 
-    scoreElement.innerText = "Modo boxe 🥊 — combos, crítico, bônus x2 e especial x10 liberados";
+    scoreElement.innerText = "Modo boxe 🥊 — combos, crítico, bônus x2, x5 aos 100 e especial até x10";
   }
 
   function darSoco(event) {
@@ -2323,7 +2323,7 @@
     verificarMarcoBoxe(socosAntes, socos, 10, "10 socos! O Bernardo já tá tonto 😵");
     verificarMarcoBoxe(socosAntes, socos, 25, "25 socos! Calma aí campeã 🥊");
     verificarMarcoBoxe(socosAntes, socos, 50, "50 socos! BÔNUS x2 por 10 segundos 💗", () => ativarSocoDuplo(10000));
-    verificarMarcoBoxe(socosAntes, socos, 100, "100 socos! Lenda viva 🏆");
+    verificarMarcoBoxe(socosAntes, socos, 100, "100 socos! BÔNUS x5 por 15 segundos 🏆🔥", () => ativarMultiplicadorSoco(5, 15000, "Bônus x5 acabou. Agora voltou ao normal 🥊"));
     verificarMarcoBoxe(socosAntes, socos, 150, "150 socos! Soco em dobro por 12 segundos 🔥", () => ativarSocoDuplo(12000));
     verificarMarcoBoxe(socosAntes, socos, 300, "300 socos! Modo massacre fofo: x2 por 15 segundos 👑", () => ativarSocoDuplo(15000));
 
@@ -2356,14 +2356,21 @@
   }
 
   function ativarSocoDuplo(duracao) {
-    multiplicadorSoco = 2;
-    atualizarHudBoxe();
+    ativarMultiplicadorSoco(2, duracao, "Bônus x2 acabou. Continua no braço 🥊");
+  }
+
+  function ativarMultiplicadorSoco(multiplicador, duracao, mensagemFinal) {
     clearTimeout(bonusSocoDuploTimer);
+    clearTimeout(bonusSocoLendarioTimer);
+
+    multiplicadorSoco = multiplicador;
+    atualizarHudBoxe();
+    mostrarAviso("Bônus x" + multiplicador + " ativado! Agora cada clique vale " + multiplicador + " socos 🔥");
 
     bonusSocoDuploTimer = setTimeout(() => {
       multiplicadorSoco = 1;
       atualizarHudBoxe();
-      mostrarAviso("Bônus x2 acabou. Continua no braço 🥊");
+      mostrarAviso(mensagemFinal || "Bônus acabou. Continua no braço 🥊");
     }, duracao);
   }
 
