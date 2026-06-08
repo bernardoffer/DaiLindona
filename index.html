@@ -1582,6 +1582,249 @@
       }
     }
 
+    /* ====== Modo Jogue Pedras no Bernardo ====== */
+    .pedra-area {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 80%, rgba(255, 230, 200, 0.55), transparent 60%),
+        linear-gradient(135deg, #fff3e0, #ffe0b2 60%, #ffcc80);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><text y='32' font-size='32'>🪨</text></svg>") 16 16, crosshair;
+    }
+
+    .bernardo-pedra {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 160px;
+      background-image: url("bersem.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 4;
+      filter: drop-shadow(0 14px 18px rgba(130, 53, 92, 0.25));
+    }
+
+    .bernardo-pedra::after {
+      content: "🧑🏻";
+      font-size: 100px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      line-height: 1;
+    }
+
+    .bernardo-pedra.sem-imagem { background-image: none; }
+    .bernardo-pedra.sem-imagem::after { opacity: 1; }
+
+    .bernardo-pedra .nome-pedra {
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #7b3d62;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 3px 10px;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(128, 70, 105, 0.15);
+    }
+
+    .bernardo-pedra.levou {
+      animation: levarPedrada 0.28s ease;
+    }
+
+    .hud-pedra {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .hud-pedra span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #5b3320;
+      font-weight: 800;
+      font-size: 0.85rem;
+      box-shadow: 0 8px 20px rgba(60, 40, 50, 0.15);
+    }
+
+    .estresse-container {
+      position: absolute;
+      top: 54px;
+      left: 12px;
+      right: 12px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.12);
+      z-index: 9;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.55);
+    }
+
+    .estresse-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff5fa2, #ff8fbd);
+      transition: width 0.35s ease, background 0.5s ease;
+    }
+
+    .estresse-fill.aliviado {
+      background: linear-gradient(90deg, #4caf50, #81c784);
+    }
+
+    .frase-pedra {
+      position: absolute;
+      padding: 8px 14px;
+      border-radius: 18px;
+      background: white;
+      color: #7b3d62;
+      font-weight: 900;
+      font-size: 1.1rem;
+      box-shadow: 0 10px 22px rgba(128, 70, 105, 0.2);
+      pointer-events: none;
+      transform: translate(-50%, 0);
+      animation: fraseSubirPedra 1.1s ease-out forwards;
+      z-index: 8;
+      white-space: nowrap;
+    }
+
+    .frase-pedra::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 12px solid white;
+    }
+
+    .pedra-voando {
+      position: absolute;
+      font-size: 26px;
+      pointer-events: none;
+      z-index: 6;
+      transform: translate(-50%, -50%);
+    }
+
+    .dica-pedra {
+      position: absolute;
+      bottom: 46px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #7b3d62;
+      font-weight: 700;
+      font-size: 0.78rem;
+      z-index: 9;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .sair-pedra {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: #a0607e;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 10px;
+      margin-top: 0;
+    }
+
+    .sair-pedra:hover {
+      transform: translateX(-50%);
+      box-shadow: none;
+      color: #c4317a;
+    }
+
+    .botao-pedra {
+      background: linear-gradient(135deg, #8d6e63, #5d4037);
+      box-shadow: 0 18px 35px rgba(93, 64, 55, 0.35);
+    }
+
+    .estresse-zerado-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(200, 255, 200, 0.45);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+    }
+
+    .estresse-zerado-conteudo {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 28px 24px 22px;
+      max-width: 88%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(128, 70, 105, 0.28);
+    }
+
+    .impacto-pedra {
+      position: absolute;
+      font-size: 17px;
+      pointer-events: none;
+      z-index: 7;
+      transform: translate(-50%, -50%);
+      animation: impactoParticulaPedra 0.45s ease-out forwards;
+    }
+
+    @keyframes impactoParticulaPedra {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(0); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) scale(0.15) rotate(240deg); }
+    }
+
+    @keyframes levarPedrada {
+      0%   { transform: translate(-50%, -50%) scale(1) rotate(0); }
+      12%  { transform: translate(-64%, -57%) scale(0.8) rotate(-16deg); }
+      38%  { transform: translate(-40%, -50%) scale(1.14) rotate(9deg); }
+      62%  { transform: translate(-55%, -54%) scale(0.92) rotate(-6deg); }
+      80%  { transform: translate(-47%, -49%) scale(1.05) rotate(2deg); }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+    }
+
+    @keyframes fraseSubirPedra {
+      0%   { opacity: 0; transform: translate(-50%, 10px) scale(0.7); }
+      20%  { opacity: 1; transform: translate(-50%, 0) scale(1.08); }
+      65%  { opacity: 1; transform: translate(-50%, -25px) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -62px) scale(0.95); }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -1737,6 +1980,10 @@
     <button id="combateButton" class="botao-combate">
       Modo combate 🥊👩‍🏫
     </button>
+
+    <button id="pedraButton" class="botao-pedra">
+      Jogar pedras 🪨
+    </button>
   </div>
 
   <div class="aviso" id="aviso"></div>
@@ -1830,6 +2077,21 @@
     <div class="dica-combate">Toque para socar a insubordinada 🥊</div>
   </div>
 
+  <div class="pedra-area" id="pedraArea">
+    <div class="hud-pedra">
+      <span id="hudPedras">🪨 0 pedras</span>
+      <span id="hudEstresse">😤 Estresse: 100%</span>
+    </div>
+    <div class="estresse-container">
+      <div class="estresse-fill" id="estresseFill"></div>
+    </div>
+    <div class="bernardo-pedra" id="bernardoPedra">
+      <span class="nome-pedra">Bernardo 😬</span>
+    </div>
+    <div class="dica-pedra">Toque em qualquer lugar para jogar pedra 🪨</div>
+    <button class="sair-pedra" id="sairPedra">← outros jogos</button>
+  </div>
+
   <section class="final" id="final">
     <div class="icone-final" id="iconeFinal">💗</div>
 
@@ -1902,6 +2164,8 @@
     document.getElementById("revolucaoArea").style.display = "none";
     document.getElementById("combateButton").style.display = "none";
     document.getElementById("combateArea").style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
     aviso.style.display = "none";
 
     document.getElementById("textoInicial").innerText =
@@ -2161,6 +2425,7 @@
     document.getElementById("remedioButton").style.display = "inline-block";
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
   }
 
   function limparObjetos() {
@@ -2227,12 +2492,14 @@
     document.getElementById("remedioArea").style.display = "none";
     document.getElementById("revolucaoArea").style.display = "none";
     document.getElementById("combateArea").style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
     document.getElementById("remedioButton").style.display = "none";
     document.getElementById("revolucaoButton").style.display = "none";
     document.getElementById("combateButton").style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo boxe ativado! Faça combos rápidos, pegue bônus x2, bônus x5 aos 100 socos e chegue aos 500 para deixar o Bernardo triste e liberar o bônus até x10.";
@@ -2483,12 +2750,14 @@
     remedioArea.style.display = "block";
     document.getElementById("revolucaoArea").style.display = "none";
     document.getElementById("combateArea").style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
     remedioButton.style.display = "none";
     document.getElementById("revolucaoButton").style.display = "none";
     document.getElementById("combateButton").style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo remédio 💊 — Toque na tela para a Dai pular. Pegue 20 remédios e desvie dos vírus!";
@@ -2685,6 +2954,7 @@
     remedioButton.style.display = "inline-block";
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
   }
 
   function perderModoRemedio() {
@@ -2705,6 +2975,7 @@
     remedioButton.style.display = "inline-block";
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
   }
 
   remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -2787,12 +3058,14 @@
     finalSection.style.display = "none";
     revolucaoArea.style.display = "block";
     document.getElementById("combateArea").style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
     remedioButton.style.display = "none";
     revolucaoButton.style.display = "none";
     document.getElementById("combateButton").style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo revolução ✊ — Toque na tela para a Dai atirar nos símbolos do patriarcado!";
@@ -3020,6 +3293,7 @@
     remedioButton.style.display = "inline-block";
     revolucaoButton.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
   }
 
   function perderRevolucao() {
@@ -3040,6 +3314,7 @@
     remedioButton.style.display = "inline-block";
     revolucaoButton.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
   }
 
   revolucaoButton.addEventListener("click", iniciarModoRevolucao);
@@ -3158,12 +3433,14 @@
     revolucaoArea.style.display = "none";
     finalSection.style.display = "none";
     combateArea.style.display = "block";
+    document.getElementById("pedraArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
     remedioButton.style.display = "none";
     revolucaoButton.style.display = "none";
     combateButton.style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo combate 🥊 — A assistente nunca te obedece. Hora de mostrar quem manda!";
@@ -3367,6 +3644,7 @@
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
+      document.getElementById("pedraButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3396,6 +3674,7 @@
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
+      document.getElementById("pedraButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3407,6 +3686,320 @@
     event.preventDefault();
     daiSocar();
   }, { passive: false });
+
+  /* ====== Modo Jogue Pedras no Bernardo ====== */
+  const pedraArea = document.getElementById("pedraArea");
+  const bernardoPedra = document.getElementById("bernardoPedra");
+  const pedraButton = document.getElementById("pedraButton");
+  const hudPedras = document.getElementById("hudPedras");
+  const hudEstresse = document.getElementById("hudEstresse");
+  const estresseFill = document.getElementById("estresseFill");
+
+  let modoPedraAtivo = false;
+  let totalPedras = 0;
+  let estresse = 100;
+  const pedrasPorEstresse = 2; // quantas pedras para reduzir 1% de estresse
+
+  const frasesBernardo = [
+    "Ai! 😖", "Mereci...", "Tá bom...", "Ai não! 🥹", "Ai!!",
+    "Eu mereço!", "Desculpa!", "Prometo melhorar!", "Ai meu Deus!",
+    "Odeio frutas!", "ME SALVE!", "TO TRISTE!", "Ai ai ai! 😵",
+    "Ok ok ok!", "Amor, eu estou melhorando!", "Se Você diz", "Será Será!", "Tô bem...",
+    "5x3", "Perdi a linha!", "Pela última vez 😭",
+    "Mereço mesmo!", "Entendi a lição!", "ME ODEIA",
+    "Tô aprendendo!", "Podia ser pior!", "Sofro com amor! 💗",
+  ];
+
+  const marcosEstresse = [
+    { nivel: 75, msg: "O estresse tá cedendo! 🪨 Continua!" },
+    { nivel: 50, msg: "Metade do estresse foi! Sensação boa né? 💗" },
+    { nivel: 25, msg: "Quase lá! O Bernardo tá recebendo tudo 😅" },
+    { nivel: 0, msg: "Estresse zerado! 🌿 Você arrasou!" },
+  ];
+  const marcosEstresseMostrados = new Set();
+
+  const marcosPedras = [
+    { n: 10,  msg: "10 pedras! O Bernardo já tá tonto 😵" },
+    { n: 25,  msg: "25 pedras! Tá melhorando? 💗" },
+    { n: 50,  msg: "50 pedras! Ele já sentiu bastante 🪨" },
+    { n: 100, msg: "100 pedras!! O Bernardo virou sapo 🐸" },
+    { n: 200, msg: "200 pedras!!! Lenda total 🏆" },
+    { n: 500, msg: "500 PEDRAS!!! Bernardo rendeu 🏳️" },
+  ];
+
+  function iniciarModoPedra() {
+    jogoAtivo = false;
+    modoBoxeAtivo = false;
+    modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false;
+    modoCombateAtivo = false;
+    clearInterval(intervaloLoop);
+    clearInterval(intervaloCriacao);
+    clearInterval(intervaloPontuacao);
+    clearInterval(loopMario);
+    clearInterval(criadorMario);
+    clearInterval(tempoMario);
+    clearInterval(loopRev);
+    clearInterval(criadorInimigos);
+    clearInterval(tempoRev);
+    clearTimeout(timerAssistAtaque);
+    limparObjetos();
+    limparRemedios();
+    limparRevolucao();
+
+    modoPedraAtivo = true;
+    totalPedras = 0;
+    estresse = 100;
+    marcosEstresseMostrados.clear();
+
+    // Limpa overlays antigos
+    pedraArea.querySelectorAll(".estresse-zerado-overlay").forEach(e => e.remove());
+
+    gameArea.style.display = "none";
+    boxeArea.style.display = "none";
+    remedioArea.style.display = "none";
+    revolucaoArea.style.display = "none";
+    combateArea.style.display = "none";
+    finalSection.style.display = "none";
+    pedraArea.style.display = "block";
+
+    startButton.style.display = "none";
+    boxeButton.style.display = "none";
+    remedioButton.style.display = "none";
+    revolucaoButton.style.display = "none";
+    combateButton.style.display = "none";
+    pedraButton.style.display = "none";
+
+    document.getElementById("textoInicial").innerText =
+      "Modo pedras 🪨 — Toque em qualquer lugar para jogar pedras no Bernardo e aliviar o estresse!";
+
+    atualizarHudPedra();
+    atualizarEstresseBar();
+    scoreElement.innerText = "Pedras: 0 | Estresse: 100%";
+  }
+
+  function jogarPedra(event) {
+    if (!modoPedraAtivo) return;
+
+    const rect = pedraArea.getBoundingClientRect();
+    let origemX, origemY;
+
+    if (event.touches && event.touches[0]) {
+      origemX = event.touches[0].clientX - rect.left;
+      origemY = event.touches[0].clientY - rect.top;
+    } else {
+      origemX = event.clientX - rect.left;
+      origemY = event.clientY - rect.top;
+    }
+
+    totalPedras++;
+
+    // Reduz estresse
+    const novoEstresse = Math.max(0, estresse - (100 / (50 * pedrasPorEstresse)));
+    estresse = Math.round(novoEstresse * 10) / 10;
+    if (estresse < 0.1) estresse = 0;
+
+    atualizarEstresseBar();
+    atualizarHudPedra();
+
+    // Marcos de estresse
+    for (const marco of marcosEstresse) {
+      if (estresse <= marco.nivel && !marcosEstresseMostrados.has(marco.nivel)) {
+        marcosEstresseMostrados.add(marco.nivel);
+        mostrarAviso(marco.msg);
+        if (marco.nivel === 0) {
+          setTimeout(mostrarEstresseZerado, 600);
+        }
+      }
+    }
+
+    // Marcos de pedras
+    for (const marco of marcosPedras) {
+      if (totalPedras === marco.n) {
+        mostrarAviso(marco.msg);
+      }
+    }
+
+    // Anima Bernardo
+    bernardoPedra.classList.remove("levou");
+    void bernardoPedra.offsetWidth;
+    bernardoPedra.classList.add("levou");
+
+    // Posição do Bernardo para o balão
+    const bernRect = bernardoPedra.getBoundingClientRect();
+    const bernX = bernRect.left + bernRect.width / 2 - rect.left;
+    const bernY = bernRect.top - rect.top + 10;
+
+    // Frase
+    if (Math.random() < 0.8) {
+      const frase = document.createElement("div");
+      frase.classList.add("frase-pedra");
+      const varX = (Math.random() - 0.5) * 80;
+      frase.style.left = (bernX + varX) + "px";
+      frase.style.top = (bernY - 10) + "px";
+      frase.innerText = frasesBernardo[Math.floor(Math.random() * frasesBernardo.length)];
+      pedraArea.appendChild(frase);
+      setTimeout(() => frase.remove(), 1100);
+    }
+
+    // Pedra voando com arco parabólico e perspectiva
+    const pedra = document.createElement("div");
+    pedra.classList.add("pedra-voando");
+    pedra.style.left = origemX + "px";
+    pedra.style.top = origemY + "px";
+    pedra.innerText = "🪨";
+    pedraArea.appendChild(pedra);
+
+    const alvoCentroY = bernRect.top + bernRect.height / 2 - rect.top;
+    const dx = bernX - origemX;
+    const dy = alvoCentroY - origemY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // Arco: pedras lançadas de perto viajam mais reto, de longe em arco maior
+    const arcHeight = Math.min(dist * 0.42, 120);
+    // Duração proporcional à distância, mas com mínimo razoável
+    const duracao = 150 + Math.min(dist * 0.38, 170);
+
+    let inicio = null;
+
+    function animarPedra(ts) {
+      if (!inicio) inicio = ts;
+      const t = Math.min((ts - inicio) / duracao, 1);
+
+      // Ease out exponencial: arranca rápido, para suavemente no alvo
+      const ease = 1 - Math.pow(1 - t, 2.8);
+
+      // Arco parabólico — sobe no começo, desce no fim
+      const arcOffset = -arcHeight * 4 * t * (1 - t);
+
+      const x = origemX + dx * ease;
+      const y = origemY + dy * ease + arcOffset;
+
+      // Escala: começa minúscula (pedra vinda de longe),
+      // cresce até o pico, encolhe rapidamente no impacto
+      let scale;
+      if (t < 0.6) {
+        scale = 0.18 + (t / 0.6) * 1.12; // 0.18 → 1.3
+      } else {
+        scale = 1.3 - ((t - 0.6) / 0.4) * 1.22; // 1.3 → 0.08
+      }
+
+      // Rotação acelerada — parece arremesso de verdade
+      const rotation = ease * 540;
+
+      // Motion blur leve no meio do voo
+      const speedFactor = dist / duracao;
+      const midFlight = 1 - Math.abs(t - 0.45) * 2.5;
+      const blur = midFlight > 0 ? Math.min(speedFactor * midFlight * 2.5, 3.5) : 0;
+
+      pedra.style.left = x + "px";
+      pedra.style.top  = y + "px";
+      pedra.style.transform = `translate(-50%,-50%) scale(${Math.max(0.05, scale)}) rotate(${rotation}deg)`;
+      pedra.style.filter = blur > 0.6
+        ? `blur(${blur.toFixed(1)}px) drop-shadow(0 6px 10px rgba(0,0,0,0.28))`
+        : `drop-shadow(0 6px 10px rgba(0,0,0,0.28))`;
+      pedra.style.opacity = t > 0.88 ? Math.max(0, 1 - (t - 0.88) / 0.12) : 1;
+
+      if (t < 1) {
+        requestAnimationFrame(animarPedra);
+      } else {
+        pedra.remove();
+        criarImpactoPedra(x, y);
+      }
+    }
+
+    requestAnimationFrame(animarPedra);
+  }
+
+  function criarImpactoPedra(x, y) {
+    const emojis = ["💥", "⭐", "✨", "💢", "⚡", "🌟", "💫"];
+    const count = 5 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement("div");
+      p.classList.add("impacto-pedra");
+      p.style.left = x + "px";
+      p.style.top  = y + "px";
+      p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      // Espalha em ângulos distribuídos + leve aleatoriedade
+      const angle = (i / count) * 360 + (Math.random() - 0.5) * (360 / count);
+      const dist  = 28 + Math.random() * 44;
+      p.style.setProperty("--px", (Math.cos(angle * Math.PI / 180) * dist) + "px");
+      p.style.setProperty("--py", (Math.sin(angle * Math.PI / 180) * dist) + "px");
+      p.style.animationDuration = (0.32 + Math.random() * 0.18) + "s";
+      pedraArea.appendChild(p);
+      setTimeout(() => p.remove(), 600);
+    }
+  }
+
+  function atualizarHudPedra() {
+    hudPedras.innerText = "🪨 " + totalPedras + " pedra" + (totalPedras !== 1 ? "s" : "");
+    hudEstresse.innerText = "😤 Estresse: " + Math.ceil(estresse) + "%";
+    scoreElement.innerText = "Pedras: " + totalPedras + " | Estresse: " + Math.ceil(estresse) + "%";
+  }
+
+  function atualizarEstresseBar() {
+    estresseFill.style.width = Math.max(0, estresse) + "%";
+    if (estresse <= 30) estresseFill.classList.add("aliviado");
+    else estresseFill.classList.remove("aliviado");
+  }
+
+  function mostrarEstresseZerado() {
+    pedraArea.querySelectorAll(".estresse-zerado-overlay").forEach(e => e.remove());
+    const overlay = document.createElement("div");
+    overlay.classList.add("estresse-zerado-overlay");
+    const totalAtual = totalPedras;
+    overlay.innerHTML =
+      '<div class="estresse-zerado-conteudo recompensa-entrando">' +
+      '<div style="font-size:3rem;margin-bottom:10px;">🌿💚🌿</div>' +
+      '<p style="font-size:1.5rem;font-weight:900;color:#4caf50;margin-bottom:8px;">Estresse zerado! 💚</p>' +
+      '<p style="font-size:1rem;font-weight:700;color:#4d2d42;margin-bottom:18px;line-height:1.5;">Você jogou <strong>' + totalAtual + '</strong> pedras e o estresse foi embora!<br>O Bernardo recebeu tudo com amor (e dor) 🐸💗</p>' +
+      '<button class="btn-recarregar-pedra" style="background:linear-gradient(135deg,#4caf50,#81c784);box-shadow:0 14px 30px rgba(76,175,80,0.35);margin-bottom:10px;">Recarregar e continuar jogando 🪨</button>' +
+      '</div>';
+    overlay.querySelector(".btn-recarregar-pedra").addEventListener("click", function() {
+      overlay.remove();
+      estresse = 100;
+      marcosEstresseMostrados.clear();
+      atualizarEstresseBar();
+      atualizarHudPedra();
+      mostrarAviso("Estresse recarregado! Pode continuar 🪨");
+    });
+    overlay.addEventListener("click", e => e.stopPropagation());
+    overlay.addEventListener("touchstart", e => e.stopPropagation());
+    pedraArea.appendChild(overlay);
+  }
+
+  function pararModoPedra() {
+    modoPedraAtivo = false;
+    pedraArea.style.display = "none";
+    pedraArea.querySelectorAll(".frase-pedra, .pedra-voando, .estresse-zerado-overlay, .impacto-pedra").forEach(e => e.remove());
+    finalSection.style.display = "none";
+    startButton.style.display = "inline-block";
+    startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block";
+    remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block";
+    combateButton.style.display = "inline-block";
+    pedraButton.style.display = "inline-block";
+    document.getElementById("textoInicial").innerText =
+      "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
+    scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
+  }
+
+  // Detecta bersem.png; usa emoji como fallback se não carregar
+  (function verificarImagemBersem() {
+    const teste = new Image();
+    teste.onload = () => bernardoPedra.classList.remove("sem-imagem");
+    teste.onerror = () => bernardoPedra.classList.add("sem-imagem");
+    teste.src = "bersem.png";
+  })();
+
+  pedraButton.addEventListener("click", iniciarModoPedra);
+
+  pedraArea.addEventListener("click", jogarPedra);
+
+  pedraArea.addEventListener("touchstart", function (event) {
+    event.preventDefault();
+    jogarPedra(event);
+  }, { passive: false });
 </script>
-</body>
-</html>
+</body></html>
