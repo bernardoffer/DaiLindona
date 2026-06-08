@@ -1825,6 +1825,131 @@
       100% { opacity: 0; transform: translate(-50%, -62px) scale(0.95); }
     }
 
+    /* ====== Modo Surpresa ====== */
+    .presente-area {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 55%, rgba(255, 240, 250, 0.95), rgba(255, 180, 225, 0.7) 65%),
+        linear-gradient(135deg, #fce4ec, #f8bbd0 55%, #f48fb1);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .presente-caixa {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      transform: translate(-50%, -50%);
+      font-size: 130px;
+      line-height: 1;
+      z-index: 4;
+      filter: drop-shadow(0 18px 28px rgba(200, 60, 120, 0.3));
+      animation: presentePulsar 2s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    .presente-caixa.abrindo {
+      animation: presenteAbrir 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+
+    .presente-dica {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      color: #a0305a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 9;
+    }
+
+    .confete-presente {
+      position: absolute;
+      font-size: 22px;
+      pointer-events: none;
+      z-index: 8;
+      transform: translate(-50%, -50%);
+      animation: confeteVoar var(--dur, 0.8s) ease-out forwards;
+    }
+
+    .presente-revelacao {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .presente-revelacao-conteudo {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 30px 26px 24px;
+      max-width: 88%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(180, 60, 110, 0.25), 0 0 0 2px rgba(255, 95, 162, 0.2);
+    }
+
+    .presente-link {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e91e8c, #ff6bb5);
+      color: white;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 1.05rem;
+      box-shadow: 0 14px 30px rgba(233, 30, 140, 0.38);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .presente-link:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 20px 38px rgba(233, 30, 140, 0.48);
+    }
+
+    .botao-presente {
+      background: linear-gradient(135deg, #e91e8c, #ff6bb5);
+      box-shadow: 0 18px 35px rgba(233, 30, 140, 0.38);
+    }
+
+    @keyframes presentePulsar {
+      0%   { transform: translate(-50%, -50%) scale(1)    rotate(-2deg); }
+      20%  { transform: translate(-50%, -53%) scale(1.07) rotate(3deg);  }
+      40%  { transform: translate(-50%, -50%) scale(1.03) rotate(-1deg); }
+      65%  { transform: translate(-50%, -52%) scale(1.09) rotate(4deg);  }
+      100% { transform: translate(-50%, -50%) scale(1)    rotate(-2deg); }
+    }
+
+    @keyframes presenteAbrir {
+      0%   { transform: translate(-50%, -50%) scale(1)    rotate(0);     opacity: 1; }
+      15%  { transform: translate(-50%, -50%) scale(0.88) rotate(-10deg); }
+      35%  { transform: translate(-50%, -50%) scale(1.18) rotate(10deg); }
+      55%  { transform: translate(-50%, -46%) scale(1.25) rotate(-5deg); }
+      80%  { transform: translate(-50%, -50%) scale(0.7)  rotate(12deg); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(0)    rotate(25deg); opacity: 0; }
+    }
+
+    @keyframes confeteVoar {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+      30%  { opacity: 1; transform: translate(calc(-50% + var(--cx) * 0.4), calc(-50% + var(--cy) * 0.4)) scale(1.2) rotate(120deg); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--cx)), calc(-50% + var(--cy))) scale(0.5) rotate(360deg); }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -1984,6 +2109,10 @@
     <button id="pedraButton" class="botao-pedra">
       Jogar pedras 🪨
     </button>
+
+    <button id="presenteButton" class="botao-presente">
+      Surpresa 🎁
+    </button>
   </div>
 
   <div class="aviso" id="aviso"></div>
@@ -2092,6 +2221,12 @@
     <button class="sair-pedra" id="sairPedra">← outros jogos</button>
   </div>
 
+  <div class="presente-area" id="presenteArea">
+    <div class="presente-caixa" id="presenteCaixa">🎁</div>
+    <p class="presente-dica" id="presenteDica">Toque na caixa para abrir! 🎁</p>
+    <button class="sair-pedra" id="sairPresente">← outros jogos</button>
+  </div>
+
   <section class="final" id="final">
     <div class="icone-final" id="iconeFinal">💗</div>
 
@@ -2167,6 +2302,8 @@
     document.getElementById("pedraButton").style.display = "none";
     document.getElementById("pedraArea").style.display = "none";
     aviso.style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Toque na tela para pular. Fuja do lanche 🍔 e da fome 😵‍💫, e colete 15 Assistentes Prof 👩‍🏫 para vencer.";
@@ -2426,6 +2563,7 @@
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
   }
 
   function limparObjetos() {
@@ -2493,6 +2631,8 @@
     document.getElementById("revolucaoArea").style.display = "none";
     document.getElementById("combateArea").style.display = "none";
     document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -2751,6 +2891,8 @@
     document.getElementById("revolucaoArea").style.display = "none";
     document.getElementById("combateArea").style.display = "none";
     document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -2955,6 +3097,7 @@
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
   }
 
   function perderModoRemedio() {
@@ -2976,6 +3119,7 @@
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
   }
 
   remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -3059,6 +3203,8 @@
     revolucaoArea.style.display = "block";
     document.getElementById("combateArea").style.display = "none";
     document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3294,6 +3440,7 @@
     revolucaoButton.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
   }
 
   function perderRevolucao() {
@@ -3315,6 +3462,7 @@
     revolucaoButton.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
   }
 
   revolucaoButton.addEventListener("click", iniciarModoRevolucao);
@@ -3434,6 +3582,8 @@
     finalSection.style.display = "none";
     combateArea.style.display = "block";
     document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3645,6 +3795,7 @@
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3675,6 +3826,7 @@
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3769,6 +3921,8 @@
     revolucaoButton.style.display = "none";
     combateButton.style.display = "none";
     pedraButton.style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo pedras 🪨 — Toque em qualquer lugar para jogar pedras no Bernardo e aliviar o estresse!";
@@ -3980,6 +4134,7 @@
     revolucaoButton.style.display = "inline-block";
     combateButton.style.display = "inline-block";
     pedraButton.style.display = "inline-block";
+    presenteButton.style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -4000,6 +4155,139 @@
   pedraArea.addEventListener("touchstart", function (event) {
     event.preventDefault();
     jogarPedra(event);
+  }, { passive: false });
+
+  /* ====== Modo Surpresa (Caixa de Presente) ====== */
+  const presenteArea = document.getElementById("presenteArea");
+  const presenteCaixa = document.getElementById("presenteCaixa");
+  const presenteButton = document.getElementById("presenteButton");
+
+  let modoPresenteAtivo = false;
+  let presenteJaAberto = false;
+
+  function iniciarModoPresente() {
+    jogoAtivo = false;
+    modoBoxeAtivo = false;
+    modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false;
+    modoCombateAtivo = false;
+    modoPedraAtivo = false;
+    clearInterval(intervaloLoop); clearInterval(intervaloCriacao); clearInterval(intervaloPontuacao);
+    clearInterval(loopMario); clearInterval(criadorMario); clearInterval(tempoMario);
+    clearInterval(loopRev); clearInterval(criadorInimigos); clearInterval(tempoRev);
+    clearTimeout(timerAssistAtaque);
+    limparObjetos(); limparRemedios(); limparRevolucao();
+
+    modoPresenteAtivo = true;
+    presenteJaAberto = false;
+
+    // Reseta o estado visual da caixa
+    presenteCaixa.classList.remove("abrindo");
+    presenteCaixa.style.display = "";
+    const dica = document.getElementById("presenteDica");
+    if (dica) dica.style.display = "";
+    presenteArea.querySelectorAll(".presente-revelacao, .confete-presente").forEach(e => e.remove());
+
+    gameArea.style.display = "none";
+    boxeArea.style.display = "none";
+    remedioArea.style.display = "none";
+    revolucaoArea.style.display = "none";
+    combateArea.style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
+    finalSection.style.display = "none";
+    presenteArea.style.display = "block";
+
+    startButton.style.display = "none";
+    boxeButton.style.display = "none";
+    remedioButton.style.display = "none";
+    revolucaoButton.style.display = "none";
+    combateButton.style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
+    presenteButton.style.display = "none";
+
+    document.getElementById("textoInicial").innerText =
+      "Uma surpresa especialmente pra você 💗";
+    scoreElement.innerText = "Toque na caixa para descobrir 🎁";
+  }
+
+  function abrirPresente() {
+    if (!modoPresenteAtivo || presenteJaAberto) return;
+    presenteJaAberto = true;
+
+    presenteCaixa.classList.add("abrindo");
+
+    // Estouro de confetes a partir do centro
+    const emojis = ["💗", "🎵", "✨", "⭐", "💕", "🌟", "💫", "🎶", "❤️", "🌸"];
+    for (let i = 0; i < 36; i++) {
+      setTimeout(function() {
+        const el = document.createElement("div");
+        el.classList.add("confete-presente");
+        el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        const angle = Math.random() * 360;
+        const dist  = 80 + Math.random() * 160;
+        el.style.left = "50%";
+        el.style.top  = "46%";
+        el.style.setProperty("--cx", (Math.cos(angle * Math.PI / 180) * dist) + "px");
+        el.style.setProperty("--cy", (Math.sin(angle * Math.PI / 180) * dist) + "px");
+        el.style.setProperty("--dur", (0.55 + Math.random() * 0.65) + "s");
+        presenteArea.appendChild(el);
+        setTimeout(function() { el.remove(); }, 1400);
+      }, i * 28);
+    }
+
+    // Esconde caixa e mostra revelação
+    setTimeout(function() {
+      presenteCaixa.style.display = "none";
+      const dica = document.getElementById("presenteDica");
+      if (dica) dica.style.display = "none";
+      mostrarRevelacaoPresente();
+    }, 750);
+  }
+
+  function mostrarRevelacaoPresente() {
+    const rev = document.createElement("div");
+    rev.classList.add("presente-revelacao");
+    const inner = document.createElement("div");
+    inner.classList.add("presente-revelacao-conteudo", "recompensa-entrando");
+    inner.innerHTML =
+      "<div style='font-size:3.2rem;margin-bottom:12px;animation:pulse 1.4s ease-in-out infinite'>💗🎵💗</div>" +
+      "<p style='font-size:1.35rem;font-weight:900;color:#c4317a;margin-bottom:10px;'>Uma música só pra você!</p>" +
+      "<p style='font-size:0.98rem;font-weight:700;color:#4d2d42;margin-bottom:4px;line-height:1.65;'>" +
+        "Separei essa música especialmente<br>pra fazer o seu dia mais bonito 💗 Você também pode pedir um desejo pra mim" +
+      "</p>" +
+      "<a href='https://music.youtube.com/watch?v=H8vyokO_FMw' target='_blank' rel='noopener' class='presente-link'>" +
+        "🎵 Ouvir agora" +
+      "</a>" +
+      "<br><button onclick='pararModoPresente()' style='background:none;box-shadow:none;color:#a0607e;font-size:0.82rem;font-weight:700;margin-top:10px;padding:4px 10px;'>" +
+        "← outros jogos" +
+      "</button>";
+    rev.appendChild(inner);
+    presenteArea.appendChild(rev);
+  }
+
+  function pararModoPresente() {
+    modoPresenteAtivo = false;
+    presenteArea.style.display = "none";
+    presenteArea.querySelectorAll(".presente-revelacao, .confete-presente").forEach(e => e.remove());
+    startButton.style.display = "inline-block";
+    startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block";
+    remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block";
+    combateButton.style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
+    presenteButton.style.display = "inline-block";
+    document.getElementById("textoInicial").innerText =
+      "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
+    scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
+  }
+
+  document.getElementById("sairPresente").addEventListener("click", pararModoPresente);
+  presenteButton.addEventListener("click", iniciarModoPresente);
+  presenteArea.addEventListener("click", abrirPresente);
+  presenteArea.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    abrirPresente();
   }, { passive: false });
 </script>
 </body></html>
