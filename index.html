@@ -2558,7 +2558,8 @@
 
     startButton.style.display = "inline-block";
     startButton.innerText = "Tentar de novo";
-    document.getElementById("boxeButton").style.display = "inline-block";
+    document.getElementById("boxeButton")
+    document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("remedioButton").style.display = "inline-block";
     document.getElementById("revolucaoButton").style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
@@ -2615,6 +2616,7 @@
     limparObjetos();
 
     modoBoxeAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     socos = 0;
     multiplicadorSoco = 1;
     comboSoco = 0;
@@ -2871,6 +2873,7 @@
     limparObjetos();
 
     modoRemedioAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     remediosColetados = 0;
     vidasMario = 3;
     pontosMario = 0;
@@ -3094,7 +3097,8 @@
     startButton.innerText = "Jogar de novo";
     boxeButton.style.display = "inline-block";
     remedioButton.style.display = "inline-block";
-    document.getElementById("revolucaoButton").style.display = "inline-block";
+    document.getElementById("revolucaoButton")
+    document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
@@ -3116,7 +3120,8 @@
     startButton.innerText = "Tentar de novo";
     boxeButton.style.display = "inline-block";
     remedioButton.style.display = "inline-block";
-    document.getElementById("revolucaoButton").style.display = "inline-block";
+    document.getElementById("revolucaoButton")
+    document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
@@ -3189,6 +3194,7 @@
     limparRemedios();
 
     modoRevolucaoAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     patriarcadosDerrotados = 0;
     vidasRev = 3;
     pontosRev = 0;
@@ -3438,7 +3444,8 @@
     boxeButton.style.display = "inline-block";
     remedioButton.style.display = "inline-block";
     revolucaoButton.style.display = "inline-block";
-    document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("combateButton")
+    document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
   }
@@ -3460,7 +3467,8 @@
     boxeButton.style.display = "inline-block";
     remedioButton.style.display = "inline-block";
     revolucaoButton.style.display = "inline-block";
-    document.getElementById("combateButton").style.display = "inline-block";
+    document.getElementById("combateButton")
+    document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
   }
@@ -3570,6 +3578,7 @@
     limparRevolucao();
 
     modoCombateAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     daiHp = 100;
     assistHp = 100;
     roundAtual = 1;
@@ -3794,7 +3803,8 @@
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
-      document.getElementById("pedraButton").style.display = "inline-block";
+      document.getElementById("pedraButton")
+      document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
     }, 1600);
   }
@@ -3825,7 +3835,8 @@
       remedioButton.style.display = "inline-block";
       revolucaoButton.style.display = "inline-block";
       combateButton.style.display = "inline-block";
-      document.getElementById("pedraButton").style.display = "inline-block";
+      document.getElementById("pedraButton")
+      document.getElementById("legenda").style.display = "";.style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
     }, 1600);
   }
@@ -3900,6 +3911,7 @@
     limparRevolucao();
 
     modoPedraAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     totalPedras = 0;
     estresse = 100;
     marcosEstresseMostrados.clear();
@@ -4124,6 +4136,7 @@
 
   function pararModoPedra() {
     modoPedraAtivo = false;
+    document.getElementById("legenda").style.display = "";
     pedraArea.style.display = "none";
     pedraArea.querySelectorAll(".frase-pedra, .pedra-voando, .estresse-zerado-overlay, .impacto-pedra").forEach(e => e.remove());
     finalSection.style.display = "none";
@@ -4179,6 +4192,7 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoPresenteAtivo = true;
+    document.getElementById("legenda").style.display = "none";
     presenteJaAberto = false;
 
     // Reseta o estado visual da caixa
@@ -4267,6 +4281,7 @@
 
   function pararModoPresente() {
     modoPresenteAtivo = false;
+    document.getElementById("legenda").style.display = "";
     presenteArea.style.display = "none";
     presenteArea.querySelectorAll(".presente-revelacao, .confete-presente").forEach(e => e.remove());
     startButton.style.display = "inline-block";
