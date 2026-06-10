@@ -1950,6 +1950,157 @@
       100% { opacity: 0; transform: translate(calc(-50% + var(--cx)), calc(-50% + var(--cy))) scale(0.5) rotate(360deg); }
     }
 
+
+    /* ====== Modo Dormir o Ber ====== */
+    .ber-dormir-area {
+      position: relative;
+      width: 100%;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 60%, rgba(255, 220, 245, 0.85), transparent 65%),
+        linear-gradient(135deg, #fce4ec, #f8bbd0 55%, #f48fb1);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'><text y='28' font-size='28'>&#x1F44A;</text></svg>") 16 16, pointer;
+      padding-bottom: 22px;
+    }
+
+    .hud-ber-dormir {
+      padding: 12px 14px 0;
+      display: flex;
+      justify-content: center;
+      z-index: 9;
+    }
+
+    .hud-ber-dormir span {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #7b3d62;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 20px rgba(128, 70, 105, 0.18);
+    }
+
+    .ber-dormir-barra-container {
+      margin: 10px 16px 0;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1.5px solid rgba(255, 255, 255, 0.65);
+    }
+
+    .ber-dormir-barra {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff5fa2, #ffb3d1);
+      transition: width 0.1s ease, background 0.5s ease;
+    }
+
+    .ber-dormir-barra.dormindo {
+      background: linear-gradient(90deg, #9575cd, #b39ddb) !important;
+    }
+
+    .ber-dormir-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 14px auto 0;
+      width: fit-content;
+      position: relative;
+    }
+
+    .ber-dormir-img-el {
+      width: 200px;
+      max-width: 66vw;
+      border-radius: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 14px 40px rgba(128, 70, 105, 0.22);
+      display: block;
+      transition: transform 0.09s ease, filter 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, opacity 0.4s ease;
+      cursor: inherit;
+    }
+
+    .ber-dormir-img-el.pancada {
+      transform: scale(0.93) rotate(-5deg);
+      box-shadow: 0 8px 30px rgba(255, 60, 60, 0.55);
+      filter: brightness(1.45) saturate(1.6);
+    }
+
+    .ber-dormir-img-el.dormindo {
+      filter: brightness(0.7) saturate(0.4) sepia(0.25);
+      box-shadow: 0 14px 40px rgba(100, 60, 160, 0.35);
+      border-color: #b39ddb;
+      animation: berRespirando 2.8s ease-in-out infinite;
+      cursor: default;
+    }
+
+    .ber-dormir-nome {
+      margin-top: 8px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #7b3d62;
+      font-size: 0.82rem;
+      font-weight: 800;
+      box-shadow: 0 6px 16px rgba(128, 70, 105, 0.14);
+      transition: color 0.5s ease;
+    }
+
+    .ber-dormir-msg {
+      text-align: center;
+      margin: 12px 16px 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #6d3659;
+      min-height: 1.5em;
+    }
+
+    .hit-ber {
+      position: absolute;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 10;
+      transform: translate(-50%, -50%);
+      animation: hitBerSubir 0.65s ease-out forwards;
+    }
+
+    .zzz-ber {
+      position: fixed;
+      font-size: 1.6rem;
+      pointer-events: none;
+      z-index: 999;
+      animation: zzzSubir 1.8s ease-out forwards;
+    }
+
+    .botao-ber-dormir {
+      background: linear-gradient(135deg, #7b3d62, #ff5fa2);
+      box-shadow: 0 18px 35px rgba(123, 61, 98, 0.35);
+    }
+
+    @keyframes berRespirando {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.028) rotate(0.5deg); }
+    }
+
+    @keyframes hitBerSubir {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(-10deg); }
+      100% { opacity: 0; transform: translate(-50%, calc(-50% - 80px)) scale(0.7) rotate(15deg); }
+    }
+
+    @keyframes zzzSubir {
+      0%   { opacity: 0; transform: scale(0.5); }
+      20%  { opacity: 1; transform: scale(1.15); }
+      75%  { opacity: 0.8; }
+      100% { opacity: 0; transform: translateY(-70px) scale(0.9); }
+    }
+
     @media (max-width: 600px) {
       body {
         align-items: flex-start;
@@ -2113,6 +2264,10 @@
     <button id="presenteButton" class="botao-presente">
       Surpresa 🎁
     </button>
+
+    <button id="berDormirButton" class="botao-ber-dormir">
+      Dormir o Ber 😴
+    </button>
   </div>
 
   <div class="aviso" id="aviso"></div>
@@ -2227,6 +2382,22 @@
     <button class="sair-pedra" id="sairPresente">← outros jogos</button>
   </div>
 
+
+  <div class="ber-dormir-area" id="berDormirArea">
+    <div class="hud-ber-dormir">
+      <span id="hudBerDormir">👊 0 / 100</span>
+    </div>
+    <div class="ber-dormir-barra-container">
+      <div class="ber-dormir-barra" id="berDormirBarra"></div>
+    </div>
+    <div class="ber-dormir-wrapper" id="berDormirWrapper">
+      <img id="berDormirImg" class="ber-dormir-img-el" src="bersem.png" alt="Bernardo" draggable="false">
+      <div class="ber-dormir-nome" id="berDormirNome">Bernardo 😬</div>
+    </div>
+    <div class="ber-dormir-msg" id="berDormirMsg">Clica no Ber para bater! 👊</div>
+    <button class="sair-pedra" id="sairBerDormir">← outros jogos</button>
+  </div>
+
   <section class="final" id="final">
     <div class="icone-final" id="iconeFinal">💗</div>
 
@@ -2304,6 +2475,8 @@
     aviso.style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Toque na tela para pular. Fuja do lanche 🍔 e da fome 😵‍💫, e colete 15 Assistentes Prof 👩‍🏫 para vencer.";
@@ -2564,6 +2737,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
   }
 
   function limparObjetos() {
@@ -2633,6 +2807,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -2893,6 +3069,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3098,6 +3276,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
   }
 
   function perderModoRemedio() {
@@ -3120,6 +3299,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
   }
 
   remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -3205,6 +3385,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3441,6 +3623,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
   }
 
   function perderRevolucao() {
@@ -3463,6 +3646,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
   }
 
   revolucaoButton.addEventListener("click", iniciarModoRevolucao);
@@ -3584,6 +3768,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3796,6 +3982,7 @@
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3827,6 +4014,7 @@
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -3923,6 +4111,8 @@
     pedraButton.style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo pedras 🪨 — Toque em qualquer lugar para jogar pedras no Bernardo e aliviar o estresse!";
@@ -4135,6 +4325,7 @@
     combateButton.style.display = "inline-block";
     pedraButton.style.display = "inline-block";
     presenteButton.style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -4204,6 +4395,8 @@
     combateButton.style.display = "none";
     document.getElementById("pedraButton").style.display = "none";
     presenteButton.style.display = "none";
+    document.getElementById("berDormirButton").style.display = "none";
+    document.getElementById("berDormirArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Uma surpresa especialmente pra você 💗";
@@ -4277,6 +4470,7 @@
     combateButton.style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     presenteButton.style.display = "inline-block";
+    document.getElementById("berDormirButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -4289,5 +4483,208 @@
     e.preventDefault();
     abrirPresente();
   }, { passive: false });
+  /* ====== Modo Dormir o Ber ====== */
+  const berDormirArea    = document.getElementById("berDormirArea");
+  const berDormirImg     = document.getElementById("berDormirImg");
+  const berDormirBarra   = document.getElementById("berDormirBarra");
+  const berDormirMsg     = document.getElementById("berDormirMsg");
+  const hudBerDormir     = document.getElementById("hudBerDormir");
+  const berDormirNome    = document.getElementById("berDormirNome");
+  const berDormirWrapper = document.getElementById("berDormirWrapper");
+  const berDormirButton  = document.getElementById("berDormirButton");
+
+  let modoBerDormirAtivo = false;
+  let batidasBer = 0;
+  let berJaDormiu = false;
+
+  const hitEmojisB = ["💥","🌟","✨","😵","💫","🔥","⚡","😤","💢","👊"];
+  const frasesHit = [
+    "Ai!", "Mereci...", "Tá bom...", "Ai não!", "Ai!!",
+    "Eu mereço!", "Desculpa!", "Prometo melhorar!", "Ai meu Deus!",
+    "Odeio frutas!", "ME SALVE!", "TO TRISTE!", "Ai ai ai!",
+    "Ok ok ok!", "Amor, eu estou melhorando!", "Se Você diz", "Será Será!", "Tô bem...",
+    "5x3", "Perdi a linha!", "Pela última vez!",
+    "Mereço mesmo!", "Entendi a lição!", "ME ODEIA",
+    "Tô aprendendo!", "Podia ser pior!", "Sofro com amor!",
+  ];
+
+  function iniciarModoBerDormir() {
+    // Para todos os outros modos
+    jogoAtivo = false;
+    modoBoxeAtivo = false;
+    modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false;
+    modoCombateAtivo = false;
+    modoPedraAtivo = false;
+    modoPresenteAtivo = false;
+    clearInterval(intervaloLoop); clearInterval(intervaloCriacao); clearInterval(intervaloPontuacao);
+    clearInterval(loopMario); clearInterval(criadorMario); clearInterval(tempoMario);
+    clearInterval(loopRev); clearInterval(criadorInimigos); clearInterval(tempoRev);
+    clearTimeout(timerAssistAtaque);
+    limparObjetos(); limparRemedios(); limparRevolucao();
+
+    modoBerDormirAtivo = true;
+    batidasBer = 0;
+    berJaDormiu = false;
+
+    // Reseta imagem e visual
+    berDormirImg.style.opacity = "1";
+    berDormirImg.src = "bersem.png";
+    berDormirImg.classList.remove("dormindo", "pancada");
+    berDormirBarra.style.width = "0%";
+    berDormirBarra.classList.remove("dormindo");
+    berDormirNome.style.color = "";
+    berDormirNome.innerText = "Bernardo 😬";
+    berDormirMsg.innerText = "Clica no Ber para bater! 👊";
+
+    // Esconde tudo
+    gameArea.style.display = "none";
+    boxeArea.style.display = "none";
+    remedioArea.style.display = "none";
+    revolucaoArea.style.display = "none";
+    combateArea.style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
+    finalSection.style.display = "none";
+    berDormirArea.style.display = "block";
+
+    startButton.style.display = "none";
+    boxeButton.style.display = "none";
+    remedioButton.style.display = "none";
+    revolucaoButton.style.display = "none";
+    combateButton.style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    berDormirButton.style.display = "none";
+
+    document.getElementById("textoInicial").innerText =
+      "Modo dormir o Ber 😴 — Bate nele 100 vezes e ele vai dormir!";
+    atualizarHudBer();
+    scoreElement.innerText = "Batidas: 0 / 100";
+  }
+
+  function baterBer(event) {
+    if (!modoBerDormirAtivo || berJaDormiu) return;
+
+    batidasBer++;
+    atualizarHudBer();
+
+    const pct = Math.min(batidasBer / 100, 1);
+    berDormirBarra.style.width = (pct * 100) + "%";
+
+    // Animação de pancada
+    berDormirImg.classList.remove("pancada");
+    void berDormirImg.offsetWidth;
+    berDormirImg.classList.add("pancada");
+    setTimeout(() => berDormirImg.classList.remove("pancada"), 150);
+
+    // Mensagem aleatória
+    if (batidasBer < 100) {
+      berDormirMsg.innerText = frasesHit[Math.floor(Math.random() * frasesHit.length)];
+    }
+
+    // Emoji voando no ponto do clique
+    const rect = berDormirWrapper.getBoundingClientRect();
+    let cx, cy;
+    if (event.touches && event.touches[0]) {
+      cx = event.touches[0].clientX - rect.left;
+      cy = event.touches[0].clientY - rect.top;
+    } else {
+      cx = event.clientX - rect.left;
+      cy = event.clientY - rect.top;
+    }
+    const el = document.createElement("div");
+    el.className = "hit-ber";
+    el.style.left = cx + "px";
+    el.style.top  = cy + "px";
+    el.innerText = hitEmojisB[Math.floor(Math.random() * hitEmojisB.length)];
+    berDormirWrapper.appendChild(el);
+    setTimeout(() => el.remove(), 660);
+
+    // Transição para dormindo ao chegar em 100
+    if (batidasBer >= 100 && !berJaDormiu) {
+      berJaDormiu = true;
+      berDormirBarra.classList.add("dormindo");
+
+      setTimeout(() => {
+        berDormirImg.style.opacity = "0";
+        setTimeout(() => {
+          berDormirImg.src = "berdormindo.png";
+          berDormirImg.classList.add("dormindo");
+          berDormirImg.style.opacity = "1";
+          berDormirNome.innerText = "Bernardo 😴";
+          berDormirNome.style.color = "#7e57c2";
+          berDormirMsg.innerHTML = "😴 Dormi por vontade própria! 💤";
+          scoreElement.innerText = "Dormi após as batidas " + batidasBer + " do amor!";
+
+          // Zzzs flutuantes
+          for (let i = 0; i < 6; i++) {
+            setTimeout(() => {
+              const wr = berDormirWrapper.getBoundingClientRect();
+              const zzz = document.createElement("div");
+              zzz.className = "zzz-ber";
+              zzz.style.left = (wr.left + wr.width / 2 + (Math.random() - 0.5) * 60) + "px";
+              zzz.style.top  = (wr.top + wr.height / 2) + "px";
+              zzz.innerText = "💤";
+              document.body.appendChild(zzz);
+              setTimeout(() => zzz.remove(), 1800);
+            }, i * 300);
+          }
+
+          // Mostrar botão de jogar de novo
+          setTimeout(() => {
+            mostrarAviso("O Ber tá roncando... Missão concluída! 🎉");
+            document.getElementById("sairBerDormir").innerText = "Jogar de novo 🔄";
+          }, 600);
+        }, 400);
+      }, 200);
+    }
+  }
+
+  function atualizarHudBer() {
+    hudBerDormir.innerText = "👊 " + batidasBer + " / 100";
+    scoreElement.innerText = "Batidas: " + batidasBer + " / 100";
+  }
+
+  function pararModoBerDormir() {
+    modoBerDormirAtivo = false;
+    berDormirArea.style.display = "none";
+    finalSection.style.display = "none";
+    startButton.style.display = "inline-block";
+    startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block";
+    remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block";
+    combateButton.style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
+    berDormirButton.style.display = "inline-block";
+    document.getElementById("textoInicial").innerText =
+      "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
+    scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
+  }
+
+  berDormirButton.addEventListener("click", iniciarModoBerDormir);
+  document.getElementById("sairBerDormir").addEventListener("click", function() {
+    if (berJaDormiu) {
+      // Reset e joga de novo
+      iniciarModoBerDormir();
+    } else {
+      pararModoBerDormir();
+    }
+  });
+
+  berDormirArea.addEventListener("click", function(event) {
+    if (event.target === document.getElementById("sairBerDormir")) return;
+    baterBer(event);
+  });
+
+  berDormirArea.addEventListener("touchstart", function(event) {
+    if (event.target === document.getElementById("sairBerDormir")) return;
+    event.preventDefault();
+    baterBer(event);
+  }, { passive: false });
+
+
 </script>
 </body></html>
