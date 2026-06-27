@@ -1951,155 +1951,211 @@
     }
 
 
-    /* ====== Modo Dormir o Ber ====== */
-    .ber-dormir-area {
+    /* ====== Modo Fatson vs Bernardo Vilão ====== */
+    .atirador-area {
       position: relative;
       width: 100%;
+      height: 420px;
       margin-top: 24px;
       border-radius: 28px;
       background:
-        radial-gradient(circle at 50% 60%, rgba(255, 220, 245, 0.85), transparent 65%),
-        linear-gradient(135deg, #fce4ec, #f8bbd0 55%, #f48fb1);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+        radial-gradient(circle at 20% 80%, rgba(100, 40, 140, 0.4), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(200, 60, 80, 0.3), transparent 40%),
+        linear-gradient(135deg, #0d0020 0%, #1a0535 50%, #2d0f4a 100%);
+      border: 1px solid rgba(255, 100, 200, 0.2);
       overflow: hidden;
       display: none;
       touch-action: manipulation;
       user-select: none;
-      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'><text y='28' font-size='28'>&#x1F44A;</text></svg>") 16 16, pointer;
-      padding-bottom: 22px;
+      cursor: crosshair;
     }
 
-    .hud-ber-dormir {
-      padding: 12px 14px 0;
-      display: flex;
-      justify-content: center;
-      z-index: 9;
+    .fatson-img {
+      position: absolute;
+      left: 16px;
+      bottom: 20px;
+      width: 100px;
+      height: 130px;
+      background-image: url("fatson.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 5;
+      filter: drop-shadow(0 0 14px rgba(255, 150, 200, 0.5));
+      transform-origin: bottom center;
     }
 
-    .hud-ber-dormir span {
-      padding: 6px 14px;
+    .fatson-img.sem-imagem::after { content: "🤠"; font-size: 90px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+    .fatson-img.sem-imagem { background-image: none; }
+
+    .fatson-img.atirando { animation: fatsonRecuo 0.2s ease; }
+
+    .vilao-img {
+      position: absolute;
+      right: 24px;
+      bottom: 30px;
+      width: 110px;
+      height: 140px;
+      background-image: url("bernardo vilao.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      z-index: 5;
+      filter: drop-shadow(0 0 16px rgba(255, 60, 60, 0.55));
+    }
+
+    .vilao-img.sem-imagem::after { content: "😈"; font-size: 90px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+    .vilao-img.sem-imagem { background-image: none; }
+
+    .vilao-img.tomou-tiro { animation: vilaoTomouTiro 0.3s ease; }
+
+    .pedra-atirador {
+      position: absolute;
+      font-size: 22px;
+      pointer-events: none;
+      z-index: 6;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.55));
+    }
+
+    .frase-vilao {
+      position: absolute;
+      padding: 6px 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.94);
+      color: #c1121f;
+      font-weight: 900;
+      font-size: 0.92rem;
+      pointer-events: none;
+      transform: translate(-50%, 0);
+      animation: fraseSubirPedra 1s ease-out forwards;
+      z-index: 8;
+      white-space: nowrap;
+    }
+
+    .impacto-atirador {
+      position: absolute;
+      font-size: 28px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: impactoAtirador 0.4s ease-out forwards;
+      z-index: 7;
+    }
+
+    .hud-atirador {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 18px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.92);
-      color: #7b3d62;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 8px 20px rgba(128, 70, 105, 0.18);
+      color: #4a0020;
+      font-weight: 900;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+      z-index: 9;
+      pointer-events: none;
+      white-space: nowrap;
     }
 
-    .ber-dormir-barra-container {
-      margin: 10px 16px 0;
-      height: 16px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      border: 1.5px solid rgba(255, 255, 255, 0.65);
-    }
-
-    .ber-dormir-barra {
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ff5fa2, #ffb3d1);
-      transition: width 0.1s ease, background 0.5s ease;
-    }
-
-    .ber-dormir-barra.dormindo {
-      background: linear-gradient(90deg, #9575cd, #b39ddb) !important;
-    }
-
-    .ber-dormir-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 14px auto 0;
-      width: fit-content;
-      position: relative;
-    }
-
-    .ber-dormir-img-el {
-      width: 200px;
-      max-width: 66vw;
-      border-radius: 18px;
-      border: 3px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 14px 40px rgba(128, 70, 105, 0.22);
-      display: block;
-      transition: transform 0.09s ease, filter 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, opacity 0.4s ease;
-      cursor: inherit;
-    }
-
-    .ber-dormir-img-el.pancada {
-      transform: scale(0.93) rotate(-5deg);
-      box-shadow: 0 8px 30px rgba(255, 60, 60, 0.55);
-      filter: brightness(1.45) saturate(1.6);
-    }
-
-    .ber-dormir-img-el.dormindo {
-      filter: brightness(0.7) saturate(0.4) sepia(0.25);
-      box-shadow: 0 14px 40px rgba(100, 60, 160, 0.35);
-      border-color: #b39ddb;
-      animation: berRespirando 2.8s ease-in-out infinite;
-      cursor: default;
-    }
-
-    .ber-dormir-nome {
-      margin-top: 8px;
-      padding: 4px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.88);
-      color: #7b3d62;
-      font-size: 0.82rem;
-      font-weight: 800;
-      box-shadow: 0 6px 16px rgba(128, 70, 105, 0.14);
-      transition: color 0.5s ease;
-    }
-
-    .ber-dormir-msg {
-      text-align: center;
-      margin: 12px 16px 0;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #6d3659;
-      min-height: 1.5em;
-    }
-
-    .hit-ber {
+    .dica-atirador {
       position: absolute;
-      font-size: 2rem;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffccee;
+      font-weight: 700;
+      font-size: 0.75rem;
+      backdrop-filter: blur(8px);
+      z-index: 9;
       pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .sair-atirador {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: rgba(255,200,230,0.65);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 10px;
       z-index: 10;
-      transform: translate(-50%, -50%);
-      animation: hitBerSubir 0.65s ease-out forwards;
+      margin-top: 0;
     }
 
-    .zzz-ber {
-      position: fixed;
-      font-size: 1.6rem;
-      pointer-events: none;
-      z-index: 999;
-      animation: zzzSubir 1.8s ease-out forwards;
+    .sair-atirador:hover { transform: translateX(-50%); box-shadow: none; color: #ffaadd; }
+
+    .atirador-vitoria {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 0, 30, 0.72);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
     }
 
-    .botao-ber-dormir {
-      background: linear-gradient(135deg, #7b3d62, #ff5fa2);
-      box-shadow: 0 18px 35px rgba(123, 61, 98, 0.35);
+    .atirador-vitoria-conteudo {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 28px 22px 22px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
     }
 
-    @keyframes berRespirando {
-      0%, 100% { transform: scale(1) rotate(0deg); }
-      50% { transform: scale(1.028) rotate(0.5deg); }
+    .berdormindo-img {
+      width: 160px;
+      max-width: 52vw;
+      height: 160px;
+      max-height: 52vw;
+      margin: 0 auto 12px;
+      display: block;
+      background-image: url("berdormindo.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: sapoTriste 2s ease-in-out infinite;
     }
 
-    @keyframes hitBerSubir {
-      0%   { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(-10deg); }
-      100% { opacity: 0; transform: translate(-50%, calc(-50% - 80px)) scale(0.7) rotate(15deg); }
+    .botao-atirador {
+      background: linear-gradient(135deg, #6a0572, #c1121f);
+      box-shadow: 0 18px 35px rgba(106, 5, 114, 0.4);
     }
 
-    @keyframes zzzSubir {
-      0%   { opacity: 0; transform: scale(0.5); }
-      20%  { opacity: 1; transform: scale(1.15); }
-      75%  { opacity: 0.8; }
-      100% { opacity: 0; transform: translateY(-70px) scale(0.9); }
+    @keyframes fatsonRecuo {
+      0%   { transform: translateX(0) scaleX(1); }
+      40%  { transform: translateX(-7px) scaleX(0.91); }
+      100% { transform: translateX(0) scaleX(1); }
     }
+
+    @keyframes vilaoTomouTiro {
+      0%   { transform: translateX(0) rotate(0) scale(1); }
+      18%  { transform: translateX(14px) rotate(10deg) scale(0.88); }
+      48%  { transform: translateX(-9px) rotate(-6deg) scale(1.1); }
+      74%  { transform: translateX(5px) rotate(3deg) scale(0.96); }
+      100% { transform: translateX(0) rotate(0) scale(1); }
+    }
+
+    @keyframes impactoAtirador {
+      0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.3) rotate(-15deg); }
+      40%  { opacity: 1; transform: translate(-50%,-50%) scale(1.5) rotate(0); }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(1.9) rotate(22deg); }
+    }
+
+
 
     @media (max-width: 600px) {
       body {
@@ -2265,8 +2321,8 @@
       Surpresa 🎁
     </button>
 
-    <button id="berDormirButton" class="botao-ber-dormir">
-      Modo Dormir Por Vontade Própria 😴
+    <button id="atiradorButton" class="botao-atirador">
+      Fatson vs Vilão 🪨
     </button>
   </div>
 
@@ -2383,19 +2439,13 @@
   </div>
 
 
-  <div class="ber-dormir-area" id="berDormirArea">
-    <div class="hud-ber-dormir">
-      <span id="hudBerDormir">👊 0 / 100</span>
-    </div>
-    <div class="ber-dormir-barra-container">
-      <div class="ber-dormir-barra" id="berDormirBarra"></div>
-    </div>
-    <div class="ber-dormir-wrapper" id="berDormirWrapper">
-      <img id="berDormirImg" class="ber-dormir-img-el" src="bersem.png" alt="Bernardo" draggable="false">
-      <div class="ber-dormir-nome" id="berDormirNome">Bernardo 😬</div>
-    </div>
-    <div class="ber-dormir-msg" id="berDormirMsg">Clica em mim para Bater! 👊</div>
-    <button class="sair-pedra" id="sairBerDormir">← outros jogos</button>
+
+  <div class="atirador-area" id="atiradorArea">
+    <div class="hud-atirador" id="hudAtirador">🪨 0 / 50</div>
+    <div class="fatson-img" id="fatsonImg"></div>
+    <div class="vilao-img" id="vilaoImg"></div>
+    <div class="dica-atirador">Toque na tela para atirar pedras! 🪨</div>
+    <button class="sair-atirador" id="sairAtirador">← outros jogos</button>
   </div>
 
   <section class="final" id="final">
@@ -2475,8 +2525,8 @@
     aviso.style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Toque na tela para pular. Fuja do lanche 🍔 e da fome 😵‍💫, e colete 15 Assistentes Prof 👩‍🏫 para vencer.";
@@ -2737,7 +2787,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
   }
 
   function limparObjetos() {
@@ -2807,8 +2857,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3069,8 +3119,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3276,7 +3326,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
   }
 
   function perderModoRemedio() {
@@ -3299,7 +3349,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
   }
 
   remedioButton.addEventListener("click", iniciarModoRemedio);
@@ -3385,8 +3435,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3623,7 +3673,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
   }
 
   function perderRevolucao() {
@@ -3646,7 +3696,7 @@
     document.getElementById("combateButton").style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
   }
 
   revolucaoButton.addEventListener("click", iniciarModoRevolucao);
@@ -3768,8 +3818,8 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     startButton.style.display = "none";
     boxeButton.style.display = "none";
@@ -3982,7 +4032,7 @@
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -4014,7 +4064,7 @@
       combateButton.style.display = "inline-block";
       document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
     }, 1600);
   }
 
@@ -4088,6 +4138,8 @@
     limparRevolucao();
 
     modoPedraAtivo = true;
+    document.getElementById("atiradorArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
     totalPedras = 0;
     estresse = 100;
     marcosEstresseMostrados.clear();
@@ -4111,8 +4163,8 @@
     pedraButton.style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Modo pedras 🪨 — Toque em qualquer lugar para jogar pedras no Bernardo e aliviar o estresse!";
@@ -4325,7 +4377,7 @@
     combateButton.style.display = "inline-block";
     pedraButton.style.display = "inline-block";
     presenteButton.style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -4370,6 +4422,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoPresenteAtivo = true;
+    document.getElementById("atiradorArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
     presenteJaAberto = false;
 
     // Reseta o estado visual da caixa
@@ -4395,8 +4449,8 @@
     combateButton.style.display = "none";
     document.getElementById("pedraButton").style.display = "none";
     presenteButton.style.display = "none";
-    document.getElementById("berDormirButton").style.display = "none";
-    document.getElementById("berDormirArea").style.display = "none";
+    document.getElementById("atiradorButton").style.display = "none";
+    document.getElementById("atiradorArea").style.display = "none";
 
     document.getElementById("textoInicial").innerText =
       "Uma surpresa especialmente pra você 💗";
@@ -4470,7 +4524,7 @@
     combateButton.style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     presenteButton.style.display = "inline-block";
-    document.getElementById("berDormirButton").style.display = "inline-block";
+    document.getElementById("atiradorButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -4483,61 +4537,42 @@
     e.preventDefault();
     abrirPresente();
   }, { passive: false });
-  /* ====== Modo Dormir o Ber ====== */
-  const berDormirArea    = document.getElementById("berDormirArea");
-  const berDormirImg     = document.getElementById("berDormirImg");
-  const berDormirBarra   = document.getElementById("berDormirBarra");
-  const berDormirMsg     = document.getElementById("berDormirMsg");
-  const hudBerDormir     = document.getElementById("hudBerDormir");
-  const berDormirNome    = document.getElementById("berDormirNome");
-  const berDormirWrapper = document.getElementById("berDormirWrapper");
-  const berDormirButton  = document.getElementById("berDormirButton");
+  /* ====== Modo Fatson vs Bernardo Vilão ====== */
+  const atiradorArea = document.getElementById("atiradorArea");
+  const fatsonImg    = document.getElementById("fatsonImg");
+  const vilaoImg     = document.getElementById("vilaoImg");
+  const atiradorButton = document.getElementById("atiradorButton");
 
-  let modoBerDormirAtivo = false;
-  let batidasBer = 0;
-  let berJaDormiu = false;
+  let modoAtiradorAtivo = false;
+  let acertosVilao = 0;
+  let vilaoOffset  = 0;
+  let vilaoDir     = 1;
+  let vilaoAnimLoop;
 
-  const hitEmojisB = ["💥","🌟","✨","😵","💫","🔥","⚡","😤","💢","👊"];
-  const frasesHit = [
-    "Ai!", "Mereci...", "Tá bom...", "Ai não!", "Ai!!",
-    "Eu mereço!", "Desculpa!", "Prometo melhorar!", "Ai meu Deus!",
-    "Odeio frutas!", "ME SALVE!", "TO TRISTE!", "Ai ai ai!",
-    "Ok ok ok!", "Amor, eu estou melhorando!", "Se Você diz", "Será Será!", "Tô bem...",
-    "5x3", "Perdi a linha!", "Pela última vez!",
-    "Mereço mesmo!", "Entendi a lição!", "ME ODEIA",
-    "Tô aprendendo!", "Podia ser pior!", "Sofro com amor!",
-  ];
+  // Fallback de imagens
+  (function() {
+    [["fatson.png", fatsonImg], ["bernardo vilao.png", vilaoImg]].forEach(([src, el]) => {
+      const t = new Image();
+      t.onload = () => el.classList.remove("sem-imagem");
+      t.onerror = () => el.classList.add("sem-imagem");
+      t.src = src;
+    });
+  })();
 
-  function iniciarModoBerDormir() {
-    // Para todos os outros modos
-    jogoAtivo = false;
-    modoBoxeAtivo = false;
-    modoRemedioAtivo = false;
-    modoRevolucaoAtivo = false;
-    modoCombateAtivo = false;
-    modoPedraAtivo = false;
-    modoPresenteAtivo = false;
+  function iniciarModoAtirador() {
+    jogoAtivo = false; modoBoxeAtivo = false; modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false; modoCombateAtivo = false; modoPedraAtivo = false; modoPresenteAtivo = false;
     clearInterval(intervaloLoop); clearInterval(intervaloCriacao); clearInterval(intervaloPontuacao);
     clearInterval(loopMario); clearInterval(criadorMario); clearInterval(tempoMario);
     clearInterval(loopRev); clearInterval(criadorInimigos); clearInterval(tempoRev);
     clearTimeout(timerAssistAtaque);
     limparObjetos(); limparRemedios(); limparRevolucao();
 
-    modoBerDormirAtivo = true;
-    batidasBer = 0;
-    berJaDormiu = false;
+    modoAtiradorAtivo = true;
+    acertosVilao = 0;
+    atiradorArea.querySelectorAll(".pedra-atirador,.frase-vilao,.impacto-atirador,.atirador-vitoria").forEach(e => e.remove());
+    vilaoImg.style.bottom = "30px";
 
-    // Reseta imagem e visual
-    berDormirImg.style.opacity = "1";
-    berDormirImg.src = "bersem.png";
-    berDormirImg.classList.remove("dormindo", "pancada");
-    berDormirBarra.style.width = "0%";
-    berDormirBarra.classList.remove("dormindo");
-    berDormirNome.style.color = "";
-    berDormirNome.innerText = "Bernardo 😬";
-    berDormirMsg.innerText = "Clica em mim para bater! 👊";
-
-    // Esconde tudo
     gameArea.style.display = "none";
     boxeArea.style.display = "none";
     remedioArea.style.display = "none";
@@ -4546,145 +4581,178 @@
     document.getElementById("pedraArea").style.display = "none";
     document.getElementById("presenteArea").style.display = "none";
     finalSection.style.display = "none";
-    berDormirArea.style.display = "block";
+    atiradorArea.style.display = "block";
 
-    startButton.style.display = "none";
-    boxeButton.style.display = "none";
-    remedioButton.style.display = "none";
-    revolucaoButton.style.display = "none";
+    startButton.style.display = "none"; boxeButton.style.display = "none";
+    remedioButton.style.display = "none"; revolucaoButton.style.display = "none";
     combateButton.style.display = "none";
     document.getElementById("pedraButton").style.display = "none";
     document.getElementById("presenteButton").style.display = "none";
-    berDormirButton.style.display = "none";
+    atiradorButton.style.display = "none";
 
     document.getElementById("textoInicial").innerText =
-      "Modo dormir 😴 — Bata nele 100 vezes e ele vai dormir!";
-    atualizarHudBer();
-    scoreElement.innerText = "Batidas: 0 / 100";
+      "Fatson vs Bernardo Vilão 🪨 — 50 pedradas e o vilão vai dormir!";
+    atualizarHudAtirador();
+    scoreElement.innerText = "Acertos: 0 / 50";
+
+    clearInterval(vilaoAnimLoop);
+    vilaoOffset = 0; vilaoDir = 1;
+    vilaoAnimLoop = setInterval(function() {
+      if (!modoAtiradorAtivo) return;
+      vilaoOffset += vilaoDir * 0.65;
+      if (vilaoOffset > 26) vilaoDir = -1;
+      if (vilaoOffset < -26) vilaoDir = 1;
+      vilaoImg.style.bottom = (30 + vilaoOffset) + "px";
+    }, 16);
   }
 
-  function baterBer(event) {
-    if (!modoBerDormirAtivo || berJaDormiu) return;
+  function atirarPedraVilao(event) {
+    if (!modoAtiradorAtivo) return;
 
-    batidasBer++;
-    atualizarHudBer();
-
-    const pct = Math.min(batidasBer / 100, 1);
-    berDormirBarra.style.width = (pct * 100) + "%";
-
-    // Animação de pancada
-    berDormirImg.classList.remove("pancada");
-    void berDormirImg.offsetWidth;
-    berDormirImg.classList.add("pancada");
-    setTimeout(() => berDormirImg.classList.remove("pancada"), 150);
-
-    // Mensagem aleatória
-    if (batidasBer < 100) {
-      berDormirMsg.innerText = frasesHit[Math.floor(Math.random() * frasesHit.length)];
-    }
-
-    // Emoji voando no ponto do clique
-    const rect = berDormirWrapper.getBoundingClientRect();
-    let cx, cy;
+    const rect = atiradorArea.getBoundingClientRect();
+    let alvoX, alvoY;
     if (event.touches && event.touches[0]) {
-      cx = event.touches[0].clientX - rect.left;
-      cy = event.touches[0].clientY - rect.top;
+      alvoX = event.touches[0].clientX - rect.left;
+      alvoY = event.touches[0].clientY - rect.top;
     } else {
-      cx = event.clientX - rect.left;
-      cy = event.clientY - rect.top;
+      alvoX = event.clientX - rect.left;
+      alvoY = event.clientY - rect.top;
     }
-    const el = document.createElement("div");
-    el.className = "hit-ber";
-    el.style.left = cx + "px";
-    el.style.top  = cy + "px";
-    el.innerText = hitEmojisB[Math.floor(Math.random() * hitEmojisB.length)];
-    berDormirWrapper.appendChild(el);
-    setTimeout(() => el.remove(), 660);
 
-    // Transição para dormindo ao chegar em 100
-    if (batidasBer >= 100 && !berJaDormiu) {
-      berJaDormiu = true;
-      berDormirBarra.classList.add("dormindo");
+    const fatRect = fatsonImg.getBoundingClientRect();
+    const origemX = fatRect.right - rect.left - 4;
+    const origemY = fatRect.top + fatRect.height * 0.32 - rect.top;
 
-      setTimeout(() => {
-        berDormirImg.style.opacity = "0";
-        setTimeout(() => {
-          berDormirImg.src = "berdormindo.png";
-          berDormirImg.classList.add("dormindo");
-          berDormirImg.style.opacity = "1";
-          berDormirNome.innerText = "Bernardo 😴";
-          berDormirNome.style.color = "#7e57c2";
-          berDormirMsg.innerHTML = "😴 Dormi por vontade própria! 💤";
-          scoreElement.innerText = "Dormi após as batidas " + batidasBer + " do amor!";
+    fatsonImg.classList.remove("atirando");
+    void fatsonImg.offsetWidth;
+    fatsonImg.classList.add("atirando");
 
-          // Zzzs flutuantes
-          for (let i = 0; i < 6; i++) {
-            setTimeout(() => {
-              const wr = berDormirWrapper.getBoundingClientRect();
-              const zzz = document.createElement("div");
-              zzz.className = "zzz-ber";
-              zzz.style.left = (wr.left + wr.width / 2 + (Math.random() - 0.5) * 60) + "px";
-              zzz.style.top  = (wr.top + wr.height / 2) + "px";
-              zzz.innerText = "💤";
-              document.body.appendChild(zzz);
-              setTimeout(() => zzz.remove(), 1800);
-            }, i * 300);
-          }
+    const pedra = document.createElement("div");
+    pedra.classList.add("pedra-atirador");
+    pedra.innerText = "🪨";
+    pedra.style.left = origemX + "px";
+    pedra.style.top  = origemY + "px";
+    atiradorArea.appendChild(pedra);
 
-          // Mostrar botão de jogar de novo
-          setTimeout(() => {
-            mostrarAviso("Estou roncando... Missão concluída! 🎉");
-            document.getElementById("sairBerDormir").innerText = "Jogar de novo 🔄";
-          }, 600);
-        }, 400);
-      }, 200);
-    }
+    const dx = alvoX - origemX;
+    const dy = alvoY - origemY;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const spd  = 15;
+    const vx = dx / dist * spd;
+    const vy = dy / dist * spd;
+    let x = origemX, y = origemY, rot = 0;
+
+    const anim = setInterval(function() {
+      if (!modoAtiradorAtivo) { clearInterval(anim); pedra.remove(); return; }
+      x += vx; y += vy; rot += 20;
+      pedra.style.left = x + "px";
+      pedra.style.top  = y + "px";
+      pedra.style.transform = "translate(-50%,-50%) rotate(" + rot + "deg)";
+
+      if (x < -60 || x > rect.width + 60 || y < -60 || y > rect.height + 60) {
+        clearInterval(anim); pedra.remove(); return;
+      }
+
+      const vRect = vilaoImg.getBoundingClientRect();
+      const px = rect.left + x, py = rect.top + y;
+      if (px > vRect.left + 8 && px < vRect.right - 8 && py > vRect.top + 8 && py < vRect.bottom - 8) {
+        clearInterval(anim); pedra.remove();
+        registrarAcertoVilao(x, y);
+      }
+    }, 16);
   }
 
-  function atualizarHudBer() {
-    hudBerDormir.innerText = "👊 " + batidasBer + " / 100";
-    scoreElement.innerText = "Batidas: " + batidasBer + " / 100";
+  const frasesVilao = [
+    "Ai!! 🪨", "Para!!", "Não!! 😱", "Tô dormindo...", "Ai minha cabeça!",
+    "Que pedra!!", "Não aguento mais!", "Cada vez mais sono...", "Sinto o sono...", "Ai ai ai!"
+  ];
+
+  function registrarAcertoVilao(x, y) {
+    acertosVilao++;
+
+    vilaoImg.classList.remove("tomou-tiro");
+    void vilaoImg.offsetWidth;
+    vilaoImg.classList.add("tomou-tiro");
+
+    if (Math.random() < 0.72) {
+      const f = document.createElement("div");
+      f.classList.add("frase-vilao");
+      f.style.left = x + "px";
+      f.style.top  = (y - 20) + "px";
+      f.innerText = frasesVilao[Math.floor(Math.random() * frasesVilao.length)];
+      atiradorArea.appendChild(f);
+      setTimeout(function() { f.remove(); }, 1000);
+    }
+
+    const imp = document.createElement("div");
+    imp.classList.add("impacto-atirador");
+    imp.style.left = x + "px";
+    imp.style.top  = y + "px";
+    imp.innerText = ["💥","✨","⭐","💢"][Math.floor(Math.random() * 4)];
+    atiradorArea.appendChild(imp);
+    setTimeout(function() { imp.remove(); }, 420);
+
+    if (acertosVilao === 25) mostrarAviso("25 pedras! O Bernardo Vilão tá cambaleando 😵");
+    if (acertosVilao === 40) mostrarAviso("40 acertos! Faltam só 10! 🪨🔥");
+
+    atualizarHudAtirador();
+    if (acertosVilao >= 50) setTimeout(vencerAtirador, 550);
   }
 
-  function pararModoBerDormir() {
-    modoBerDormirAtivo = false;
-    berDormirArea.style.display = "none";
-    finalSection.style.display = "none";
-    startButton.style.display = "inline-block";
-    startButton.innerText = "Começar missão";
-    boxeButton.style.display = "inline-block";
-    remedioButton.style.display = "inline-block";
-    revolucaoButton.style.display = "inline-block";
-    combateButton.style.display = "inline-block";
+  function atualizarHudAtirador() {
+    document.getElementById("hudAtirador").innerText = "🪨 " + acertosVilao + " / 50";
+    scoreElement.innerText = "Acertos: " + acertosVilao + " / 50";
+  }
+
+  function vencerAtirador() {
+    clearInterval(vilaoAnimLoop);
+    modoAtiradorAtivo = false;
+    atiradorArea.querySelectorAll(".pedra-atirador,.frase-vilao,.impacto-atirador").forEach(e => e.remove());
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("atirador-vitoria");
+    const inner = document.createElement("div");
+    inner.classList.add("atirador-vitoria-conteudo", "recompensa-entrando");
+    inner.innerHTML =
+      "<div class='berdormindo-img'></div>" +
+      "<p style='font-size:1.35rem;font-weight:900;color:#6a0572;margin:8px 0 6px;'>50 pedradas! Bernardo Vilão dormiu! 😴</p>" +
+      "<p style='font-size:0.97rem;font-weight:700;color:#4d2d42;line-height:1.65;margin-bottom:18px;'>" +
+        "O Fatson salvou o dia! O vilão foi pro sono profundo 💫<br>" +
+        "<strong>Bom dia pra você, Dai! 💗</strong><br>" +
+        "Que seu dia seja tão incrível quanto você é!" +
+      "</p>" +
+      "<button onclick='pararModoAtirador()' style='background:linear-gradient(135deg,#ff5fa2,#ff8fbd);box-shadow:0 14px 30px rgba(255,95,162,0.35);'>" +
+        "Voltar aos jogos 🎮" +
+      "</button>";
+    overlay.appendChild(inner);
+    atiradorArea.appendChild(overlay);
+  }
+
+  function pararModoAtirador() {
+    modoAtiradorAtivo = false;
+    clearInterval(vilaoAnimLoop);
+    atiradorArea.style.display = "none";
+    atiradorArea.querySelectorAll(".pedra-atirador,.frase-vilao,.impacto-atirador,.atirador-vitoria").forEach(e => e.remove());
+    startButton.style.display = "inline-block"; startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block"; remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block"; combateButton.style.display = "inline-block";
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
-    berDormirButton.style.display = "inline-block";
+    atiradorButton.style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
   }
 
-  berDormirButton.addEventListener("click", iniciarModoBerDormir);
-  document.getElementById("sairBerDormir").addEventListener("click", function() {
-    if (berJaDormiu) {
-      // Reset e joga de novo
-      iniciarModoBerDormir();
-    } else {
-      pararModoBerDormir();
-    }
+  document.getElementById("sairAtirador").addEventListener("click", pararModoAtirador);
+  atiradorButton.addEventListener("click", iniciarModoAtirador);
+  atiradorArea.addEventListener("click", function(e) {
+    if (e.target === document.getElementById("sairAtirador")) return;
+    atirarPedraVilao(e);
   });
-
-  berDormirArea.addEventListener("click", function(event) {
-    if (event.target === document.getElementById("sairBerDormir")) return;
-    baterBer(event);
-  });
-
-  berDormirArea.addEventListener("touchstart", function(event) {
-    if (event.target === document.getElementById("sairBerDormir")) return;
-    event.preventDefault();
-    baterBer(event);
+  atiradorArea.addEventListener("touchstart", function(e) {
+    if (e.target === document.getElementById("sairAtirador")) return;
+    e.preventDefault(); atirarPedraVilao(e);
   }, { passive: false });
-
-
 </script>
 </body></html>
