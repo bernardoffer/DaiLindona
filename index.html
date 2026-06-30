@@ -2262,7 +2262,219 @@
         max-width: 140px;
       }
     }
-  </style>
+  
+    /* ====== Modo Facas no Bernardo ====== */
+    .facas-area {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 110%, rgba(150, 20, 20, 0.55), transparent 60%),
+        linear-gradient(160deg, #1a0000 0%, #2d0808 55%, #1c1000 100%);
+      border: 1px solid rgba(255, 80, 80, 0.2);
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: crosshair;
+    }
+
+    .facas-area::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 38px,
+        rgba(255,255,255,0.025) 38px,
+        rgba(255,255,255,0.025) 39px
+      );
+      pointer-events: none;
+    }
+
+    .facas-cenario {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .alvo-moldura {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: alvoFlutuar 1.8s ease-in-out infinite alternate;
+    }
+
+    .bernardo-alvo {
+      width: 120px;
+      height: 150px;
+      background-image: url("bersem.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      position: relative;
+      filter: drop-shadow(0 0 18px rgba(255, 100, 100, 0.4));
+    }
+
+    .bernardo-alvo.sem-imagem::after {
+      content: "😱";
+      font-size: 90px;
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+    }
+    .bernardo-alvo.sem-imagem { background-image: none; }
+
+    .bernardo-alvo.levou-faca { animation: bernardoLevouFaca 0.3s ease; }
+
+    .faca-voando {
+      position: absolute;
+      font-size: 28px;
+      pointer-events: none;
+      z-index: 6;
+      transform-origin: center;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 8px rgba(255,180,50,0.7));
+    }
+
+    .faca-presa {
+      position: absolute;
+      font-size: 22px;
+      pointer-events: none;
+      z-index: 5;
+      transform-origin: center;
+      animation: facaEntrou 0.25s ease-out;
+    }
+
+    .hud-facas {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #5c0000;
+      font-weight: 900;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 9;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .dica-facas {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffbbbb;
+      font-weight: 700;
+      font-size: 0.75rem;
+      backdrop-filter: blur(8px);
+      z-index: 9;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .sair-facas {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: rgba(255, 180, 180, 0.65);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 10px;
+      z-index: 10;
+      margin-top: 0;
+    }
+
+    .sair-facas:hover { transform: translateX(-50%); box-shadow: none; color: #ff9999; }
+
+    .facas-vitoria {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+    }
+
+    .facas-vitoria-conteudo {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 28px 22px 22px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    }
+
+    .botao-facas {
+      background: linear-gradient(135deg, #8b0000, #cc3300);
+      box-shadow: 0 18px 35px rgba(139, 0, 0, 0.45);
+    }
+
+    .aviso-facas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px 22px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.93);
+      color: #8b0000;
+      font-weight: 900;
+      font-size: 1rem;
+      z-index: 15;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      animation: avisoPulsar 0.5s ease-out;
+    }
+
+    @keyframes alvoFlutuar {
+      0%   { transform: translateY(0px) rotate(-1.5deg); }
+      100% { transform: translateY(-24px) rotate(2deg); }
+    }
+
+    @keyframes bernardoLevouFaca {
+      0%   { transform: scale(1) rotate(0); }
+      20%  { transform: scale(0.88) rotate(-5deg); }
+      55%  { transform: scale(1.12) rotate(3deg); }
+      80%  { transform: scale(0.97) rotate(-1deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    @keyframes facaEntrou {
+      0%   { transform: scale(1.6) rotate(-20deg); opacity: 0.6; }
+      60%  { transform: scale(0.9) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes avisoPulsar {
+      0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.7); }
+      60%  { opacity: 1; transform: translate(-50%,-50%) scale(1.08); }
+      100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    }
+
+</style>
 </head>
 
 <body>
@@ -2323,6 +2535,9 @@
 
     <button id="atiradorButton" class="botao-atirador">
       Fatson vs Vilão 🪨
+    </button>
+    <button id="facasButton" class="botao-facas">
+      Jogue Facas no Bernardo 🔪
     </button>
   </div>
 
@@ -2446,6 +2661,17 @@
     <div class="vilao-img" id="vilaoImg"></div>
     <div class="dica-atirador">Toque na tela para atirar pedras! 🪨</div>
     <button class="sair-atirador" id="sairAtirador">← outros jogos</button>
+  </div>
+
+  <div class="facas-area" id="facasArea">
+    <div class="hud-facas" id="hudFacas">🔪 0 / 30</div>
+    <div class="facas-cenario">
+      <div class="alvo-moldura" id="alvoMoldura">
+        <div class="bernardo-alvo" id="bernardoAlvo"></div>
+      </div>
+    </div>
+    <div class="dica-facas">Toque para atirar facas! 🔪</div>
+    <button class="sair-facas" id="sairFacas">← outros jogos</button>
   </div>
 
   <section class="final" id="final">
@@ -2839,6 +3065,8 @@
     limparObjetos();
 
     modoBoxeAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     socos = 0;
     multiplicadorSoco = 1;
     comboSoco = 0;
@@ -3097,6 +3325,8 @@
     limparObjetos();
 
     modoRemedioAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     remediosColetados = 0;
     vidasMario = 3;
     pontosMario = 0;
@@ -3419,6 +3649,8 @@
     limparRemedios();
 
     modoRevolucaoAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     patriarcadosDerrotados = 0;
     vidasRev = 3;
     pontosRev = 0;
@@ -3804,6 +4036,8 @@
     limparRevolucao();
 
     modoCombateAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     daiHp = 100;
     assistHp = 100;
     roundAtual = 1;
@@ -4138,6 +4372,8 @@
     limparRevolucao();
 
     modoPedraAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     document.getElementById("atiradorArea").style.display = "none";
     document.getElementById("atiradorButton").style.display = "none";
     totalPedras = 0;
@@ -4422,6 +4658,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoPresenteAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     document.getElementById("atiradorArea").style.display = "none";
     document.getElementById("atiradorButton").style.display = "none";
     presenteJaAberto = false;
@@ -4569,6 +4807,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoAtiradorAtivo = true;
+    document.getElementById("facasArea").style.display = "none";
+    document.getElementById("facasButton").style.display = "none";
     acertosVilao = 0;
     atiradorArea.querySelectorAll(".pedra-atirador,.frase-vilao,.impacto-atirador,.atirador-vitoria").forEach(e => e.remove());
     vilaoImg.style.bottom = "30px";
@@ -4753,6 +4993,218 @@
   atiradorArea.addEventListener("touchstart", function(e) {
     if (e.target === document.getElementById("sairAtirador")) return;
     e.preventDefault(); atirarPedraVilao(e);
+  }, { passive: false });
+
+
+  /* ====== Modo Facas no Bernardo ====== */
+  const facasArea    = document.getElementById("facasArea");
+  const bernardoAlvo = document.getElementById("bernardoAlvo");
+  const facasButton  = document.getElementById("facasButton");
+  let modoFacasAtivo  = false;
+  let acertosFacas    = 0;
+
+  // Fallback imagem
+  (function() {
+    const t = new Image();
+    t.onload = () => bernardoAlvo.classList.remove("sem-imagem");
+    t.onerror = () => bernardoAlvo.classList.add("sem-imagem");
+    t.src = "bersem.png";
+  })();
+
+  function iniciarModoFacas() {
+    jogoAtivo = false; modoBoxeAtivo = false; modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false; modoCombateAtivo = false;
+    modoPedraAtivo = false; modoPresenteAtivo = false; modoAtiradorAtivo = false;
+    clearInterval(intervaloLoop); clearInterval(intervaloCriacao); clearInterval(intervaloPontuacao);
+    clearInterval(loopMario); clearInterval(criadorMario); clearInterval(tempoMario);
+    clearInterval(loopRev); clearInterval(criadorInimigos); clearInterval(tempoRev);
+    clearInterval(vilaoAnimLoop); clearTimeout(timerAssistAtaque);
+    limparObjetos(); limparRemedios(); limparRevolucao();
+
+    modoFacasAtivo = true;
+    acertosFacas = 0;
+    facasArea.querySelectorAll(".faca-voando,.faca-presa,.facas-vitoria,.aviso-facas").forEach(e => e.remove());
+
+    gameArea.style.display = "none"; boxeArea.style.display = "none";
+    remedioArea.style.display = "none"; revolucaoArea.style.display = "none";
+    combateArea.style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
+    atiradorArea.style.display = "none";
+    finalSection.style.display = "none";
+    facasArea.style.display = "block";
+
+    startButton.style.display = "none"; boxeButton.style.display = "none";
+    remedioButton.style.display = "none"; revolucaoButton.style.display = "none";
+    combateButton.style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    atiradorButton.style.display = "none";
+    facasButton.style.display = "none";
+
+    document.getElementById("textoInicial").innerText =
+      "Jogue Facas no Bernardo! 🔪 — Acerte 30 vezes para aliviar o estresse! 😱";
+    atualizarHudFacas();
+    scoreElement.innerText = "Acertos: 0 / 30";
+  }
+
+  function jogarFaca(event) {
+    if (!modoFacasAtivo) return;
+
+    const rect = facasArea.getBoundingClientRect();
+    let alvoX, alvoY;
+    if (event.touches && event.touches[0]) {
+      alvoX = event.touches[0].clientX - rect.left;
+      alvoY = event.touches[0].clientY - rect.top;
+    } else {
+      alvoX = event.clientX - rect.left;
+      alvoY = event.clientY - rect.top;
+    }
+
+    // Origem: lado esquerdo da área (jogador invisível)
+    const origemX = -10;
+    const origemY = rect.height * 0.5;
+
+    const faca = document.createElement("div");
+    faca.classList.add("faca-voando");
+    faca.innerText = "🔪";
+    faca.style.left = origemX + "px";
+    faca.style.top  = origemY + "px";
+    facasArea.appendChild(faca);
+
+    const dx = alvoX - origemX;
+    const dy = alvoY - origemY;
+    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+    const angulo = Math.atan2(dy, dx) * (180/Math.PI);
+    const spd = 18;
+    const vx = dx/dist * spd;
+    const vy = dy/dist * spd;
+    let x = origemX, y = origemY;
+
+    faca.style.transform = "translate(-50%,-50%) rotate(" + angulo + "deg)";
+
+    const anim = setInterval(function() {
+      if (!modoFacasAtivo) { clearInterval(anim); faca.remove(); return; }
+      x += vx; y += vy;
+      faca.style.left = x + "px";
+      faca.style.top  = y + "px";
+
+      if (x < -60 || x > rect.width + 60 || y < -60 || y > rect.height + 60) {
+        clearInterval(anim); faca.remove(); return;
+      }
+
+      // Hit detection: bounding box do bernardoAlvo
+      const bRect = bernardoAlvo.getBoundingClientRect();
+      const px = rect.left + x, py = rect.top + y;
+      if (px > bRect.left + 6 && px < bRect.right - 6 && py > bRect.top + 6 && py < bRect.bottom - 6) {
+        clearInterval(anim); faca.remove();
+        registrarAcertoFaca(x, y, angulo);
+      }
+    }, 16);
+  }
+
+  const frasesFaca = [
+    "AAAA!! 😱", "Não!!! 😨", "Pelo amor!!!", "Para!! 🥹", "Ai ai ai!!!",
+    "Não tô preparado!", "Misericórdia!!", "SOCORRO! 😭", "Nossa mãe!!!",
+    "Que susto!!!", "Basta! 🙈", "Não de novo!!"
+  ];
+
+  function registrarAcertoFaca(x, y, angulo) {
+    acertosFacas++;
+
+    bernardoAlvo.classList.remove("levou-faca");
+    void bernardoAlvo.offsetWidth;
+    bernardoAlvo.classList.add("levou-faca");
+
+    // Faca presa na posição do acerto (relativa à facasArea)
+    const presa = document.createElement("div");
+    presa.classList.add("faca-presa");
+    presa.innerText = "🔪";
+    presa.style.left = x + "px";
+    presa.style.top  = y + "px";
+    presa.style.transform = "translate(-50%,-50%) rotate(" + angulo + "deg)";
+    facasArea.appendChild(presa);
+
+    // Frase de susto
+    if (Math.random() < 0.75) {
+      const f = document.createElement("div");
+      f.classList.add("frase-vilao");
+      f.style.left = (x + (Math.random() - 0.5) * 40) + "px";
+      f.style.top  = (y - 30) + "px";
+      f.style.color = "#8b0000";
+      f.innerText = frasesFaca[Math.floor(Math.random() * frasesFaca.length)];
+      facasArea.appendChild(f);
+      setTimeout(function() { f.remove(); }, 1100);
+    }
+
+    if (acertosFacas === 15) mostrarAvisoFacas("15 facas! Bernardo tá em pânico! 😱🔪");
+    if (acertosFacas === 25) mostrarAvisoFacas("Quase lá! Só mais 5! 🔪🔥");
+
+    atualizarHudFacas();
+    if (acertosFacas >= 30) setTimeout(vencerFacas, 600);
+  }
+
+  function mostrarAvisoFacas(txt) {
+    const av = document.createElement("div");
+    av.classList.add("aviso-facas");
+    av.innerText = txt;
+    facasArea.appendChild(av);
+    setTimeout(function() { av.remove(); }, 2200);
+  }
+
+  function atualizarHudFacas() {
+    document.getElementById("hudFacas").innerText = "🔪 " + acertosFacas + " / 30";
+    scoreElement.innerText = "Acertos: " + acertosFacas + " / 30";
+  }
+
+  function vencerFacas() {
+    modoFacasAtivo = false;
+    facasArea.querySelectorAll(".faca-voando,.faca-presa").forEach(e => e.remove());
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("facas-vitoria");
+    const inner = document.createElement("div");
+    inner.classList.add("facas-vitoria-conteudo", "recompensa-entrando");
+    inner.innerHTML =
+      "<div style='font-size:5rem;margin-bottom:8px;'>🔪😱🔪</div>" +
+      "<p style='font-size:1.35rem;font-weight:900;color:#8b0000;margin:6px 0;'>30 facas! Bernardo tá com medo! 😨</p>" +
+      "<p style='font-size:0.97rem;font-weight:700;color:#4d1010;line-height:1.7;margin-bottom:18px;'>" +
+        "O estresse foi embora junto com as facas! 💨<br>" +
+        "<strong>Bom dia, Dai! 💗</strong><br>" +
+        "Que hoje seja um dia leve e incrível pra você!" +
+      "</p>" +
+      "<button onclick='pararModoFacas()' style='background:linear-gradient(135deg,#ff5fa2,#ff8fbd);box-shadow:0 14px 30px rgba(255,95,162,0.35);'>" +
+        "Voltar aos jogos 🎮" +
+      "</button>";
+    overlay.appendChild(inner);
+    facasArea.appendChild(overlay);
+  }
+
+  function pararModoFacas() {
+    modoFacasAtivo = false;
+    facasArea.style.display = "none";
+    facasArea.querySelectorAll(".faca-voando,.faca-presa,.facas-vitoria,.aviso-facas").forEach(e => e.remove());
+    startButton.style.display = "inline-block"; startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block"; remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block"; combateButton.style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
+    atiradorButton.style.display = "inline-block";
+    facasButton.style.display = "inline-block";
+    document.getElementById("textoInicial").innerText =
+      "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
+    scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
+  }
+
+  document.getElementById("sairFacas").addEventListener("click", pararModoFacas);
+  facasButton.addEventListener("click", iniciarModoFacas);
+  facasArea.addEventListener("click", function(e) {
+    if (e.target === document.getElementById("sairFacas")) return;
+    jogarFaca(e);
+  });
+  facasArea.addEventListener("touchstart", function(e) {
+    if (e.target === document.getElementById("sairFacas")) return;
+    e.preventDefault(); jogarFaca(e);
   }, { passive: false });
 </script>
 </body></html>
