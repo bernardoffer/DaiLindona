@@ -1,3 +1,5 @@
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -2474,6 +2476,191 @@
       100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
     }
 
+
+    /* ====== Modo Carta do Bernardo ====== */
+    .carta-area {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      margin-top: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255, 180, 210, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(255, 140, 190, 0.25), transparent 50%),
+        linear-gradient(145deg, #fff0f7 0%, #ffe4f0 50%, #ffd6ea 100%);
+      border: 1px solid rgba(255, 120, 170, 0.3);
+      overflow: hidden;
+      display: none;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .carta-cenario {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px 60px;
+      min-height: 360px;
+    }
+
+    .envelope-wrap {
+      position: relative;
+      width: 300px;
+      max-width: 88vw;
+      cursor: pointer;
+    }
+
+    /* ── Envelope ── */
+    .envelope {
+      position: relative;
+      width: 100%;
+      background: linear-gradient(160deg, #fff0f8, #ffd6ea);
+      border-radius: 12px 12px 12px 12px;
+      box-shadow: 0 20px 50px rgba(200, 60, 120, 0.25);
+      border: 1.5px solid rgba(255, 120, 180, 0.4);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .envelope:hover { transform: translateY(-4px) scale(1.015); box-shadow: 0 28px 65px rgba(200,60,120,0.35); }
+
+    .envelope-aba {
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 90px solid rgba(255, 150, 190, 0.45);
+      position: relative;
+      z-index: 2;
+      transition: border-top-color 0.3s ease;
+    }
+
+    .envelope:hover .envelope-aba { border-top-color: rgba(255, 110, 165, 0.6); }
+
+    .envelope-corpo {
+      padding: 20px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .envelope-coracao { font-size: 3.5rem; animation: pulsar 1.4s ease-in-out infinite; }
+
+    .envelope-dica {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: rgba(160, 40, 90, 0.75);
+      margin: 0;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Carta (papel) ── */
+    .carta-papel {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      background: #fff9fc;
+      border-radius: 12px;
+      padding: 22px 20px 20px;
+      box-shadow: 0 20px 50px rgba(200, 60, 120, 0.3);
+      border: 1.5px solid rgba(255, 120, 180, 0.35);
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      pointer-events: none;
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5;
+    }
+
+    .carta-papel.aberta {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .carta-topo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .carta-titulo {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #c1386b;
+      letter-spacing: 0.02em;
+    }
+
+    .carta-coracao-topo { font-size: 1.2rem; animation: pulsar 1.6s ease-in-out infinite; }
+
+    .carta-texto {
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: #4d1030;
+      line-height: 1.75;
+      text-align: center;
+      margin: 0 0 16px;
+    }
+
+    .carta-assinatura {
+      text-align: right;
+      font-size: 0.88rem;
+      color: #c1386b;
+      font-weight: 700;
+      line-height: 1.5;
+      border-top: 1px dashed rgba(200, 80, 130, 0.25);
+      padding-top: 10px;
+    }
+
+    .carta-coracoes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .coracao-flutuante {
+      position: absolute;
+      bottom: -10px;
+      font-size: 1.1rem;
+      animation: subirCoracao var(--dur, 3s) ease-in var(--delay, 0s) infinite;
+      opacity: 0;
+    }
+
+    .botao-carta {
+      background: linear-gradient(135deg, #e91e8c, #ff6bb5);
+      box-shadow: 0 18px 35px rgba(233, 30, 140, 0.4);
+    }
+
+    .sair-carta {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: rgba(180, 60, 110, 0.6);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 10px;
+      z-index: 10;
+      margin-top: 0;
+    }
+
+    .sair-carta:hover { transform: translateX(-50%); box-shadow: none; color: #e91e8c; }
+
+    @keyframes subirCoracao {
+      0%   { opacity: 0; transform: translateY(0) scale(0.8) rotate(var(--rot, 0deg)); }
+      15%  { opacity: 1; }
+      85%  { opacity: 0.8; }
+      100% { opacity: 0; transform: translateY(-280px) scale(1.3) rotate(calc(var(--rot, 0deg) * -1)); }
+    }
+
 </style>
 </head>
 
@@ -2538,6 +2725,9 @@
     </button>
     <button id="facasButton" class="botao-facas">
       Jogue Facas no Bernardo 🔪
+    </button>
+    <button id="cartaButton" class="botao-carta">
+      Carta do Bernardo 💌
     </button>
   </div>
 
@@ -2672,6 +2862,39 @@
     </div>
     <div class="dica-facas">Toque para atirar facas! 🔪</div>
     <button class="sair-facas" id="sairFacas">← outros jogos</button>
+  </div>
+
+  <div class="carta-area" id="cartaArea">
+    <div class="carta-cenario">
+      <div class="envelope-wrap" id="envelopeWrap">
+        <!-- Envelope fechado -->
+        <div class="envelope" id="envelope">
+          <div class="envelope-aba" id="envelopeAba"></div>
+          <div class="envelope-corpo">
+            <div class="envelope-coracao">💌</div>
+            <p class="envelope-dica" id="envelopeDica">Toque para abrir a carta</p>
+          </div>
+        </div>
+        <!-- Carta / papel (dentro do envelope) -->
+        <div class="carta-papel" id="cartaPapel">
+          <div class="carta-topo">
+            <span class="carta-coracao-topo">💗</span>
+            <span class="carta-titulo">Para Dai</span>
+            <span class="carta-coracao-topo">💗</span>
+          </div>
+          <p class="carta-texto">
+            Dai, você é o amor da minha vida, te amo. Espero que seu dia seja melhor.
+            Você é uma mulher super batalhadora, esperta, forte, e linda.
+            Eu tenho certeza que você vai conquistar tudo que você deseja.
+            Sei que às vezes é difícil, mas essa fase vai passar.
+            Saiba que você tem sempre meu apoio. 💗
+          </p>
+          <div class="carta-assinatura">Com amor,<br><strong>Bernardo</strong> 🥰</div>
+          <div class="carta-coracoes" id="cartaCoracoes"></div>
+        </div>
+      </div>
+    </div>
+    <button class="sair-carta" id="sairCarta">← outros jogos</button>
   </div>
 
   <section class="final" id="final">
@@ -3065,6 +3288,8 @@
     limparObjetos();
 
     modoBoxeAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     socos = 0;
@@ -3325,6 +3550,8 @@
     limparObjetos();
 
     modoRemedioAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     remediosColetados = 0;
@@ -3649,6 +3876,8 @@
     limparRemedios();
 
     modoRevolucaoAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     patriarcadosDerrotados = 0;
@@ -4036,6 +4265,8 @@
     limparRevolucao();
 
     modoCombateAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     daiHp = 100;
@@ -4372,6 +4603,8 @@
     limparRevolucao();
 
     modoPedraAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     document.getElementById("atiradorArea").style.display = "none";
@@ -4658,6 +4891,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoPresenteAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     document.getElementById("atiradorArea").style.display = "none";
@@ -4807,6 +5042,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoAtiradorAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     document.getElementById("facasArea").style.display = "none";
     document.getElementById("facasButton").style.display = "none";
     acertosVilao = 0;
@@ -4979,6 +5216,8 @@
     document.getElementById("pedraButton").style.display = "inline-block";
     document.getElementById("presenteButton").style.display = "inline-block";
     atiradorButton.style.display = "inline-block";
+    document.getElementById("facasButton").style.display = "inline-block";
+    document.getElementById("cartaButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -5022,6 +5261,8 @@
     limparObjetos(); limparRemedios(); limparRevolucao();
 
     modoFacasAtivo = true;
+    document.getElementById("cartaArea").style.display = "none";
+    document.getElementById("cartaButton").style.display = "none";
     acertosFacas = 0;
     facasArea.querySelectorAll(".faca-voando,.faca-presa,.facas-vitoria,.aviso-facas").forEach(e => e.remove());
 
@@ -5191,6 +5432,7 @@
     document.getElementById("presenteButton").style.display = "inline-block";
     atiradorButton.style.display = "inline-block";
     facasButton.style.display = "inline-block";
+  document.getElementById("cartaButton").style.display = "inline-block";
     document.getElementById("textoInicial").innerText =
       "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
     scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
@@ -5206,5 +5448,105 @@
     if (e.target === document.getElementById("sairFacas")) return;
     e.preventDefault(); jogarFaca(e);
   }, { passive: false });
+
+
+  /* ====== Modo Carta do Bernardo ====== */
+  const cartaArea   = document.getElementById("cartaArea");
+  const cartaButton = document.getElementById("cartaButton");
+  let modoCartaAtivo = false;
+  let cartaAberta    = false;
+  let coracoesInterval;
+
+  function iniciarModoCarta() {
+    jogoAtivo = false; modoBoxeAtivo = false; modoRemedioAtivo = false;
+    modoRevolucaoAtivo = false; modoCombateAtivo = false;
+    modoPedraAtivo = false; modoPresenteAtivo = false;
+    modoAtiradorAtivo = false; modoFacasAtivo = false;
+    clearInterval(intervaloLoop); clearInterval(intervaloCriacao); clearInterval(intervaloPontuacao);
+    clearInterval(loopMario); clearInterval(criadorMario); clearInterval(tempoMario);
+    clearInterval(loopRev); clearInterval(criadorInimigos); clearInterval(tempoRev);
+    clearInterval(vilaoAnimLoop); clearTimeout(timerAssistAtaque);
+    limparObjetos(); limparRemedios(); limparRevolucao();
+
+    modoCartaAtivo = true;
+    cartaAberta    = false;
+    document.getElementById("cartaPapel").classList.remove("aberta");
+    document.getElementById("envelopeWrap").style.display = "block";
+    document.getElementById("envelope").style.display = "";
+    document.getElementById("envelopeDica").innerText = "Toque para abrir a carta";
+    document.getElementById("cartaCoracoes").innerHTML = "";
+    clearInterval(coracoesInterval);
+
+    gameArea.style.display = "none"; boxeArea.style.display = "none";
+    remedioArea.style.display = "none"; revolucaoArea.style.display = "none";
+    combateArea.style.display = "none";
+    document.getElementById("pedraArea").style.display = "none";
+    document.getElementById("presenteArea").style.display = "none";
+    atiradorArea.style.display = "none";
+    facasArea.style.display = "none";
+    finalSection.style.display = "none";
+    cartaArea.style.display = "block";
+
+    startButton.style.display = "none"; boxeButton.style.display = "none";
+    remedioButton.style.display = "none"; revolucaoButton.style.display = "none";
+    combateButton.style.display = "none";
+    document.getElementById("pedraButton").style.display = "none";
+    document.getElementById("presenteButton").style.display = "none";
+    atiradorButton.style.display = "none";
+    facasButton.style.display = "none";
+    cartaButton.style.display = "none";
+
+    document.getElementById("textoInicial").innerText = "Você tem uma carta especial esperando por você 💌";
+    scoreElement.innerText = "";
+  }
+
+  function abrirCarta() {
+    if (cartaAberta) return;
+    cartaAberta = true;
+    document.getElementById("cartaPapel").classList.add("aberta");
+    document.getElementById("envelopeDica").innerText = "💗";
+    iniciarCoracoesCarta();
+  }
+
+  function iniciarCoracoesCarta() {
+    const container = document.getElementById("cartaCoracoes");
+    const emojis = ["💗","💕","💖","🌸","✨","💝","💓","🌷","⭐","💫"];
+    function criarCoracao() {
+      if (!modoCartaAtivo) return;
+      const c = document.createElement("span");
+      c.classList.add("coracao-flutuante");
+      c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      c.style.left = (5 + Math.random() * 90) + "%";
+      c.style.setProperty("--dur", (2.5 + Math.random() * 2) + "s");
+      c.style.setProperty("--delay", "0s");
+      c.style.setProperty("--rot", (Math.random() * 30 - 15) + "deg");
+      c.style.fontSize = (0.7 + Math.random() * 0.8) + "rem";
+      container.appendChild(c);
+      setTimeout(function() { c.remove(); }, 5000);
+    }
+    criarCoracao();
+    coracoesInterval = setInterval(criarCoracao, 600);
+  }
+
+  function pararModoCarta() {
+    modoCartaAtivo = false;
+    clearInterval(coracoesInterval);
+    cartaArea.style.display = "none";
+    startButton.style.display = "inline-block"; startButton.innerText = "Começar missão";
+    boxeButton.style.display = "inline-block"; remedioButton.style.display = "inline-block";
+    revolucaoButton.style.display = "inline-block"; combateButton.style.display = "inline-block";
+    document.getElementById("pedraButton").style.display = "inline-block";
+    document.getElementById("presenteButton").style.display = "inline-block";
+    atiradorButton.style.display = "inline-block";
+    facasButton.style.display = "inline-block";
+    cartaButton.style.display = "inline-block";
+    document.getElementById("textoInicial").innerText =
+      "Agora a missão é ajudar a Dai a enfrentar a Assistente Prof, desviando do lanche e da fome pelo caminho.";
+    scoreElement.innerText = "Pontos: 0 | Assistentes Prof: 0/15 | Vidas: 3";
+  }
+
+  document.getElementById("sairCarta").addEventListener("click", pararModoCarta);
+  cartaButton.addEventListener("click", iniciarModoCarta);
+  document.getElementById("envelopeWrap").addEventListener("click", abrirCarta);
 </script>
 </body></html>
