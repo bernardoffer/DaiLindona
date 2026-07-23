@@ -2659,6 +2659,310 @@
       100% { opacity: 0; transform: translateY(-280px) scale(1.3) rotate(calc(var(--rot, 0deg) * -1)); }
     }
 
+    /* ====== Modo Vila (mapa RPG) ====== */
+    .vila-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      background: linear-gradient(180deg, #9fd6ff 0%, #bfe6ff 45%, #ffdcec 100%);
+      font-family: 'Poppins', sans-serif;
+      touch-action: none;
+      user-select: none;
+    }
+    .vila-overlay.ativo { display: flex; }
+
+    .vila-topo {
+      flex: 0 0 auto;
+      text-align: center;
+      padding: 14px 16px 6px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .vila-topo h2 {
+      font-size: clamp(1.3rem, 5vw, 2.2rem);
+      color: #2c6b45;
+      margin: 0;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.6);
+      letter-spacing: -0.5px;
+    }
+    .vila-topo p {
+      margin: 4px 0 0;
+      font-size: clamp(0.8rem, 2.4vw, 1rem);
+      color: #34754d;
+      font-weight: 600;
+    }
+
+    .vila-mapa {
+      --piso: 18%;   /* linha do chão (topo da grama) onde tudo se apoia */
+      position: relative;
+      flex: 1 1 auto;
+      margin: 6px 10px 10px;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-shadow: inset 0 0 60px rgba(120,170,220,0.2), 0 20px 50px rgba(60,90,130,0.22);
+      background:
+        radial-gradient(circle at 78% 22%, rgba(255,255,255,0.5), transparent 42%),
+        linear-gradient(180deg, #a7ddff 0%, #c8ecff 40%, #ffe3ef 82%, #ffe9d6 100%);
+    }
+    /* céu com solzinho */
+    .vila-mapa::before {
+      content: "";
+      position: absolute;
+      right: 8%; top: 8%;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff6c0, #ffe17a 60%, transparent 72%);
+      opacity: 0.8;
+    }
+
+    /* mundo que rola horizontalmente (sidescroller) */
+    .vila-mundo {
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      z-index: 2;
+      will-change: transform;
+    }
+    /* fundo distante (castelo) com parallax */
+    .vila-fundo {
+      position: absolute;
+      left: 0; bottom: calc(var(--piso) - 2%);
+      width: 100%; height: 40%;
+      background: url('cenario/castle.png') repeat-x;
+      background-size: auto 100%;
+      background-position-x: 0;
+      opacity: 0.85;
+      pointer-events: none;
+      z-index: 1;
+    }
+    /* chão com tile de terra (grama no topo alinhada ao piso) */
+    .vila-chao {
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%;
+      height: var(--piso);
+      background: url('cenario/ground_dirt.png') repeat-x;
+      background-size: auto 100%;
+      z-index: 2;
+    }
+    /* árvores espalhadas pela rua */
+    .arvore {
+      position: absolute;
+      bottom: var(--piso);
+      transform: translateX(-50%);
+      pointer-events: none;
+      filter: drop-shadow(0 6px 5px rgba(0,0,0,0.22));
+    }
+    .arvore img { display: block; width: 100%; height: auto; }
+    .arvore.tras { z-index: 2; opacity: 0.96; }
+    .arvore.frente { z-index: 6; }
+
+    .casa {
+      position: absolute;
+      width: clamp(130px, 30vw, 210px);
+      bottom: var(--piso);
+      transform: translateX(-50%);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+      z-index: 3;
+    }
+    .casa-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 8px 6px rgba(0,0,0,0.25));
+      transition: filter 0.15s ease;
+    }
+    .casa .telhado {
+      width: 0; height: 0; margin: 0 auto;
+      border-left: clamp(42px,10vw,65px) solid transparent;
+      border-right: clamp(42px,10vw,65px) solid transparent;
+      border-bottom: clamp(30px,7vw,42px) solid var(--cor, #ff8fbd);
+      filter: drop-shadow(0 4px 3px rgba(0,0,0,0.12));
+    }
+    .casa .corpo {
+      position: relative;
+      background: #fff7fb;
+      border: 2px solid rgba(0,0,0,0.06);
+      border-top: none;
+      padding: 8px 6px 10px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 10px 22px rgba(60,90,70,0.2);
+    }
+    .casa .janela {
+      width: 30%;
+      height: 20px;
+      margin: 0 auto 6px;
+      background: linear-gradient(135deg, #bfe4ff, #8fc7f5);
+      border: 2px solid #fff;
+      border-radius: 4px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    }
+    .casa .porta {
+      width: 40%;
+      height: 42px;
+      margin: 4px auto 0;
+      background: linear-gradient(180deg, #8a5a3c, #6f4529);
+      border-radius: 8px 8px 3px 3px;
+      position: relative;
+      transition: transform 0.2s ease, filter 0.2s ease;
+      transform-origin: left center;
+    }
+    .casa .porta::after {
+      content: "";
+      position: absolute;
+      right: 6px; top: 50%;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #ffd76a;
+      transform: translateY(-50%);
+    }
+    /* letreiro do modo, flutuando acima da casa */
+    .casa .placa {
+      position: absolute;
+      left: 50%; top: -14px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--cor, #ff8fbd);
+      color: #fff;
+      font-size: clamp(0.6rem, 1.7vw, 0.82rem);
+      font-weight: 800;
+      line-height: 1.1;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+      border: 2px solid rgba(255,255,255,0.85);
+    }
+    .casa.perto { transform: translateX(-50%) scale(1.05); z-index: 5; }
+    .casa.perto .casa-img { filter: drop-shadow(0 0 10px #ffe08a) drop-shadow(0 8px 6px rgba(0,0,0,0.25)) brightness(1.06); }
+
+    .dai-vila {
+      position: absolute;
+      width: clamp(56px, 13vw, 80px);
+      height: clamp(82px, 18vw, 116px);
+      bottom: calc(var(--piso) - 1.5%);
+      /* ancorada nos pés (bottom-center); flip controlado via --flip */
+      transform: translateX(-50%) scaleX(var(--flip, 1));
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      background-size: contain;
+      z-index: 5;
+      pointer-events: none;
+      filter: drop-shadow(0 5px 4px rgba(0,0,0,0.28));
+    }
+    .dai-vila::after {
+      content: "";
+      position: absolute;
+      left: 50%; bottom: -4px;
+      width: 46%; height: 9px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.22);
+      border-radius: 50%;
+      filter: blur(2px);
+      z-index: -1;
+    }
+
+    .vila-prompt {
+      position: absolute;
+      left: 50%; top: 12px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.95);
+      color: #2c6b45;
+      font-weight: 800;
+      font-size: clamp(0.8rem, 2.4vw, 1rem);
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 10px 24px rgba(40,100,66,0.25);
+      display: none;
+      z-index: 8;
+      cursor: pointer;
+      animation: promptPulse 1s ease-in-out infinite alternate;
+    }
+    .vila-prompt.mostrar { display: block; }
+    @keyframes promptPulse { from { transform: translateX(-50%) translateY(0);} to { transform: translateX(-50%) translateY(-4px);} }
+
+    /* Controles mobile: D-pad + botão entrar */
+    .vila-controles {
+      position: absolute;
+      left: 16px; bottom: 20px;
+      display: flex;
+      gap: 14px;
+      z-index: 7;
+    }
+    .dpad {
+      display: flex; align-items: center; justify-content: center;
+      width: 58px; height: 58px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 16px;
+      font-size: 1.5rem;
+      color: #2c6b45;
+      box-shadow: 0 6px 14px rgba(40,100,66,0.2);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dpad:active { background: #ffe08a; transform: scale(0.94); }
+
+    .btn-entrar-vila {
+      position: absolute;
+      right: 16px; bottom: 26px;
+      background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 74px; height: 74px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      box-shadow: 0 12px 26px rgba(255,95,162,0.4);
+      cursor: pointer;
+      z-index: 7;
+      display: none;
+    }
+    .btn-entrar-vila.mostrar { display: block; }
+    .btn-entrar-vila:active { transform: scale(0.93); }
+
+    /* Botão flutuante para voltar à Vila (dentro dos modos) */
+    .btn-voltar-vila {
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 55;
+      background: rgba(255,255,255,0.9);
+      color: #2c6b45;
+      border: 2px solid rgba(46,120,78,0.25);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 8px 18px rgba(40,100,66,0.22);
+      cursor: pointer;
+      display: none;
+    }
+    .btn-voltar-vila.mostrar { display: block; }
+
+    .vila-dica-teclado {
+      position: absolute;
+      right: 14px; top: 12px;
+      background: rgba(255,255,255,0.75);
+      color: #34754d;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      z-index: 6;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      .vila-dica-teclado { display: none; }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .vila-controles { display: none; }
+    }
+
 </style>
 </head>
 
@@ -2667,6 +2971,32 @@
 <div class="floating">🍔</div>
 <div class="floating">👩‍🏫</div>
 <div class="floating">💕</div>
+
+<!-- ====== Modo Vila (tela inicial estilo RPG) ====== -->
+<div class="vila-overlay" id="vilaOverlay">
+  <div class="vila-topo">
+    <h2>A Vila da Dai</h2>
+    <p>Ande com a Dai e entre nas casinhas pra jogar cada modo</p>
+  </div>
+  <div class="vila-mapa" id="vilaMapa">
+    <div class="vila-dica-teclado">Use ← → ou A D • Enter pra entrar</div>
+    <div class="vila-prompt" id="vilaPrompt"></div>
+    <div class="vila-fundo" id="vilaFundo"></div>
+
+    <div class="vila-mundo" id="vilaMundo">
+      <div class="vila-chao"></div>
+      <div class="dai-vila" id="daiVila"></div>
+    </div>
+
+    <div class="vila-controles" id="vilaControles">
+      <div class="dpad left" data-dir="left">◀</div>
+      <div class="dpad right" data-dir="right">▶</div>
+    </div>
+    <button class="btn-entrar-vila" id="btnEntrarVila">Entrar</button>
+  </div>
+</div>
+
+<button class="btn-voltar-vila" id="btnVoltarVila">Voltar pra Vila</button>
 
 <main class="card">
   <h1>Missão: Dai vs Assistente Prof</h1>
@@ -5546,5 +5876,202 @@
   document.getElementById("sairCarta").addEventListener("click", pararModoCarta);
   cartaButton.addEventListener("click", iniciarModoCarta);
   document.getElementById("envelopeWrap").addEventListener("click", abrirCarta);
+
+  /* ====== Modo Vila (sidescroller - tela inicial) ====== */
+  (function () {
+    const overlay = document.getElementById("vilaOverlay");
+    const mapa = document.getElementById("vilaMapa");
+    const mundo = document.getElementById("vilaMundo");
+    const fundo = document.getElementById("vilaFundo");
+    const dai = document.getElementById("daiVila");
+    const prompt = document.getElementById("vilaPrompt");
+    const btnEntrar = document.getElementById("btnEntrarVila");
+    const btnVoltar = document.getElementById("btnVoltarVila");
+    const card = document.querySelector(".card");
+
+    // Cada casa = um modo, enfileiradas ao longo da rua. fn = inicia o modo.
+    const casas = [
+      { nome: "Missão\nDai vs Prof", cor: "#ff8fbd", fn: iniciarJogo },
+      { nome: "Boxe", cor: "#c4317a", fn: iniciarModoBoxe },
+      { nome: "Remédios", cor: "#7fb5ff", fn: iniciarModoRemedio },
+      { nome: "Revolução", cor: "#e5484d", fn: iniciarModoRevolucao },
+      { nome: "Combate", cor: "#b85a8c", fn: iniciarModoCombate },
+      { nome: "Jogar\nPedras", cor: "#8a9aa8", fn: iniciarModoPedra },
+      { nome: "Fatson\nvs Vilão", cor: "#5fd0a2", fn: iniciarModoAtirador },
+      { nome: "Facas no\nBernardo", cor: "#9b6dff", fn: iniciarModoFacas },
+      { nome: "Carta do\nBernardo", cor: "#ff5fa2", fn: iniciarModoCarta }
+    ];
+
+    const SPACING = 430;   // distância entre casas (px do mundo)
+    const MARGIN = 280;    // margem antes da 1ª e depois da última
+    let WORLD_W = 0, viewW = 0;
+    let worldX = 90;       // posição da Dai no mundo (px)
+    let casaPerto = null;
+    const casasEls = [];
+    const teclas = {};
+    let rafId = null;
+
+    // frames da caminhada (a personagem olha pra ESQUERDA por padrão)
+    const NUM_FRAMES = 10;
+    const walkFrames = [];
+    for (let i = 1; i <= NUM_FRAMES; i++) {
+      const img = new Image();
+      img.src = "andando/walk_" + String(i).padStart(2, "0") + ".png";
+      walkFrames.push(img);
+    }
+    let frameIdx = 0;
+    let frameAcc = 0;
+    let olhaDireita = true; // começa andando pra direita, rumo à rua
+    dai.style.backgroundImage = "url('" + walkFrames[0].src + "')";
+    dai.style.setProperty("--flip", "1"); // sprite já olha pra direita por padrão
+
+    // cria as casinhas (arte casa.png) ao longo da rua
+    casas.forEach((c, i) => {
+      c.wx = MARGIN + i * SPACING;
+      const el = document.createElement("div");
+      el.className = "casa";
+      el.style.left = c.wx + "px";
+      el.style.setProperty("--cor", c.cor);
+      el.innerHTML =
+        '<span class="placa">' + c.nome.replace(/\n/g, " ") + '</span>' +
+        '<img class="casa-img" src="cenario/house.png" alt="">';
+      el.addEventListener("click", () => {
+        // clicar na casa: leva a Dai até ela e entra
+        worldX = c.wx; atualizar(); entrarNaCasa(c);
+      });
+      mundo.appendChild(el);
+      casasEls.push(el);
+    });
+    WORLD_W = MARGIN + (casas.length - 1) * SPACING + MARGIN;
+    mundo.style.width = WORLD_W + "px";
+
+    function medir() {
+      viewW = mapa.clientWidth || window.innerWidth;
+    }
+
+    function atualizar() {
+      worldX = Math.max(60, Math.min(WORLD_W - 60, worldX));
+      let cam = worldX - viewW / 2;
+      cam = Math.max(0, Math.min(Math.max(0, WORLD_W - viewW), cam));
+      mundo.style.transform = "translateX(" + (-cam) + "px)";
+      dai.style.left = worldX + "px";
+      // castelo ao fundo se move mais devagar (parallax)
+      fundo.style.backgroundPositionX = (-cam * 0.35) + "px";
+    }
+
+    function checarProximidade() {
+      let achou = null;
+      casas.forEach((c, i) => {
+        const dist = Math.abs(c.wx - worldX);
+        const perto = dist < 95;
+        casasEls[i].classList.toggle("perto", perto);
+        if (perto && (!achou || dist < achou.dist)) achou = { casa: c, dist: dist };
+      });
+      casaPerto = achou ? achou.casa : null;
+      if (casaPerto) {
+        prompt.innerHTML = "Entrar em <b>" + casaPerto.nome.replace(/\n/g, " ") + "</b>";
+        prompt.classList.add("mostrar");
+        btnEntrar.classList.add("mostrar");
+      } else {
+        prompt.classList.remove("mostrar");
+        btnEntrar.classList.remove("mostrar");
+      }
+    }
+
+    let ultimoT = 0;
+    function loop(t) {
+      const dt = ultimoT ? (t - ultimoT) : 16;
+      ultimoT = t;
+      const v = 3.4; // velocidade em px por frame
+      let mov = false;
+      if (teclas.left)  { worldX -= v; mov = true; olhaDireita = false; }
+      if (teclas.right) { worldX += v; mov = true; olhaDireita = true; }
+
+      dai.style.setProperty("--flip", olhaDireita ? "1" : "-1");
+
+      if (mov) {
+        // avança o ciclo de caminhada (~11 fps)
+        frameAcc += dt;
+        if (frameAcc > 90) {
+          frameAcc = 0;
+          frameIdx = (frameIdx + 1) % NUM_FRAMES;
+          dai.style.backgroundImage = "url('" + walkFrames[frameIdx].src + "')";
+        }
+        atualizar();
+        checarProximidade();
+      } else if (frameIdx !== 0) {
+        // parada: pose neutra
+        frameIdx = 0; frameAcc = 0;
+        dai.style.backgroundImage = "url('" + walkFrames[0].src + "')";
+      }
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function entrarNaCasa(c) {
+      if (!c) return;
+      pararVila();
+      overlay.classList.remove("ativo");
+      card.style.display = "block";
+      btnVoltar.classList.add("mostrar");
+      // rola pro topo e inicia o modo
+      window.scrollTo(0, 0);
+      try { c.fn(); } catch (e) { console.error("Erro ao abrir modo:", e); }
+    }
+
+    function abrirVila() {
+      card.style.display = "none";
+      btnVoltar.classList.remove("mostrar");
+      overlay.classList.add("ativo");
+      medir();
+      worldX = 90; olhaDireita = true; ultimoT = 0;
+      atualizar();
+      checarProximidade();
+      if (!rafId) rafId = requestAnimationFrame(loop);
+    }
+
+    function pararVila() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    window.addEventListener("resize", () => {
+      if (!overlay.classList.contains("ativo")) return;
+      medir(); atualizar();
+    });
+
+    // teclado (só esquerda/direita)
+    const mapaTeclas = {
+      ArrowLeft: "left", KeyA: "left",
+      ArrowRight: "right", KeyD: "right"
+    };
+    document.addEventListener("keydown", (e) => {
+      if (!overlay.classList.contains("ativo")) return;
+      if (mapaTeclas[e.code]) { teclas[mapaTeclas[e.code]] = true; e.preventDefault(); }
+      if ((e.code === "Enter" || e.code === "Space") && casaPerto) { e.preventDefault(); entrarNaCasa(casaPerto); }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (mapaTeclas[e.code]) teclas[mapaTeclas[e.code]] = false;
+    });
+
+    // D-pad toque
+    document.querySelectorAll("#vilaControles .dpad[data-dir]").forEach((btn) => {
+      const dir = btn.getAttribute("data-dir");
+      const on = (e) => { e.preventDefault(); teclas[dir] = true; };
+      const off = (e) => { e.preventDefault(); teclas[dir] = false; };
+      btn.addEventListener("touchstart", on, { passive: false });
+      btn.addEventListener("touchend", off, { passive: false });
+      btn.addEventListener("touchcancel", off, { passive: false });
+      btn.addEventListener("mousedown", on);
+      btn.addEventListener("mouseup", off);
+      btn.addEventListener("mouseleave", off);
+    });
+
+    btnEntrar.addEventListener("click", () => entrarNaCasa(casaPerto));
+    prompt.addEventListener("click", () => entrarNaCasa(casaPerto));
+    btnVoltar.addEventListener("click", () => { location.reload(); });
+
+    // Expor pra reuso e iniciar a Vila ao carregar
+    window.abrirVila = abrirVila;
+    abrirVila();
+  })();
 </script>
 </body></html>
