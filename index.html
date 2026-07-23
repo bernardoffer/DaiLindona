@@ -5971,10 +5971,10 @@
       if (mobile) {
         const H = mapa.clientHeight || window.innerHeight;
         const W = mapa.clientWidth || window.innerWidth;
-        const daiH = Math.min(H * 0.26, W * 0.44);   // limita pela altura E largura
+        const daiH = Math.min(H * 0.21, W * 0.37);   // limita pela altura E largura
         const daiW = daiH * 0.689;                    // proporção do sprite (303x440)
-        const casaW = Math.min(W * 0.78, daiH * 4.4);
-        mapa.style.setProperty("--piso", "13%");      // chão mais fino
+        const casaW = Math.min(W * 0.66, daiH * 4.4);
+        mapa.style.setProperty("--piso", "14%");      // chão mais fino
         mapa.style.setProperty("--daiH", daiH + "px");
         mapa.style.setProperty("--daiW", daiW + "px");
         mapa.style.setProperty("--casaW", casaW + "px");
