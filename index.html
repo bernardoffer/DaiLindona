@@ -2963,6 +2963,40 @@
       .vila-controles { display: none; }
     }
 
+    /* ===== Mobile em retrato: dimensiona pela ALTURA da tela ===== */
+    @media (orientation: portrait) and (max-width: 900px) {
+      .vila-mapa { --piso: 21%; }
+      .vila-topo { padding: 10px 14px 4px; }
+      .vila-topo h2 { font-size: 1.5rem; }
+      .vila-topo p { font-size: 0.78rem; }
+
+      /* Dai (proporção 303x440 -> largura = altura*0.69) */
+      .dai-vila { height: 18vh; width: 12.4vh; }
+
+      /* Casas (proporção ~1092x1001) e letreiro */
+      .casa { width: 36vh; }
+      .casa .placa {
+        top: -1.9vh;
+        padding: 0.55vh 1.5vh;
+        font-size: 1.75vh;
+        border-width: 2px;
+      }
+
+      /* Castelo ao fundo um pouco mais alto */
+      .vila-fundo { height: 36%; }
+
+      /* Controles de toque maiores e mais afastados das bordas */
+      .vila-controles { left: 18px; bottom: 26px; gap: 16px; }
+      .dpad { width: 64px; height: 64px; font-size: 1.7rem; }
+      .btn-entrar-vila { width: 82px; height: 82px; right: 18px; bottom: 34px; }
+    }
+
+    /* Telas bem pequenas (celular menor) */
+    @media (orientation: portrait) and (max-width: 480px) {
+      .dai-vila { height: 16.5vh; width: 11.4vh; }
+      .casa { width: 42vh; }
+    }
+
 </style>
 </head>
 
