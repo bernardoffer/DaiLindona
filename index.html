@@ -2926,6 +2926,129 @@
     .btn-entrar-vila.mostrar { display: block; }
     .btn-entrar-vila:active { transform: scale(0.93); }
 
+    /* ===== Carta secreta flutuando pela rua da Vila ===== */
+    .carta-vila {
+      position: absolute;
+      bottom: calc(var(--piso) + 16%);
+      transform: translateX(-50%) scale(0.2);
+      font-size: clamp(2rem, 7vw, 3rem);
+      line-height: 1;
+      cursor: pointer;
+      z-index: 6;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.34,1.6,.5,1);
+      filter: drop-shadow(0 0 14px rgba(255,120,180,0.85)) drop-shadow(0 8px 8px rgba(0,0,0,0.2));
+      -webkit-tap-highlight-color: transparent;
+    }
+    .carta-vila.aparece {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) scale(1);
+      animation: cartaVilaBoia 2.6s ease-in-out infinite;
+    }
+    .carta-vila.pega { opacity: 0; transform: translateX(-50%) scale(1.8) translateY(-30px); }
+    @keyframes cartaVilaBoia {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(-6deg); }
+      50%      { transform: translateX(-50%) translateY(-16px) rotate(6deg); }
+    }
+    .carta-vila::after {
+      content: "";
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 150%; height: 150%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,180,215,0.55), transparent 70%);
+      z-index: -1;
+      animation: cartaVilaBrilho 1.8s ease-in-out infinite alternate;
+    }
+    @keyframes cartaVilaBrilho { from { opacity: 0.4; } to { opacity: 0.9; } }
+
+    .carta-vila-dica {
+      position: absolute;
+      left: 50%; top: -28px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: #fff;
+      color: #e0338a;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(224,51,138,0.28);
+      border: 2px solid #ffd4e7;
+    }
+
+    /* ===== Modal da carta secreta ===== */
+    .carta-vila-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(60, 20, 45, 0.55);
+      backdrop-filter: blur(4px);
+      font-family: 'Poppins', sans-serif;
+      overflow-y: auto;
+    }
+    .carta-vila-modal.ativo { display: flex; animation: cartaVilaFade 0.35s ease; }
+    @keyframes cartaVilaFade { from { opacity: 0; } to { opacity: 1; } }
+
+    .carta-vila-papel {
+      position: relative;
+      width: min(560px, 100%);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #fffdf8, #fff2f7);
+      border: 3px solid #ffd4e7;
+      border-radius: 22px;
+      padding: 26px 24px 22px;
+      box-shadow: 0 26px 60px rgba(90,20,60,0.4);
+      animation: cartaVilaSobe 0.45s cubic-bezier(.2,1.2,.4,1);
+    }
+    @keyframes cartaVilaSobe { from { transform: translateY(26px) scale(0.94); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    .carta-vila-papel h3 {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: clamp(1.1rem, 4.4vw, 1.5rem);
+      color: #e0338a;
+      letter-spacing: 0.02em;
+    }
+    .carta-vila-papel p {
+      margin: 0 0 14px;
+      font-size: clamp(0.95rem, 3.6vw, 1.08rem);
+      line-height: 1.75;
+      color: #5a3b4c;
+      text-align: left;
+    }
+    .carta-vila-assinatura {
+      text-align: right;
+      color: #b5397a;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+    .carta-vila-fechar {
+      display: block;
+      margin: 18px auto 0;
+      background: linear-gradient(135deg, #ff5fa2, #ff8fbd);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(255,95,162,0.4);
+    }
+    .carta-vila-fechar:active { transform: scale(0.95); }
+
     /* Botão flutuante para voltar à Vila (dentro dos modos) */
     .btn-voltar-vila {
       position: fixed;
@@ -3007,6 +3130,18 @@
       <div class="dpad right" data-dir="right">▶</div>
     </div>
     <button class="btn-entrar-vila" id="btnEntrarVila">Entrar</button>
+  </div>
+</div>
+
+<!-- ====== Carta secreta encontrada na rua da Vila ====== -->
+<div class="carta-vila-modal" id="cartaVilaModal">
+  <div class="carta-vila-papel">
+    <h3>💌 Uma carta pra você 💌</h3>
+    <p>
+Te amo meu amor, você é o amor da minha vida pra minha vida. Quero tanto um dia poder ter ver com um vestido de noiva, quero tanto passar dias lindos com você. Eu quero crescer com você, lado a lado segurando a sua mão, eu quero poder te proteger, eu quero poder te entregar o mundo. Eu amo seu sorriso, eu amo cada minuto que eu passo com você, eu amo o seu olhar quando vc ta feliz, curiosa, até quando me julga, eu amo cada coisa em você, cada reação, cada célula que existe em você. Te amo. O que você precisar conta comigo amor
+    </p>
+    <div class="carta-vila-assinatura">— Bernardo 🥰</div>
+    <button class="carta-vila-fechar" id="cartaVilaFechar">Fechar 💕</button>
   </div>
 </div>
 
@@ -5959,6 +6094,43 @@
     WORLD_W = MARGIN + (casas.length - 1) * SPACING + MARGIN;
     mundo.style.width = WORLD_W + "px";
 
+    /* ── Carta secreta: aparece flutuando quando a Dai anda pra frente ── */
+    const cartaModal = document.getElementById("cartaVilaModal");
+    const cartaFechar = document.getElementById("cartaVilaFechar");
+    const CARTA_WX = MARGIN + 2.5 * SPACING;   // fica entre as casinhas
+    const CARTA_GATILHO = CARTA_WX - 360;      // distância em que ela surge
+    let cartaAberta = false;
+
+    const cartaEl = document.createElement("div");
+    cartaEl.className = "carta-vila";
+    cartaEl.style.left = CARTA_WX + "px";
+    cartaEl.innerHTML = '<span class="carta-vila-dica">Toque na carta 💗</span>💌';
+    mundo.appendChild(cartaEl);
+
+    function checarCarta() {
+      if (cartaAberta) return;
+      if (worldX >= CARTA_GATILHO) cartaEl.classList.add("aparece");
+      else cartaEl.classList.remove("aparece");
+    }
+
+    function abrirCartaVila() {
+      cartaAberta = true;
+      cartaEl.classList.remove("aparece");
+      cartaEl.classList.add("pega");
+      teclas.left = teclas.right = false;
+      cartaModal.classList.add("ativo");
+    }
+
+    function fecharCartaVila() {
+      cartaModal.classList.remove("ativo");
+    }
+
+    cartaEl.addEventListener("click", abrirCartaVila);
+    cartaFechar.addEventListener("click", fecharCartaVila);
+    cartaModal.addEventListener("click", (e) => {
+      if (e.target === cartaModal) fecharCartaVila();
+    });
+
     function medir() {
       viewW = mapa.clientWidth || window.innerWidth;
       dimensionarMobile();
@@ -6036,6 +6208,7 @@
         }
         atualizar();
         checarProximidade();
+        checarCarta();
       } else if (frameIdx !== 0) {
         // parada: pose neutra
         frameIdx = 0; frameAcc = 0;
@@ -6046,6 +6219,7 @@
 
     function entrarNaCasa(c) {
       if (!c) return;
+      if (cartaModal.classList.contains("ativo")) return;
       pararVila();
       overlay.classList.remove("ativo");
       card.style.display = "block";
@@ -6063,6 +6237,7 @@
       worldX = 90; olhaDireita = true; ultimoT = 0;
       atualizar();
       checarProximidade();
+      checarCarta();
       if (!rafId) rafId = requestAnimationFrame(loop);
     }
 
@@ -6082,6 +6257,12 @@
     };
     document.addEventListener("keydown", (e) => {
       if (!overlay.classList.contains("ativo")) return;
+      if (cartaModal.classList.contains("ativo")) {
+        if (e.code === "Escape" || e.code === "Enter" || e.code === "Space") {
+          e.preventDefault(); fecharCartaVila();
+        }
+        return;
+      }
       if (mapaTeclas[e.code]) { teclas[mapaTeclas[e.code]] = true; e.preventDefault(); }
       if ((e.code === "Enter" || e.code === "Space") && casaPerto) { e.preventDefault(); entrarNaCasa(casaPerto); }
     });
